@@ -5,6 +5,9 @@
   <p><b>Low Latency C++ Central Limit Order Book Engine</b></p>
 
   <div>
+    <a href="https://github.com/lunathanael/clob/actions/workflows/ubuntu.yml">
+      <img src="https://github.com/lunathanael/clob/actions/workflows/ubuntu.yml/badge.svg" alt="ubuntu-ci"/>
+    </a>
   </div>
   <div>
     <a href="https://codecov.io/github/lunathanael/clob" > 

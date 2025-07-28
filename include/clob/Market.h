@@ -7,17 +7,18 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "clob/Stock.h"
 #include "clob/OrderBook.h"
+#include "clob/Stock.h"
 
 namespace clob {
 
 /**
  * @brief Interface for the Market Engine.
  *
- * This class is responsible for managing the entire market engine and
+ * @details This class is responsible for managing the entire market engine and
  * the stocks it holds. It exposes interfaces for adding and interacting
  * with the stocks.
  */
@@ -34,11 +35,22 @@ public:
   /**
    * @brief Constructor for the Market class.
    *
+   * @param exchange_name The name of the market.
+   * @param exchange_ticker The ticker of the market.
+   */
+  Market(const std::string &exchange_name, const std::string &exchange_ticker)
+      : exchange_name(exchange_name), exchange_ticker(exchange_ticker),
+        next_order_id(0) {}
+
+  /**
+   * @brief Constructor for the Market class.
+   *
    * @param name The name of the market.
    * @param ticker The ticker of the market.
    */
-  Market(const std::string exchange_name, const std::string exchange_ticker)
-      : exchange_name(exchange_name), exchange_ticker(exchange_ticker), next_order_id(0) {}
+  Market(std::string &&exchange_name, std::string &&exchange_ticker)
+      : exchange_name(std::move(exchange_name)),
+        exchange_ticker(std::move(exchange_ticker)), next_order_id(0) {}
 
   /**
    * @brief Get the name of the market.
@@ -66,8 +78,15 @@ public:
    *
    * @param stock The stock to add.
    */
-  bool add_stock(std::string stock_name, std::string stock_ticker);
+  bool add_stock(const std::string &stock_name,
+                 const std::string &stock_ticker);
 
+  /**
+   * @brief Add a stock to the market.
+   *
+   * @param stock The stock to add.
+   */
+  bool add_stock(std::string &&stock_name, std::string &&stock_ticker);
 };
 
 } // namespace clob

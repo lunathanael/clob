@@ -25,14 +25,14 @@ public:
    *
    * @param order The order to add.
    */
-  void add_bid_order(LimitOrder &order);
+  void add_bid_order(LimitOrder &&order);
 
   /**
    * @brief Add an ask order to the order book.
    *
    * @param order The order to add.
    */
-  void add_ask_order(LimitOrder &order);
+  void add_ask_order(LimitOrder &&order);
 
   /**
    * @brief Cancel an order from the order book.
@@ -41,7 +41,7 @@ public:
    *
    * @return True if the order was found and cancelled, false otherwise.
    */
-  bool cancel_order(LimitOrder::id_t order_id);
+  bool cancel_order(const LimitOrder::id_t order_id);
 };
 
 } // namespace clob

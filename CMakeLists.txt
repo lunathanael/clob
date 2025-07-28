@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 set(TARGET_NAME    "clob")
 set(LIBRARY_NAME    "clob_lib")

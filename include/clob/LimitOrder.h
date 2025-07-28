@@ -10,6 +10,11 @@
 
 namespace clob {
 
+/**
+ * @brief A class representing a limit order
+ *
+ * @details Includes the id, timestamp, price, and quantity of the order.
+ */
 class LimitOrder {
 public:
   enum class OrderType { Bid, Ask };
