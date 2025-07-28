@@ -11,4 +11,4 @@ set(PACKAGE_BUGREPORT "https://github.com/lunathanael/clob/issues")
 
 project(${PACKAGE_NAME} CXX)
 
-add_executable(${PACKAGE_NAME} clob/main.cpp)
+add_executable(${PACKAGE_NAME} src/main.cpp)
