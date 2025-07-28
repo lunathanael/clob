@@ -9,7 +9,7 @@
 
 - Initial pre-version release
 - Updated Readme
-- Added Ubuntu, Fedora, GCC15, Windows, Clang-Windows Builds
+- Added Ubuntu, Fedora, GCC15, Windows, Clang-Windows Builds and badges
 - Added placeholder classes `Market`, `Stock`, `LimitOrder`, `OrderBook`
 - Implemented rudimentary compiling options including variable building with cmake
 - Added Code Coverage

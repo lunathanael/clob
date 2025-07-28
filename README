@@ -8,6 +8,18 @@
     <a href="https://github.com/lunathanael/clob/actions/workflows/ubuntu.yml">
       <img src="https://github.com/lunathanael/clob/actions/workflows/ubuntu.yml/badge.svg" alt="ubuntu-ci"/>
     </a>
+    <a href="https://github.com/lunathanael/clob/actions/workflows/fedora.yml">
+      <img src="https://github.com/lunathanael/clob/actions/workflows/fedora.yml/badge.svg" alt="fedora-ci"/>
+    </a>
+    <a href="https://github.com/lunathanael/clob/actions/workflows/gcc15.yml">
+      <img src="https://github.com/lunathanael/clob/actions/workflows/gcc15.yml/badge.svg" alt="gcc15-ci"/>
+    </a>
+    <a href="https://github.com/lunathanael/clob/actions/workflows/windows.yml">
+      <img src="https://github.com/lunathanael/clob/actions/workflows/windows.yml/badge.svg" alt="winfows-ci"/>
+    </a>
+    <a href="https://github.com/lunathanael/clob/actions/workflows/clang-windows.yml">
+      <img src="https://github.com/lunathanael/clob/actions/workflows/clang-windows.yml/badge.svg" alt="clang-winfows-ci"/>
+    </a>
   </div>
   <div>
     <a href="https://codecov.io/github/lunathanael/clob" > 
