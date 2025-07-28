@@ -18,8 +18,8 @@ jobs:
     - name: Check branch naming
       run: |
         BRANCH_NAME="${{ github.head_ref || github.ref_name }}"
-        if [[ ! "$BRANCH_NAME" =~ ^(main|develop|feature/|bugfix/|hotfix/|release/|docs/|refactor/|test/|perf/|ci/).*$ ]]; then
-          echo "❌ Invalid branch name: $BRANCH_NAME"
+        if [[ ! "$BRANCH_NAME" =~ ^(main|develop|feature/|bugfix/|hotfix/|release/|docs/|refactor/|test/|perf/|ci/) ]]; then
+          echo "Invalid branch name: $BRANCH_NAME"
           echo "Branch names must follow the pattern: <type>/<description>"
           echo "Valid types: feature, bugfix, hotfix, release, docs, refactor, test, perf, ci"
           exit 1
@@ -57,7 +57,7 @@ jobs:
       run: |
         # Check for potential secrets in code
         if grep -r -i "password\|secret\|key\|token" --include="*.cpp" --include="*.h" --include="*.cmake" --include="*.txt" . | grep -v "//\|#" | grep -v "test\|example"; then
-          echo "⚠️  Potential secrets found in code"
+          echo "Potential secrets found in code"
           echo "Please review the following lines:"
           grep -r -i "password\|secret\|key\|token" --include="*.cpp" --include="*.h" --include="*.cmake" --include="*.txt" . | grep -v "//\|#" | grep -v "test\|example"
           exit 1
