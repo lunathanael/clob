@@ -126,7 +126,7 @@ if [ "$VERBOSE_MAKEFILE" = true ]; then
     CMAKE_ARGS="$CMAKE_ARGS -DCLOB_VERBOSE_MAKEFILE=ON"
 fi
 
-cmake -B "$BUILD_DIR" $CMAKE_ARGS
+cmake -B "$BUILD_DIR" "$CMAKE_ARGS"
 
 echo "Building..."
 

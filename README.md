@@ -1,6 +1,6 @@
 # Clob
 
-**Low Latency C++ Central Limit Order Book Engine**
+# Low Latency C++ Central Limit Order Book Engine
 
 [![ubuntu-ci](https://github.com/lunathanael/clob/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/lunathanael/clob/actions/workflows/ubuntu.yml)
 [![fedora-ci](https://github.com/lunathanael/clob/actions/workflows/fedora.yml/badge.svg)](https://github.com/lunathanael/clob/actions/workflows/fedora.yml)
