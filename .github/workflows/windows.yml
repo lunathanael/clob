@@ -84,7 +84,7 @@ jobs:
         std: [20]
         with_tests: [ ON ]
     steps:
-      - uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@40677d36a502eb2cf0fb808cc9dec31bf6152638
         with:
           release: false
           msystem: ${{matrix.sys}}
