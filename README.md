@@ -51,6 +51,7 @@
 ---
 
 ## Introduction
+
 Clob is a Low Latency C++ Central Limit Order Book Engine
 
 ---
@@ -60,4 +61,5 @@ Clob is a Low Latency C++ Central Limit Order Book Engine
 Clob is licensed under the [MIT License](http://opensource.org/licenses/MIT)
 
 Clob depends on third party libraries with separate copyright notices and license terms.
+
 - ([MIT License](http://opensource.org/licenses/MIT)) [doctest](http://github.com/onqtam/doctest/blob/master/LICENSE.txt)
