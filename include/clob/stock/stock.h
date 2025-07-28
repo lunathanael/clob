@@ -13,9 +13,10 @@ namespace clob {
 
 class Stock {
 public:
+  using id_t = uint_fast32_t;
   const std::string name;
   const std::string ticker;
-  const uint_fast32_t id;
+  const Stock::id_t id;
 };
 
 } // namespace clob

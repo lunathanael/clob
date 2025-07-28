@@ -5,6 +5,7 @@
  */
 
 #include "clob/market/market.h"
+#include "clob/stock/stock.h"
 
 namespace clob {
 
@@ -15,7 +16,7 @@ std::string Market::get_exchange_ticker() const { return exchange_ticker; }
 std::size_t Market::get_num_stocks() const { return stocks.size(); }
 
 bool Market::add_stock(std::string stock_name, std::string stock_ticker) {
-  stocks.emplace_back(stock_name, stock_ticker, static_cast<uint_fast32_t>(get_num_stocks()));
+  stocks.emplace_back(stock_name, stock_ticker, static_cast<Stock::id_t>(get_num_stocks()));
   return true;
 }
 
