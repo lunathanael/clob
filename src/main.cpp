@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "clob/market/market.h"
+#include "clob/Market.h"
 
 int main() {
     clob::Market market("New York Stock Exchange", "NYSE");

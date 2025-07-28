@@ -36,12 +36,15 @@ add_executable(${PACKAGE_NAME} src/main.cpp)
 target_include_directories(${PACKAGE_NAME} PRIVATE include)
 
 set(HEADER_FILES
-    include/clob/market/market.h
-    include/clob/stock/stock.h
+    include/clob/Market.h
+    include/clob/Order.h
+    include/clob/OrderBook.h
+    include/clob/Stock.h
+    include/clob/types.h
 )
 
 set(SOURCE_FILES
-    src/market/market.cpp
+    src/Market.cpp
 )
 
 target_sources(${PACKAGE_NAME} PRIVATE ${SOURCE_FILES})

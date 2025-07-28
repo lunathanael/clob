@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "clob/stock/stock.h"
+#include "clob/Stock.h"
 
 namespace clob {
 
