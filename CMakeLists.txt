@@ -37,7 +37,7 @@ target_include_directories(${PACKAGE_NAME} PRIVATE include)
 
 set(HEADER_FILES
     include/clob/Market.h
-    include/clob/Order.h
+    include/clob/LimitOrder.h
     include/clob/OrderBook.h
     include/clob/Stock.h
     include/clob/types.h
@@ -45,6 +45,7 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
     src/Market.cpp
+    src/OrderBook.cpp
 )
 
 target_sources(${PACKAGE_NAME} PRIVATE ${SOURCE_FILES})

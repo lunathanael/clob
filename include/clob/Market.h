@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "clob/Stock.h"
+#include "clob/OrderBook.h"
 
 namespace clob {
 
@@ -24,6 +25,8 @@ class Market {
   const std::string exchange_name;
   const std::string exchange_ticker;
   std::vector<Stock> stocks;
+  std::vector<OrderBook> order_books;
+  clob::LimitOrder::id_t next_order_id;
 
 public:
   Market() = delete;
@@ -35,7 +38,7 @@ public:
    * @param ticker The ticker of the market.
    */
   Market(const std::string exchange_name, const std::string exchange_ticker)
-      : exchange_name(exchange_name), exchange_ticker(exchange_ticker) {}
+      : exchange_name(exchange_name), exchange_ticker(exchange_ticker), next_order_id(0) {}
 
   /**
    * @brief Get the name of the market.
@@ -65,7 +68,6 @@ public:
    */
   bool add_stock(std::string stock_name, std::string stock_ticker);
 
-  /** */
 };
 
 } // namespace clob
