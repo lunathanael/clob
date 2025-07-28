@@ -28,15 +28,14 @@ jobs:
         
     - name: Check commit message format
       run: |
-        # Check if this is a PR
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
+        if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
           echo "Commit message check skipped for PR"
           exit 0
         fi
         
-        # Check commit message format for direct pushes
         COMMIT_MSG="${{ github.event.head_commit.message }}"
-        if [[ ! "$COMMIT_MSG" =~ ^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\(.+\))?: .+ ]]; then
+        REGEX="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\([^)]+\))?: .+"
+        if [[ ! "$COMMIT_MSG" =~ $REGEX ]]; then
           echo "Invalid commit message format: $COMMIT_MSG"
           echo "Commit messages must follow conventional commits format:"
           echo "type(scope): description"
@@ -55,7 +54,6 @@ jobs:
       
     - name: Check for secrets in code
       run: |
-        # Check for potential secrets in code
         if grep -r -i "password\|secret\|key\|token" --include="*.cpp" --include="*.h" --include="*.cmake" --include="*.txt" . | grep -v "//\|#" | grep -v "test\|example"; then
           echo "Potential secrets found in code"
           echo "Please review the following lines:"
@@ -66,7 +64,6 @@ jobs:
         
     - name: Check file sizes
       run: |
-        # Check for files larger than 10MB
         find . -type f -size +10M | while read file; do
           echo "Large file found: $file"
           echo "Files larger than 10MB should not be committed to git"
