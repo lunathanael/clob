@@ -2,17 +2,17 @@
 # Format: <type>: <description>
 # 
 # Types:
-# - feat:     : New features
-# - fix:      : Bug fixes
-# - hotfix:   : Critical fixes for production
-# - docs:     : Documentation updates
-# - style:    : Code style changes (formatting, missing semicolons, etc.)
-# - refactor: : Code refactoring (no functional changes)
-# - test:     : Test improvements
-# - perf:     : Performance improvements
-# - ci:       : CI/CD improvements
-# - build:    : Build system changes
-# - chore:    : Maintenance tasks
+# - feat:     New features
+# - fix:      Bug fixes
+# - hotfix:   Critical fixes for production
+# - docs:     Documentation updates
+# - style:    Code style changes (formatting, missing semicolons, etc.)
+# - refactor: Code refactoring (no functional changes)
+# - test:     Test improvements
+# - perf:     Performance improvements
+# - ci:       CI/CD improvements
+# - build:    Build system changes
+# - chore:    Maintenance tasks
 
 # Examples:
 # - hotfix: fix critical memory leak in order book
