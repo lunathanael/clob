@@ -55,7 +55,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         Debug|Release|Performance|RelWithDebInfo|MinSizeRel)
-            BUILD_TYPE=$1
+            BUILD_TYPE="$1"
             shift
             ;;
         *)
@@ -95,7 +95,8 @@ fi
 
 # Create build directory
 BUILD_DIR="out"
-mkdir -p $BUILD_DIR
+
+mkdir -p "$BUILD_DIR"
 
 echo "Configuring with CMAKE_BUILD_TYPE=$BUILD_TYPE..."
 
@@ -125,15 +126,15 @@ if [ "$VERBOSE_MAKEFILE" = true ]; then
     CMAKE_ARGS="$CMAKE_ARGS -DCLOB_VERBOSE_MAKEFILE=ON"
 fi
 
-cmake -B $BUILD_DIR $CMAKE_ARGS
+cmake -B "$BUILD_DIR" $CMAKE_ARGS
 
 echo "Building..."
 
 # Build
 if [ "$VERBOSE_MAKEFILE" = true ]; then
-    cmake --build $BUILD_DIR -j$(nproc) --verbose
+    cmake --build "$BUILD_DIR" -j"$(nproc)" --verbose
 else
-    cmake --build $BUILD_DIR -j$(nproc)
+    cmake --build "$BUILD_DIR" -j"$(nproc)"
 fi
 
 echo "Build complete!"
@@ -141,7 +142,7 @@ echo "Binary location: $BUILD_DIR/clob"
 
 # Show optimization info
 if [ -f "$BUILD_DIR/clob" ]; then
-    echo "Binary size: $(ls -lh $BUILD_DIR/clob | awk '{print $5}')"
+    echo "Binary size: $(ls -lh "$BUILD_DIR/clob" | awk '{print $5}')"
     echo "Build type: $BUILD_TYPE"
     if [ "$NO_EXCEPTIONS" = true ]; then
         echo "Exceptions: disabled"
@@ -189,7 +190,7 @@ fi
 # Run tests if they were built
 if [ "$BUILD_TESTS" = true ]; then
     echo "Running tests..."
-    cd $BUILD_DIR
+    cd "$BUILD_DIR"
     ctest --output-on-failure
     cd ..
 fi
