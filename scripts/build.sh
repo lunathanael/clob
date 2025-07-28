@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # CLOB Build Script
 # Usage: ./build.sh [build_type] [options...]
 # Build types: Debug, Release, Performance, RelWithDebInfo, MinSizeRel
@@ -12,7 +13,8 @@
 #   --valgrind          Enable Valgrind for tests
 #   --verbose           Enable verbose make output
 
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
 BUILD_TYPE="Release"
 NO_EXCEPTIONS=false
@@ -22,6 +24,7 @@ SANITIZE_THREAD=false
 CODE_COVERAGE=false
 USE_VALGRIND=false
 VERBOSE_MAKEFILE=false
+CLEAN_BUILD=false
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -54,6 +57,10 @@ while [[ $# -gt 0 ]]; do
             VERBOSE_MAKEFILE=true
             shift
             ;;
+        --clean)
+            CLEAN_BUILD=true
+            shift
+            ;;
         Debug|Release|Performance|RelWithDebInfo|MinSizeRel)
             BUILD_TYPE="$1"
             shift
@@ -62,7 +69,7 @@ while [[ $# -gt 0 ]]; do
             echo "Unknown argument: $1"
             echo "Usage: ./build.sh [build_type] [options...]"
             echo "Build types: Debug, Release, Performance, RelWithDebInfo, MinSizeRel"
-            echo "Options: --no-exceptions, --tests, --sanitize-address, --sanitize-thread, --coverage, --valgrind, --verbose"
+            echo "Options: --no-exceptions, --tests, --sanitize-address, --sanitize-thread, --coverage, --valgrind, --verbose, --clean"
             exit 1
             ;;
     esac
@@ -93,40 +100,45 @@ if [ "$VERBOSE_MAKEFILE" = true ]; then
     echo "Verbose make: enabled"
 fi
 
-# Create build directory
 BUILD_DIR="out"
+
+if [ "$CLEAN_BUILD" = true ]; then
+    echo "Cleaning build directory..."
+    rm -rf "$BUILD_DIR"
+fi
 
 mkdir -p "$BUILD_DIR"
 
 echo "Configuring with CMAKE_BUILD_TYPE=$BUILD_TYPE..."
 
 # Configure
-CMAKE_ARGS="-DCMAKE_BUILD_TYPE=$BUILD_TYPE"
+CMAKE_ARGS=("-DCMAKE_BUILD_TYPE=$BUILD_TYPE")
 if [ "$BUILD_TESTS" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_BUILD_TESTS=ON"
+    CMAKE_ARGS+=("-DCLOB_BUILD_TESTS=ON")
 else
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_BUILD_TESTS=OFF"
+    CMAKE_ARGS+=("-DCLOB_BUILD_TESTS=OFF")
 fi
 if [ "$NO_EXCEPTIONS" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_NO_EXCEPTIONS=ON"
+    CMAKE_ARGS+=("-DCLOB_NO_EXCEPTIONS=ON")
 fi
 if [ "$SANITIZE_ADDRESS" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_SANITIZE_ADDRESS=ON"
+    CMAKE_ARGS+=("-DCLOB_SANITIZE_ADDRESS=ON")
 fi
 if [ "$SANITIZE_THREAD" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_SANITIZE_THREAD=ON"
+    CMAKE_ARGS+=("-DCLOB_SANITIZE_THREAD=ON")
 fi
 if [ "$CODE_COVERAGE" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_CODE_COVERAGE=ON"
+    CMAKE_ARGS+=("-DCLOB_CODE_COVERAGE=ON")
 fi
 if [ "$USE_VALGRIND" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_USE_VALGRIND=ON"
+    CMAKE_ARGS+=("-DCLOB_USE_VALGRIND=ON")
 fi
 if [ "$VERBOSE_MAKEFILE" = true ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DCLOB_VERBOSE_MAKEFILE=ON"
+    CMAKE_ARGS+=("-DCLOB_VERBOSE_MAKEFILE=ON")
 fi
 
-cmake -B "$BUILD_DIR" "$CMAKE_ARGS"
+
+cmake -S . -B "$BUILD_DIR" "${CMAKE_ARGS[@]}"
 
 echo "Building..."
 
