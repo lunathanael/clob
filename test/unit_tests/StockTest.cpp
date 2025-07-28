@@ -14,15 +14,18 @@ using namespace clob;
 
 /***/
 TEST_CASE("stock_construction") {
-  Stock stock1{"stock1", "AAPL", 0};
-  Stock stock2{"stock2", "GOOG", 1};
+  Stock stock1{"stock1", "AAPL", 2};
+  std::string stock2_name = "stock2";
+  std::string stock2_ticker = "GOOG";
+  Stock::id_t stock2_id = 1;
+  Stock stock2{stock2_name, stock2_ticker, stock2_id};
 
   CHECK(stock1.name == "stock1");
   CHECK(stock1.ticker == "AAPL");
   CHECK(stock2.name == "stock2");
   CHECK(stock2.ticker == "GOOG");
-  CHECK(stock1.id == 0);
-  CHECK(stock2.id == 1);
+  CHECK(stock1.id == 2);
+  CHECK(stock2.id == stock2_id);
 }
 
 /***/
