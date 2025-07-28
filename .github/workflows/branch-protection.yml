@@ -1,0 +1,102 @@
+name: Branch Protection & Code Quality
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+
+jobs:
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check branch naming
+      run: |
+        BRANCH_NAME="${{ github.head_ref || github.ref_name }}"
+        if [[ ! "$BRANCH_NAME" =~ ^(main|develop|feature/|bugfix/|hotfix/|release/|docs/|refactor/|test/|perf/|ci/).*$ ]]; then
+          echo "❌ Invalid branch name: $BRANCH_NAME"
+          echo "Branch names must follow the pattern: <type>/<description>"
+          echo "Valid types: feature, bugfix, hotfix, release, docs, refactor, test, perf, ci"
+          exit 1
+        fi
+        echo "Branch name is valid: $BRANCH_NAME"
+        
+    - name: Check commit message format
+      run: |
+        # Check if this is a PR
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "Commit message check skipped for PR"
+          exit 0
+        fi
+        
+        # Check commit message format for direct pushes
+        COMMIT_MSG="${{ github.event.head_commit.message }}"
+        if [[ ! "$COMMIT_MSG" =~ ^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\(.+\))?: .+ ]]; then
+          echo "Invalid commit message format: $COMMIT_MSG"
+          echo "Commit messages must follow conventional commits format:"
+          echo "type(scope): description"
+          echo "Valid types: feat, fix, docs, style, refactor, test, chore, perf, ci, build"
+          exit 1
+        fi
+        echo "Commit message is valid: $COMMIT_MSG"
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check for secrets in code
+      run: |
+        # Check for potential secrets in code
+        if grep -r -i "password\|secret\|key\|token" --include="*.cpp" --include="*.h" --include="*.cmake" --include="*.txt" . | grep -v "//\|#" | grep -v "test\|example"; then
+          echo "⚠️  Potential secrets found in code"
+          echo "Please review the following lines:"
+          grep -r -i "password\|secret\|key\|token" --include="*.cpp" --include="*.h" --include="*.cmake" --include="*.txt" . | grep -v "//\|#" | grep -v "test\|example"
+          exit 1
+        fi
+        echo "No obvious secrets found in code"
+        
+    - name: Check file sizes
+      run: |
+        # Check for files larger than 10MB
+        find . -type f -size +10M | while read file; do
+          echo "Large file found: $file"
+          echo "Files larger than 10MB should not be committed to git"
+          exit 1
+        done
+        echo "No large files found"
+
+  documentation:
+    name: Documentation Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check README
+      run: |
+        if [ ! -f "README.md" ]; then
+          echo "README.md is missing"
+          exit 1
+        fi
+        echo "README.md exists"
+        
+    - name: Check for TODO comments
+      run: |
+        TODO_COUNT=$(grep -r "TODO" --include="*.cpp" --include="*.h" . | wc -l)
+        if [ "$TODO_COUNT" -gt 0 ]; then
+          echo "Found $TODO_COUNT TODO comments"
+          echo "Please review TODO comments before merging:"
+          grep -r "TODO" --include="*.cpp" --include="*.h" .
+        else
+          echo "No TODO comments found"
+        fi 
