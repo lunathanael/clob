@@ -67,7 +67,7 @@ Closes #
 
 ## Review Checklist
 
-### For Reviewers:
+### For Reviewers
 
 - [ ] Code is readable and well-documented
 - [ ] Logic is correct and efficient

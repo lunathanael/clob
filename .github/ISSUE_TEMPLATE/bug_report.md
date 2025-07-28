@@ -10,6 +10,7 @@ assignees: ''
 <!-- A clear and concise description of what the bug is -->
 
 ## Steps to Reproduce
+
 1. 
 2. 
 3. 
@@ -29,6 +30,7 @@ assignees: ''
 - **CLOB Version:** [e.g., 1.0.1]
 
 ## Build Configuration
+
 ```bash
 # Command used to build:
 ./scripts/build.sh [build_type] [options]
