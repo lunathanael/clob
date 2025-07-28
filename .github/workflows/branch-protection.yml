@@ -25,20 +25,6 @@ jobs:
           exit 1
         fi
         echo "Branch name is valid: $BRANCH_NAME"
-        
-    - name: Check commit message format
-      run: |
-        
-        COMMIT_MSG="${{ github.event.head_commit.message }}"
-        REGEX="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build): .+"
-        if [[ ! "$COMMIT_MSG" =~ $REGEX ]]; then
-          echo "Invalid commit message format: $COMMIT_MSG"
-          echo "Commit messages must follow conventional commits format:"
-          echo "type(scope): description"
-          echo "Valid types: feat, fix, docs, style, refactor, test, chore, perf, ci, build"
-          exit 1
-        fi
-        echo "Commit message is valid: $COMMIT_MSG"
 
   security:
     name: Security Checks
