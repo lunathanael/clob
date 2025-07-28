@@ -30,7 +30,7 @@ jobs:
       run: |
         
         COMMIT_MSG="${{ github.event.head_commit.message }}"
-        REGEX="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\([^)]+\))?: .+"
+        REGEX="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build): .+"
         if [[ ! "$COMMIT_MSG" =~ $REGEX ]]; then
           echo "Invalid commit message format: $COMMIT_MSG"
           echo "Commit messages must follow conventional commits format:"
