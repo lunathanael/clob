@@ -1,46 +1,131 @@
 cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
-set(PACKAGE_NAME    "clob")
-project(${PACKAGE_NAME} CXX)
+set(TARGET_NAME    "clob")
+set(LIBRARY_NAME    "clob_lib")
+project(${TARGET_NAME} CXX)
+
+#-------------------------------------------------------------------------------------------------------
+# Options
+#-------------------------------------------------------------------------------------------------------
+
+option(CLOB_NO_EXCEPTIONS "Enable this option to build without exception handling support." OFF)
+option(CLOB_BUILD_TESTS "Enable this option to build the test suite." OFF)
+option(CLOB_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error detection." OFF)
+option(CLOB_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues. Note: Using this option with non-Clang compilers may produce false positives." OFF)
+option(CLOB_CODE_COVERAGE "Enable code coverage analysis during the build." OFF)
+option(CLOB_USE_VALGRIND "Use Valgrind as the default memory checking tool in CTest. Valgrind must be installed." OFF)
+
+# Internal option
+set(CLOB_ENABLE_GCC_HARDENING OFF CACHE INTERNAL "")
+
+#-------------------------------------------------------------------------------------------------------
+# Determine if clob is built as a subproject (using add_subdirectory) or if it is the master project.
+#-------------------------------------------------------------------------------------------------------
+set(CLOB_MASTER_PROJECT FALSE CACHE BOOL "Master Project" FORCE)
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(CLOB_MASTER_PROJECT TRUE CACHE BOOL "Master Project" FORCE)
+endif ()
+
+#-------------------------------------------------------------------------------------------------------
+# Custom cmake functions
+#-------------------------------------------------------------------------------------------------------
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+include(ClobUtils)
 
 #-------------------------------------------------------------------------------------------------------
 # Resolve version
 #-------------------------------------------------------------------------------------------------------
-if (NOT DEFINED PACKAGE_VERSION)
-    set(PACKAGE_VERSION "0.1.0")
-endif()
+clob_extract_version()
+project(clob VERSION ${CLOB_VERSION} LANGUAGES CXX)
+
+#-------------------------------------------------------------------------------------------------------
+# Set default build to release
+#-------------------------------------------------------------------------------------------------------
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build" FORCE)
+endif ()
 
 #---------------------------------------------------------------------------------------
 # Compiler config
-#---------------------------------------------------------------------------------------
-if (NOT CMAKE_CXX_STANDARD)
-    # If CMAKE_CXX_STANDARD is not set, configure it to 23 by default
-    set(CMAKE_CXX_STANDARD 23)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-elseif (CMAKE_CXX_STANDARD LESS 23)
-    # If CMAKE_CXX_STANDARD is set but less than 23, issue a fatal error
-    message(FATAL_ERROR "Clob requires at least C++23. Please set CMAKE_CXX_STANDARD to 23 or higher.")
-endif ()
-
-set(PACKAGE_STRING    "${PACKAGE_NAME} ${PACKAGE_VERSION}")
-set(PACKAGE_TARNAME   "${PACKAGE_NAME}-${PACKAGE_VERSION}")
-set(PACKAGE_BUGREPORT "https://github.com/lunathanael/clob/issues")
+#---------------------------------------------------------------------------------------]
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Generate compile_commands.json for IntelliSense
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Create executable
-add_executable(${PACKAGE_NAME} src/main.cpp)
+#-------------------------------------------------------------------------------------------------------
+# Required Packages
+#-------------------------------------------------------------------------------------------------------
+# find_package(Threads REQUIRED)
 
-# Add include directories
-target_include_directories(${PACKAGE_NAME} PRIVATE include)
+if (CLOB_BUILD_TESTS)
+    enable_testing()
 
+    if (CLOB_USE_VALGRIND)
+        # find valgrind
+        find_program(MEMORYCHECK_COMMAND NAMES valgrind)
+        if (NOT MEMORYCHECK_COMMAND)
+            message(WARNING "Valgrind not found")
+        endif ()
+
+        # set valgrind params
+        set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=full --leak-resolution=med --show-leak-kinds=all --track-origins=yes --vgdb=no --fair-sched=yes")
+
+        # add memcheck test action to ctest
+        include(CTest)
+    endif ()
+endif ()
+
+#-------------------------------------------------------------------------------------------------------
+# Log Info
+#-------------------------------------------------------------------------------------------------------
+if (CLOB_MASTER_PROJECT)
+    option(CLOB_VERBOSE_MAKEFILE "Enable verbose output for makefiles when Clob is the master project. This provides detailed information about the build process." OFF)
+    message(STATUS "CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
+    message(STATUS "CLOB_VERSION: ${CLOB_VERSION}")
+endif ()
+
+message(STATUS "CLOB_NO_EXCEPTIONS: " ${CLOB_NO_EXCEPTIONS})
+
+#---------------------------------------------------------------------------------------
+# Verbose make file option
+#---------------------------------------------------------------------------------------
+if (CLOB_VERBOSE_MAKEFILE)
+    set(CMAKE_VERBOSE_MAKEFILE TRUE CACHE BOOL "Verbose output" FORCE)
+endif ()
+
+# address sanitizer flags
+if (CLOB_SANITIZE_ADDRESS)
+    add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer -g)
+    add_link_options(-fsanitize=address,undefined)
+endif ()
+
+# thread sanitizer flags
+if (CLOB_SANITIZE_THREAD)
+    add_compile_options(-fsanitize=thread -fno-omit-frame-pointer -g)
+    add_link_options(-fsanitize=thread)
+endif ()
+
+# Append extra options for coverage
+if (CLOB_CODE_COVERAGE)
+    add_compile_options(-O0 -fno-omit-frame-pointer -g -fprofile-arcs -ftest-coverage)
+    add_link_options(-fprofile-arcs -ftest-coverage)
+endif ()
+
+if (CLOB_BUILD_TESTS AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test)
+    add_subdirectory(test)
+endif ()
+
+# header files
 set(HEADER_FILES
-    include/clob/Market.h
     include/clob/LimitOrder.h
+    include/clob/Market.h
     include/clob/OrderBook.h
     include/clob/Stock.h
     include/clob/types.h
+    include/clob/version.h
 )
 
 set(SOURCE_FILES
@@ -48,4 +133,52 @@ set(SOURCE_FILES
     src/OrderBook.cpp
 )
 
-target_sources(${PACKAGE_NAME} PRIVATE ${SOURCE_FILES})
+add_library(${LIBRARY_NAME} OBJECT ${HEADER_FILES} ${SOURCE_FILES})
+target_include_directories(${LIBRARY_NAME} PUBLIC include)
+
+# Apply common compile options to object library
+set_common_compile_options(${LIBRARY_NAME})
+
+# Apply build type optimizations using modern CMake
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(${LIBRARY_NAME} PRIVATE -O0 -g -DDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_options(${LIBRARY_NAME} PRIVATE -O3 -DNDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "Performance")
+    target_compile_options(${LIBRARY_NAME} PRIVATE -Ofast -march=native -ffast-math -flto -DNDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    target_compile_options(${LIBRARY_NAME} PRIVATE -O2 -g -DNDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+    target_compile_options(${LIBRARY_NAME} PRIVATE -Os -DNDEBUG)
+endif ()
+
+# Apply no-exceptions option (independent of build type)
+if (CLOB_NO_EXCEPTIONS)
+    target_compile_options(${LIBRARY_NAME} PRIVATE -fno-exceptions -fno-rtti)
+    target_compile_definitions(${LIBRARY_NAME} PRIVATE -DCLOB_NO_EXCEPTIONS)
+endif ()
+
+#-------------------------------------------------------------------------------------------------------
+# Executable
+#-------------------------------------------------------------------------------------------------------
+add_executable(${TARGET_NAME} src/main.cpp)
+target_link_libraries(${TARGET_NAME} PRIVATE ${LIBRARY_NAME})
+
+# Apply build type optimizations to executable
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(${TARGET_NAME} PRIVATE -O0 -g -DDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_options(${TARGET_NAME} PRIVATE -O3 -DNDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "Performance")
+    target_compile_options(${TARGET_NAME} PRIVATE -Ofast -march=native -ffast-math -flto -DNDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    target_compile_options(${TARGET_NAME} PRIVATE -O2 -g -DNDEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+    target_compile_options(${TARGET_NAME} PRIVATE -Os -DNDEBUG)
+endif ()
+
+# Apply no-exceptions option to executable (independent of build type)
+if (CLOB_NO_EXCEPTIONS)
+    target_compile_options(${TARGET_NAME} PRIVATE -fno-exceptions -fno-rtti)
+    target_compile_definitions(${TARGET_NAME} PRIVATE -DCLOB_NO_EXCEPTIONS)
+endif ()
