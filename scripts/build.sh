@@ -14,7 +14,6 @@
 #   --verbose           Enable verbose make output
 
 set -euo pipefail
-IFS=$'\n\t'
 
 BUILD_TYPE="Release"
 NO_EXCEPTIONS=false
