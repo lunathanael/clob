@@ -17,13 +17,6 @@ std::string Market::get_exchange_ticker() const { return exchange_ticker; }
 
 std::size_t Market::get_num_stocks() const { return stocks.size(); }
 
-bool Market::add_stock(const std::string &stock_name,
-                       const std::string &stock_ticker) {
-  stocks.emplace_back(stock_name, stock_ticker,
-                      std::move(static_cast<Stock::id_t>(get_num_stocks())));
-  return true;
-}
-
 bool Market::add_stock(std::string &&stock_name, std::string &&stock_ticker) {
   stocks.emplace_back(std::move(stock_name), std::move(stock_ticker),
                       std::move(static_cast<Stock::id_t>(get_num_stocks())));

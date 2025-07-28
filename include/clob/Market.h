@@ -35,16 +35,6 @@ public:
   /**
    * @brief Constructor for the Market class.
    *
-   * @param exchange_name The name of the market.
-   * @param exchange_ticker The ticker of the market.
-   */
-  Market(const std::string &exchange_name, const std::string &exchange_ticker)
-      : exchange_name(exchange_name), exchange_ticker(exchange_ticker),
-        next_order_id(0) {}
-
-  /**
-   * @brief Constructor for the Market class.
-   *
    * @param name The name of the market.
    * @param ticker The ticker of the market.
    */
@@ -72,14 +62,6 @@ public:
    * @return The number of stocks in the market.
    */
   std::size_t get_num_stocks() const;
-
-  /**
-   * @brief Add a stock to the market.
-   *
-   * @param stock The stock to add.
-   */
-  bool add_stock(const std::string &stock_name,
-                 const std::string &stock_ticker);
 
   /**
    * @brief Add a stock to the market.

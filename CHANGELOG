@@ -3,7 +3,7 @@
 
 ## TBD
 
-- None
+- Removed lvalue constructors for Market and Stock in favor of temporary construction
 
 ## v0.1.0
 

@@ -31,16 +31,6 @@ public:
    * @param ticker The ticker of the stock
    * @param id The id of the stock
    */
-  Stock(const std::string &name, const std::string &ticker, const id_t id)
-      : name(name), ticker(ticker), id(id) {}
-
-  /**
-   * @brief Construct a new Stock object
-   *
-   * @param name The name of the stock
-   * @param ticker The ticker of the stock
-   * @param id The id of the stock
-   */
   Stock(std::string &&name, std::string &&ticker, const id_t id)
       : name(std::move(name)), ticker(std::move(ticker)), id(id) {}
 
