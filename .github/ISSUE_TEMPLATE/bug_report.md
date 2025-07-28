@@ -21,6 +21,7 @@ assignees: ''
 <!-- What actually happened -->
 
 ## Environment
+
 - **OS:** [e.g., Ubuntu 22.04, Windows 11, macOS 14]
 - **Compiler:** [e.g., GCC 12, Clang 14, MSVC 2022]
 - **CMake Version:** [e.g., 3.20]
@@ -43,21 +44,25 @@ assignees: ''
 <!-- If applicable, add debugging output -->
 
 ### **Compiler Output:**
+
 ```
 [Paste compiler errors/warnings here]
 ```
 
 ### **Runtime Output:**
+
 ```
 [Paste runtime errors/output here]
 ```
 
 ### **Sanitizer Output:**
+
 ```
 [Paste sanitizer output here]
 ```
 
 ## Checklist
+
 - [ ] I have searched existing issues
 - [ ] I have provided all required information
 - [ ] I have tested with different build configurations
