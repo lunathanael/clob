@@ -1,0 +1,14 @@
+- TBD
+- [v0.1.0](#v010)
+
+## TBD
+
+- None
+
+## v0.1.0
+
+- Added placeholder classes `Market`, `Stock`, `LimitOrder`, `OrderBook`
+- Implemented rudimentary compiling options including variable building with cmake
+- Added Code Coverage
+- Added basic testing as Proof-of-Concept
+- Wrote README, LICENSE, CHANGELOG
