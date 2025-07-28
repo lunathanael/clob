@@ -28,10 +28,6 @@ jobs:
         
     - name: Check commit message format
       run: |
-        if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-          echo "Commit message check skipped for PR"
-          exit 0
-        fi
         
         COMMIT_MSG="${{ github.event.head_commit.message }}"
         REGEX="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build)(\([^)]+\))?: .+"
