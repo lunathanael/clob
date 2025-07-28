@@ -2,15 +2,15 @@
 # Format: <type>/<description>
 # 
 # Types:
-# - feature/     : New features
-# - bugfix/      : Bug fixes
-# - hotfix/      : Critical fixes for production
-# - release/     : Release preparation
-# - docs/        : Documentation updates
-# - refactor/    : Code refactoring
-# - test/        : Test improvements
-# - perf/        : Performance improvements
-# - ci/          : CI/CD improvements
+# - feature/     New features
+# - bugfix/      Bug fixes
+# - hotfix/      Critical fixes for production
+# - release/     Release preparation
+# - docs/        Documentation updates
+# - refactor/    Code refactoring
+# - test/        Test improvements
+# - perf/        Performance improvements
+# - ci/          CI/CD improvements
 
 # Examples:
 # - feature/order-matching-engine

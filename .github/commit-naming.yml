@@ -1,0 +1,26 @@
+# Commit message convention
+# Format: <type>: <description>
+# 
+# Types:
+# - feat:     New features
+# - fix:      Bug fixes
+# - hotfix:   Critical fixes for production
+# - docs:     Documentation updates
+# - style:    Code style changes (formatting, missing semicolons, etc.)
+# - refactor: Code refactoring (no functional changes)
+# - test:     Test improvements
+# - perf:     Performance improvements
+# - ci:       CI/CD improvements
+# - build:    Build system changes
+# - chore:    Maintenance tasks
+
+# Examples:
+# - hotfix: fix critical memory leak in order book
+# - docs: update API documentation
+# - style: fix clang-format issues
+# - refactor: simplify order priority logic
+# - test: add comprehensive order book tests
+# - perf: optimize order insertion algorithm
+# - ci: add GCC 15 workflow
+# - build: update CMake minimum version
+# - chore: update dependencies
