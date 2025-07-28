@@ -23,4 +23,4 @@
 # - perf: optimize order insertion algorithm
 # - ci: add GCC 15 workflow
 # - build: update CMake minimum version
-# - chore: update dependencies 
+# - chore: update dependencies
