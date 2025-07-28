@@ -31,6 +31,10 @@ class Market {
 
 public:
   Market() = delete;
+  Market(const Market &) = delete;
+  Market(Market &&) = delete;
+  Market &operator=(const Market &) = delete;
+  Market &operator=(Market &&) = delete;
 
   /**
    * @brief Constructor for the Market class.
