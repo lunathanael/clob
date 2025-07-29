@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,7 +28,7 @@ class Market {
   const std::string exchange_ticker;
   std::vector<Stock> stocks;
   std::vector<OrderBook> order_books;
-  std::vector<LimitOrder> orders;
+  std::vector<std::unique_ptr<LimitOrder>> orders;
   clob::LimitOrder::id_t next_order_id;
 
 public:
