@@ -13,5 +13,6 @@ namespace clob {
 using timestamp_ns_t = uint_fast64_t;
 using price_t = uint_fast32_t;
 using quantity_t = uint_fast32_t;
+using balance_t = int_fast64_t;
 
 } // namespace clob

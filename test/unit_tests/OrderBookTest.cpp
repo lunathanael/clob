@@ -163,6 +163,8 @@ TEST_CASE("order_matching_exact_price") {
 
   CHECK(bid_order->filled_quantity == 50);
   CHECK(ask_order->filled_quantity == 50);
+  CHECK(bid_order->balance == -50 * 15000);
+  CHECK(ask_order->balance == 50 * 15000);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 1);
 }
@@ -173,11 +175,15 @@ TEST_CASE("order_matching_partial_fill") {
   auto ask_order = std::make_unique<LimitOrder>(1, 1000, 15000, 100);
   order_book.add_ask_order(ask_order.get());
 
+  CHECK(ask_order->balance == 0);
+
   auto bid_order = std::make_unique<LimitOrder>(2, 1100, 15000, 150);
   order_book.add_bid_order(bid_order.get());
 
   CHECK(bid_order->filled_quantity == 100);
   CHECK(ask_order->filled_quantity == 100);
+  CHECK(bid_order->balance == -100 * 15000);
+  CHECK(ask_order->balance == 100 * 15000);
   CHECK(order_book.bids_size() == 1);
   CHECK(order_book.asks_size() == 0);
 }
@@ -193,6 +199,8 @@ TEST_CASE("order_matching_no_match") {
 
   CHECK(bid_order->filled_quantity == 0);
   CHECK(ask_order->filled_quantity == 0);
+  CHECK(bid_order->balance == 0);
+  CHECK(ask_order->balance == 0);
   CHECK(order_book.bids_size() == 1);
   CHECK(order_book.asks_size() == 1);
 }
@@ -211,6 +219,9 @@ TEST_CASE("order_matching_multiple_orders") {
   CHECK(bid_order->filled_quantity == 75);
   CHECK(ask1->filled_quantity == 50);
   CHECK(ask2->filled_quantity == 25);
+  CHECK(bid_order->balance == -75 * 15000);
+  CHECK(ask1->balance == 50 * 15000);
+  CHECK(ask2->balance == 25 * 15000);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 1);
 }
@@ -229,6 +240,9 @@ TEST_CASE("order_matching_price_time_priority") {
   CHECK(bid_order->filled_quantity == 75);
   CHECK(ask2->filled_quantity == 50);
   CHECK(ask1->filled_quantity == 25);
+  CHECK(bid_order->balance == -50 * 14900 - 25 * 15000);
+  CHECK(ask2->balance == 50 * 14900);
+  CHECK(ask1->balance == 25 * 15000);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 1);
 }
@@ -244,6 +258,8 @@ TEST_CASE("cancelled_order_skipped") {
   order_book.add_bid_order(bid_order.get());
 
   CHECK(bid_order->filled_quantity == 0);
+  CHECK(bid_order->balance == 0);
+  CHECK(ask_order->balance == 0);
   CHECK(order_book.bids_size() == 1);
   CHECK(order_book.asks_size() == 0);
 }
@@ -255,6 +271,7 @@ TEST_CASE("add_cancelled_bid_order") {
   bid_order->is_cancelled = true;
   order_book.add_bid_order(bid_order.get());
 
+  CHECK(bid_order->balance == 0);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 0);
 }
@@ -266,6 +283,7 @@ TEST_CASE("add_cancelled_ask_order") {
   ask_order->is_cancelled = true;
   order_book.add_ask_order(ask_order.get());
 
+  CHECK(ask_order->balance == 0);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 0);
 }
@@ -281,6 +299,8 @@ TEST_CASE("cancel_later_ask_order") {
   order_book.add_bid_order(bid_order.get());
 
   CHECK(bid_order->filled_quantity == 0);
+  CHECK(bid_order->balance == 0);
+  CHECK(ask_order->balance == 0);
   CHECK(order_book.bids_size() == 1);
   CHECK(order_book.asks_size() == 0);
 }
@@ -296,6 +316,8 @@ TEST_CASE("cancel_later_bid_order") {
   order_book.add_ask_order(ask_order.get());
 
   CHECK(ask_order->filled_quantity == 0);
+  CHECK(bid_order->balance == 0);
+  CHECK(ask_order->balance == 0);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 1);
 }
@@ -311,6 +333,8 @@ TEST_CASE("bid_matches_better_ask_price") {
 
   CHECK(bid_order->filled_quantity == 100);
   CHECK(ask_order->filled_quantity == 100);
+  CHECK(bid_order->balance == -100 * 14900);
+  CHECK(ask_order->balance == 100 * 14900);
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 0);
 }
@@ -326,6 +350,8 @@ TEST_CASE("ask_matches_better_bid_price") {
 
   CHECK(ask_order->filled_quantity == 100);
   CHECK(bid_order->filled_quantity == 100);
+  CHECK(bid_order->balance == -100 * 15100);
+  CHECK(ask_order->balance == 100 * 15100);
   CHECK(order_book.asks_size() == 0);
   CHECK(order_book.bids_size() == 0);
 }
@@ -344,6 +370,8 @@ TEST_CASE("exact_match_single_order") {
   CHECK(order_book.asks_size() == 0);
   CHECK(bid1->filled_quantity == 800);
   CHECK(ask1->filled_quantity == 800);
+  CHECK(bid1->balance == -800 * 50000);
+  CHECK(ask1->balance == 800 * 50000);
 }
 
 TEST_CASE("one_ask_matches_multiple_bids") {
@@ -367,6 +395,10 @@ TEST_CASE("one_ask_matches_multiple_bids") {
   CHECK(bid1->filled_quantity == 400);
   CHECK(bid2->filled_quantity == 300);
   CHECK(order_book.get_best_bid_order()->id == 102);
+  CHECK(bid1->balance == -400 * 50000);
+  CHECK(bid2->balance == -300 * 49800);
+  CHECK(bid3->balance == -300 * 50200);
+  CHECK(ask1->balance == 400 * 50000 + 300 * 49800 + 300 * 50200);
 }
 
 TEST_CASE("one_bid_matches_multiple_asks") {
@@ -390,6 +422,10 @@ TEST_CASE("one_bid_matches_multiple_asks") {
   CHECK(ask1->filled_quantity == 250);
   CHECK(ask3->filled_quantity == 250);
   CHECK(order_book.get_best_ask_order()->id == 203);
+  CHECK(ask1->balance == 250 * 50500);
+  CHECK(ask2->balance == 400 * 50200);
+  CHECK(ask3->balance == 250 * 50800);
+  CHECK(bid1->balance == -250 * 50500 - 400 * 50200 - 250 * 50800);
 }
 
 TEST_CASE("partial_fill_scenarios") {
@@ -413,6 +449,9 @@ TEST_CASE("partial_fill_scenarios") {
   CHECK(bid1->filled_quantity == 1200);
   CHECK(ask2->filled_quantity == 400);
   CHECK(order_book.get_best_ask_order()->id == 202);
+  CHECK(bid1->balance == -1200 * 50000);
+  CHECK(ask1->balance == 800 * 50000);
+  CHECK(ask2->balance == 400 * 50000);
 }
 
 TEST_CASE("no_match_orders_go_to_book") {
@@ -436,6 +475,10 @@ TEST_CASE("no_match_orders_go_to_book") {
   CHECK(ask2->filled_quantity == 0);
   CHECK(order_book.get_best_bid_order()->id == 101);
   CHECK(order_book.get_best_ask_order()->id == 201);
+  CHECK(bid1->balance == 0);
+  CHECK(bid2->balance == 0);
+  CHECK(ask1->balance == 0);
+  CHECK(ask2->balance == 0);
 }
 
 TEST_CASE("price_time_priority_validation") {
@@ -466,6 +509,11 @@ TEST_CASE("price_time_priority_validation") {
   CHECK(ask2->filled_quantity == 400);
   CHECK(bid1->filled_quantity == 300);
   CHECK(ask1->filled_quantity == 500);
+  CHECK(bid1->balance == -300 * 50000);
+  CHECK(bid2->balance == -400 * 50000);
+  CHECK(bid3->balance == -200 * 50100);
+  CHECK(ask1->balance == 200 * 50100 + 300 * 50000);
+  CHECK(ask2->balance == 400 * 50000);
 }
 
 TEST_CASE("aggressive_cross_price_matching") {
@@ -487,6 +535,10 @@ TEST_CASE("aggressive_cross_price_matching") {
   CHECK(bid1->filled_quantity == 400);
   CHECK(bid2->filled_quantity == 600);
   CHECK(order_book.get_best_ask_order()->id == 201);
+  CHECK(bid1->balance == -400 * 50000);
+  CHECK(bid2->balance == -600 * 49800);
+  CHECK(bid3->balance == -300 * 50200);
+  CHECK(ask1->balance == 400 * 50000 + 600 * 49800 + 300 * 50200);
 }
 
 TEST_CASE("complex_interlaced_timestamps") {
@@ -509,8 +561,14 @@ TEST_CASE("complex_interlaced_timestamps") {
   CHECK(ask1->filled_quantity == 1000);
   CHECK(bid2->filled_quantity == 300);
   CHECK(bid4->filled_quantity == 200);
+  CHECK(bid3->filled_quantity == 0);
   CHECK(bid1->filled_quantity == 500);
   CHECK(order_book.get_best_bid_order()->id == 103);
+  CHECK(bid1->balance == -500 * 50000);
+  CHECK(bid2->balance == -300 * 50000);
+  CHECK(bid3->balance == 0);
+  CHECK(bid4->balance == -200 * 50000);
+  CHECK(ask1->balance == 1000 * 50000);
 }
 
 TEST_CASE("ultimate_comprehensive_order_book_test") {
@@ -528,24 +586,28 @@ TEST_CASE("ultimate_comprehensive_order_book_test") {
   REQUIRE(order_book.get_best_bid_order() != nullptr);
   CHECK(order_book.get_best_bid_order()->id == 1001);
   CHECK(bid1->filled_quantity == 0);
+  CHECK(bid1->balance == 0);
 
   order_book.add_bid_order(bid2.get());
   CHECK(order_book.bids_size() == 2);
   REQUIRE(order_book.get_best_bid_order() != nullptr);
   CHECK(order_book.get_best_bid_order()->id == 1001);
   CHECK(bid2->filled_quantity == 0);
+  CHECK(bid2->balance == 0);
 
   order_book.add_bid_order(bid3.get());
   CHECK(order_book.bids_size() == 3);
   REQUIRE(order_book.get_best_bid_order() != nullptr);
   CHECK(order_book.get_best_bid_order()->id == 1003);
   CHECK(bid3->filled_quantity == 0);
+  CHECK(bid3->balance == 0);
 
   order_book.add_bid_order(bid4.get());
   CHECK(order_book.bids_size() == 4);
   REQUIRE(order_book.get_best_bid_order() != nullptr);
   CHECK(order_book.get_best_bid_order()->id == 1003);
   CHECK(bid4->filled_quantity == 0);
+  CHECK(bid4->balance == 0);
 
   order_book.add_bid_order(bid5.get());
   CHECK(order_book.bids_size() == 5);
@@ -701,6 +763,9 @@ TEST_CASE("ultimate_comprehensive_order_book_test") {
   CHECK(bid11->filled_quantity == 35000);
   CHECK(bid9->filled_quantity == 90000);
   CHECK(bid10->filled_quantity == 25000);
+  CHECK(bid10->balance == -25000LL * 1018000);
+  CHECK(bid11->balance == -35000LL * 1030000);
+  CHECK(ask9->balance == 35000LL * 1030000 + 27000LL * 1025000 + 25000LL * 1018000);
 }
 
 TEST_SUITE_END();

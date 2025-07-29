@@ -24,12 +24,14 @@ TEST_CASE("limit_order_construction") {
   CHECK(order1.id == 1);
   CHECK(order1.timestamp == 1000);
   CHECK(order1.price == 15000);
+  CHECK(order1.balance == 0);
   CHECK(order1.quantity == 100);
   CHECK(order1.filled_quantity == 0);
   CHECK(order1.is_cancelled == false);
   CHECK(order2.id == order2_id);
   CHECK(order2.timestamp == order2_timestamp);
   CHECK(order2.price == order2_price);
+  CHECK(order2.balance == 0);
   CHECK(order2.quantity == order2_quantity);
   CHECK(order2.filled_quantity == 0);
   CHECK(order2.is_cancelled == false);
@@ -121,6 +123,7 @@ TEST_CASE("limit_order_edge_cases") {
 /***/
 TEST_CASE("limit_order_copy_constructors") {
   LimitOrder order1{1, 1000, 15000, 100};
+  order1.balance = 10000;
   LimitOrder order2{order1};
 
   CHECK(order2.id == order1.id);
@@ -129,6 +132,7 @@ TEST_CASE("limit_order_copy_constructors") {
   CHECK(order2.quantity == order1.quantity);
   CHECK(order2.filled_quantity == order1.filled_quantity);
   CHECK(order2.is_cancelled == order1.is_cancelled);
+  CHECK(order2.balance == order1.balance);
 }
 
 /***/
