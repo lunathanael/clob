@@ -99,7 +99,7 @@ public:
    * @param order The order to add.
    */
   template <clob::LimitOrder::OrderType order_type>
-  bool add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity);
+  clob::LimitOrder::id_t add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity);
 
   /**
    * @brief Cancel an order.

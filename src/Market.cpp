@@ -32,7 +32,7 @@ bool Market::add_stock(std::string &&stock_name, std::string &&stock_ticker) {
 }
 
 template <clob::LimitOrder::OrderType order_type>
-bool Market::add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity) {
+clob::LimitOrder::id_t Market::add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity) {
   auto ns = std::chrono::system_clock::now().time_since_epoch().count();
   orders.emplace_back(static_cast<LimitOrder::id_t>(orders.size()), ns, price, quantity);
   if constexpr (order_type == LimitOrder::OrderType::Bid) {
