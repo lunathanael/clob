@@ -23,18 +23,18 @@ public:
   class PriceTimeQueuePriority {
   public:
     struct BidCmp {
-      constexpr inline bool operator()(const LimitOrder &o1,
-                                       const LimitOrder &o2) const {
-        return o1.price < o2.price ||
-               (o1.price == o2.price && o1.timestamp > o2.timestamp);
+      constexpr inline bool operator()(const LimitOrder *o1,
+                                       const LimitOrder *o2) const {
+        return o1->price < o2->price ||
+               (o1->price == o2->price && o1->timestamp > o2->timestamp);
       }
     };
 
     struct AskCmp {
-      constexpr inline bool operator()(const LimitOrder &o1,
-                                       const LimitOrder &o2) const {
-        return o1.price > o2.price ||
-               (o1.price == o2.price && o1.timestamp > o2.timestamp);
+      constexpr inline bool operator()(const LimitOrder *o1,
+                                       const LimitOrder *o2) const {
+        return o1->price > o2->price ||
+               (o1->price == o2->price && o1->timestamp > o2->timestamp);
       }
     };
   };

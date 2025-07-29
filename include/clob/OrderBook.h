@@ -17,22 +17,22 @@ namespace clob {
 class OrderBook {
 public:
   std::unordered_set<LimitOrder::id_t> pending_orders;
-  std::priority_queue<LimitOrder, std::vector<LimitOrder>, LimitOrder::PriceTimeQueuePriority::BidCmp> bids;
-  std::priority_queue<LimitOrder, std::vector<LimitOrder>, LimitOrder::PriceTimeQueuePriority::AskCmp> asks;
+  std::priority_queue<LimitOrder*, std::vector<LimitOrder*>, LimitOrder::PriceTimeQueuePriority::BidCmp> bids;
+  std::priority_queue<LimitOrder*, std::vector<LimitOrder*>, LimitOrder::PriceTimeQueuePriority::AskCmp> asks;
 
   /**
    * @brief Add a bid order to the order book.
    *
    * @param order The order to add.
    */
-  void add_bid_order(LimitOrder &&order);
+  void add_bid_order(LimitOrder *order);
 
   /**
    * @brief Add an ask order to the order book.
    *
    * @param order The order to add.
    */
-  void add_ask_order(LimitOrder &&order);
+  void add_ask_order(LimitOrder *order);
 
   /**
    * @brief Cancel an order from the order book.
