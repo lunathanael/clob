@@ -4,6 +4,7 @@
 ## TBD
 
 - Add Unit and Integration tests for placeholder classes
+- Implemented OrderBook order matching
 
 ## v0.1.0
 

@@ -65,15 +65,18 @@ TEST_CASE("limit_order_priority_queue_bid_comparator") {
   LimitOrder order1{1, 1000, 15000, 100}; // Lower price
   LimitOrder order2{2, 1000, 16000, 100}; // Higher price
 
-  CHECK(bid_cmp(order1, order2) == true);  // order2 should have higher priority
-  CHECK(bid_cmp(order2, order1) == false); // order1 should have lower priority
+  CHECK(bid_cmp(&order1, &order2) ==
+        true); // order2 should have higher priority
+  CHECK(bid_cmp(&order2, &order1) ==
+        false); // order1 should have lower priority
 
   // Test time priority (earlier timestamp = higher priority when prices equal)
   LimitOrder order3{3, 1000, 15000, 100}; // Earlier timestamp
   LimitOrder order4{4, 2000, 15000, 100}; // Later timestamp
 
-  CHECK(bid_cmp(order3, order4) == false); // order3 should have higher priority
-  CHECK(bid_cmp(order4, order3) == true);  // order4 should have lower priority
+  CHECK(bid_cmp(&order3, &order4) ==
+        false); // order3 should have higher priority
+  CHECK(bid_cmp(&order4, &order3) == true); // order4 should have lower priority
 }
 
 /***/
@@ -84,15 +87,18 @@ TEST_CASE("limit_order_priority_queue_ask_comparator") {
   LimitOrder order1{1, 1000, 16000, 100}; // Higher price
   LimitOrder order2{2, 1000, 15000, 100}; // Lower price
 
-  CHECK(ask_cmp(order1, order2) == true);  // order1 should have higher priority
-  CHECK(ask_cmp(order2, order1) == false); // order2 should have lower priority
+  CHECK(ask_cmp(&order1, &order2) ==
+        true); // order1 should have higher priority
+  CHECK(ask_cmp(&order2, &order1) ==
+        false); // order2 should have lower priority
 
   // Test time priority (earlier timestamp = higher priority when prices equal)
   LimitOrder order3{3, 1000, 15000, 100}; // Earlier timestamp
   LimitOrder order4{4, 2000, 15000, 100}; // Later timestamp
 
-  CHECK(ask_cmp(order3, order4) == false); // order3 should have higher priority
-  CHECK(ask_cmp(order4, order3) == true);  // order4 should have lower priority
+  CHECK(ask_cmp(&order3, &order4) ==
+        false); // order3 should have higher priority
+  CHECK(ask_cmp(&order4, &order3) == true); // order4 should have lower priority
 }
 
 /***/
