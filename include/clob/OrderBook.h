@@ -62,14 +62,14 @@ public:
    *
    * @return The number of bid orders.
    */
-  size_t bids_size() const { return bids.size(); }
+  std::size_t bids_size() const { return bids.size(); }
 
   /**
    * @brief Get the number of ask orders.
    *
    * @return The number of ask orders.
    */
-  size_t asks_size() const { return asks.size(); }
+  std::size_t asks_size() const { return asks.size(); }
 };
 
 } // namespace clob
