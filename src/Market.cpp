@@ -9,6 +9,7 @@
 
 #include "clob/Market.h"
 #include "clob/Stock.h"
+#include "clob/LimitOrder.h"
 
 namespace clob {
 
@@ -22,12 +23,14 @@ bool Market::add_stock(const std::string &stock_name,
                        const std::string &stock_ticker) {
   stocks.emplace_back(stock_name, stock_ticker,
                       static_cast<Stock::id_t>(get_num_stocks()));
+  order_books.emplace_back();
   return true;
 }
 
 bool Market::add_stock(std::string &&stock_name, std::string &&stock_ticker) {
   stocks.emplace_back(std::move(stock_name), std::move(stock_ticker),
                       static_cast<Stock::id_t>(get_num_stocks()));
+  order_books.emplace_back();
   return true;
 }
 
@@ -73,5 +76,8 @@ const OrderBook *Market::get_order_book(const clob::Stock::id_t stock_id) const 
   }
   return &order_books[stock_id];
 }
+
+template clob::LimitOrder::id_t Market::add_order<LimitOrder::OrderType::Bid>(const clob::Stock::id_t, const clob::price_t, const clob::quantity_t);
+template clob::LimitOrder::id_t Market::add_order<LimitOrder::OrderType::Ask>(const clob::Stock::id_t, const clob::price_t, const clob::quantity_t);
 
 } // namespace clob
