@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "clob/LimitOrder.h"
 #include "clob/Market.h"
 #include "clob/Stock.h"
-#include "clob/LimitOrder.h"
 
 namespace clob {
 
@@ -36,10 +36,14 @@ bool Market::add_stock(std::string &&stock_name, std::string &&stock_ticker) {
 }
 
 template <clob::LimitOrder::OrderType order_type>
-clob::LimitOrder::id_t Market::add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity) {
+clob::LimitOrder::id_t Market::add_order(const clob::Stock::id_t stock_id,
+                                         const clob::price_t price,
+                                         const clob::quantity_t quantity) {
   auto ns = std::chrono::system_clock::now().time_since_epoch().count();
-  clob::LimitOrder::id_t order_id = static_cast<LimitOrder::id_t>(orders.size());
-  orders.emplace_back(std::make_unique<LimitOrder>(static_cast<LimitOrder::id_t>(orders.size()), ns, price, quantity));
+  clob::LimitOrder::id_t order_id =
+      static_cast<LimitOrder::id_t>(orders.size());
+  orders.emplace_back(
+      std::make_unique<LimitOrder>(order_id, ns, price, quantity));
   if (stock_id >= order_books.size()) {
     orders.back()->is_cancelled = true;
     return order_id;
@@ -56,7 +60,7 @@ bool Market::cancel_order(const clob::LimitOrder::id_t order_id) {
   if (order_id >= orders.size()) {
     return false;
   }
-  auto & order = orders[order_id];
+  auto &order = orders[order_id];
   if (order->is_cancelled || order->filled_quantity == order->quantity) {
     return false;
   }
@@ -64,21 +68,25 @@ bool Market::cancel_order(const clob::LimitOrder::id_t order_id) {
   return true;
 }
 
-const LimitOrder *Market::query_order(const clob::LimitOrder::id_t order_id) const {
+const LimitOrder *
+Market::query_order(const clob::LimitOrder::id_t order_id) const {
   if (order_id >= orders.size()) {
     return nullptr;
   }
   return orders[order_id].get();
 }
 
-const OrderBook *Market::get_order_book(const clob::Stock::id_t stock_id) const {
+const OrderBook *
+Market::get_order_book(const clob::Stock::id_t stock_id) const {
   if (stock_id >= order_books.size()) {
     return nullptr;
   }
   return &order_books[stock_id];
 }
 
-template clob::LimitOrder::id_t Market::add_order<LimitOrder::OrderType::Bid>(const clob::Stock::id_t, const clob::price_t, const clob::quantity_t);
-template clob::LimitOrder::id_t Market::add_order<LimitOrder::OrderType::Ask>(const clob::Stock::id_t, const clob::price_t, const clob::quantity_t);
+template clob::LimitOrder::id_t Market::add_order<LimitOrder::OrderType::Bid>(
+    const clob::Stock::id_t, const clob::price_t, const clob::quantity_t);
+template clob::LimitOrder::id_t Market::add_order<LimitOrder::OrderType::Ask>(
+    const clob::Stock::id_t, const clob::price_t, const clob::quantity_t);
 
 } // namespace clob

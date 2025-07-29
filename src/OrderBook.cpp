@@ -20,7 +20,8 @@ void OrderBook::match_orders(LimitOrder *new_order) {
                          decltype(bids), decltype(asks)>;
   order_book_t *order_book;
   new_order_book_t *new_order_book;
-  constexpr const balance_t balance_sign{order_type == LimitOrder::OrderType::Bid ? 1 : -1};
+  constexpr const balance_t balance_sign{
+      order_type == LimitOrder::OrderType::Bid ? 1 : -1};
   if constexpr (order_type == LimitOrder::OrderType::Bid) {
     order_book = &asks;
     new_order_book = &bids;

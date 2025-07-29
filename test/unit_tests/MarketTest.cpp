@@ -5,8 +5,8 @@
 
 #include "misc/TestUtilities.h"
 
-#include "clob/Market.h"
 #include "clob/LimitOrder.h"
+#include "clob/Market.h"
 
 TEST_SUITE_BEGIN("Market");
 
@@ -99,7 +99,6 @@ TEST_CASE("market_add_invalid_order") {
   REQUIRE(market.query_order(3) != nullptr);
   CHECK(market.query_order(3)->is_cancelled == true);
 }
-
 
 /***/
 TEST_CASE("market_cancel_order") {

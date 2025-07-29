@@ -99,7 +99,9 @@ public:
    * @param order The order to add.
    */
   template <clob::LimitOrder::OrderType order_type>
-  clob::LimitOrder::id_t add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity);
+  clob::LimitOrder::id_t add_order(const clob::Stock::id_t stock_id,
+                                   const clob::price_t price,
+                                   const clob::quantity_t quantity);
 
   /**
    * @brief Cancel an order.
@@ -121,7 +123,6 @@ public:
    * @param stock_id The id of the stock to get the order book for.
    */
   const OrderBook *get_order_book(const clob::Stock::id_t stock_id) const;
-
 };
 
 } // namespace clob

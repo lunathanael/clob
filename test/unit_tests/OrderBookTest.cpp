@@ -765,7 +765,8 @@ TEST_CASE("ultimate_comprehensive_order_book_test") {
   CHECK(bid10->filled_quantity == 25000);
   CHECK(bid10->balance == -25000LL * 1018000);
   CHECK(bid11->balance == -35000LL * 1030000);
-  CHECK(ask9->balance == 35000LL * 1030000 + 27000LL * 1025000 + 25000LL * 1018000);
+  CHECK(ask9->balance ==
+        35000LL * 1030000 + 27000LL * 1025000 + 25000LL * 1018000);
 }
 
 TEST_SUITE_END();
