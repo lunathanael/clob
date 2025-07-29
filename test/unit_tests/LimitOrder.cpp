@@ -60,39 +60,39 @@ TEST_CASE("limit_order_order_type_enum") {
 /***/
 TEST_CASE("limit_order_priority_queue_bid_comparator") {
   LimitOrder::PriceTimeQueuePriority::BidCmp bid_cmp;
-  
+
   // Test price priority (lower price = higher priority for bids)
-  LimitOrder order1{1, 1000, 15000, 100};  // Lower price
-  LimitOrder order2{2, 1000, 16000, 100};  // Higher price
-  
+  LimitOrder order1{1, 1000, 15000, 100}; // Lower price
+  LimitOrder order2{2, 1000, 16000, 100}; // Higher price
+
   CHECK(bid_cmp(order1, order2) == true);  // order2 should have higher priority
-  CHECK(bid_cmp(order2, order1) == false);   // order1 should have lower priority
-  
+  CHECK(bid_cmp(order2, order1) == false); // order1 should have lower priority
+
   // Test time priority (earlier timestamp = higher priority when prices equal)
-  LimitOrder order3{3, 1000, 15000, 100};  // Earlier timestamp
-  LimitOrder order4{4, 2000, 15000, 100};  // Later timestamp
-  
-  CHECK(bid_cmp(order3, order4) == false);    // order3 should have higher priority
-  CHECK(bid_cmp(order4, order3) == true);   // order4 should have lower priority
+  LimitOrder order3{3, 1000, 15000, 100}; // Earlier timestamp
+  LimitOrder order4{4, 2000, 15000, 100}; // Later timestamp
+
+  CHECK(bid_cmp(order3, order4) == false); // order3 should have higher priority
+  CHECK(bid_cmp(order4, order3) == true);  // order4 should have lower priority
 }
 
 /***/
 TEST_CASE("limit_order_priority_queue_ask_comparator") {
   LimitOrder::PriceTimeQueuePriority::AskCmp ask_cmp;
-  
+
   // Test price priority (higher price = higher priority for asks)
-  LimitOrder order1{1, 1000, 16000, 100};  // Higher price
-  LimitOrder order2{2, 1000, 15000, 100};  // Lower price
-  
+  LimitOrder order1{1, 1000, 16000, 100}; // Higher price
+  LimitOrder order2{2, 1000, 15000, 100}; // Lower price
+
   CHECK(ask_cmp(order1, order2) == true);  // order1 should have higher priority
-  CHECK(ask_cmp(order2, order1) == false);   // order2 should have lower priority
-  
+  CHECK(ask_cmp(order2, order1) == false); // order2 should have lower priority
+
   // Test time priority (earlier timestamp = higher priority when prices equal)
-  LimitOrder order3{3, 1000, 15000, 100};  // Earlier timestamp
-  LimitOrder order4{4, 2000, 15000, 100};  // Later timestamp
-  
-  CHECK(ask_cmp(order3, order4) == false);  // order3 should have higher priority
-  CHECK(ask_cmp(order4, order3) == true);   // order4 should have lower priority
+  LimitOrder order3{3, 1000, 15000, 100}; // Earlier timestamp
+  LimitOrder order4{4, 2000, 15000, 100}; // Later timestamp
+
+  CHECK(ask_cmp(order3, order4) == false); // order3 should have higher priority
+  CHECK(ask_cmp(order4, order3) == true);  // order4 should have lower priority
 }
 
 /***/
@@ -103,9 +103,10 @@ TEST_CASE("limit_order_edge_cases") {
   CHECK(zero_order.timestamp == 0);
   CHECK(zero_order.price == 0);
   CHECK(zero_order.quantity == 0);
-  
+
   // Test with maximum values
-  LimitOrder max_order{UINT_FAST64_MAX, UINT_FAST64_MAX, UINT_FAST32_MAX, UINT_FAST32_MAX};
+  LimitOrder max_order{UINT_FAST64_MAX, UINT_FAST64_MAX, UINT_FAST32_MAX,
+                       UINT_FAST32_MAX};
   CHECK(max_order.id == UINT_FAST64_MAX);
   CHECK(max_order.timestamp == UINT_FAST64_MAX);
   CHECK(max_order.price == UINT_FAST32_MAX);
@@ -116,7 +117,7 @@ TEST_CASE("limit_order_edge_cases") {
 TEST_CASE("limit_order_copy_constructors") {
   LimitOrder order1{1, 1000, 15000, 100};
   LimitOrder order2{order1};
-  
+
   CHECK(order2.id == order1.id);
   CHECK(order2.timestamp == order1.timestamp);
   CHECK(order2.price == order1.price);
@@ -127,7 +128,7 @@ TEST_CASE("limit_order_copy_constructors") {
 TEST_CASE("limit_order_move_constructor") {
   LimitOrder order1{1, 1000, 15000, 100};
   LimitOrder order2{std::move(order1)};
-  
+
   CHECK(order2.id == 1);
   CHECK(order2.timestamp == 1000);
   CHECK(order2.price == 15000);
