@@ -1,7 +1,12 @@
 - TBD
+- [v0.2.0](#v020)
 - [v0.1.0](#v010)
 
 ## TBD
+
+- None
+
+## v0.2.0
 
 - Add Unit and Integration tests for placeholder classes
 - Implemented OrderBook order matching
