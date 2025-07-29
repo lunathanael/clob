@@ -47,7 +47,7 @@ public:
   bool is_cancelled;
 
 
-  LimitOrder(const id_t id, const timestamp_ns_t timestamp, const price_t price, const quantity_t quantity)
+  explicit LimitOrder(const id_t id, const timestamp_ns_t timestamp, const price_t price, const quantity_t quantity)
       : id(id), timestamp(timestamp), price(price), quantity(quantity),
         filled_quantity(0),
         is_cancelled(false) {}
