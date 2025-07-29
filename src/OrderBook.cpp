@@ -61,7 +61,7 @@ void OrderBook::match_orders(LimitOrder *new_order) {
       order->filled_quantity += new_order_q;
       new_order->filled_quantity = new_order->quantity;
       new_order_q = 0;
-      break;
+      return;
     }
   }
 
