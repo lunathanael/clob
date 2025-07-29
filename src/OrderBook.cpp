@@ -20,6 +20,7 @@ void OrderBook::match_orders(LimitOrder *new_order) {
                          decltype(bids), decltype(asks)>;
   order_book_t *order_book;
   new_order_book_t *new_order_book;
+  constexpr const balance_t price_coefficient{order_type == LimitOrder::OrderType::Bid ? 1 : -1};
   if constexpr (order_type == LimitOrder::OrderType::Bid) {
     order_book = &asks;
     new_order_book = &bids;
@@ -32,9 +33,10 @@ void OrderBook::match_orders(LimitOrder *new_order) {
     return;
   }
 
+  LimitOrder *order;
   quantity_t order_q{}, new_order_q{new_order->quantity};
   while (order_book->size() > 0 && new_order_q != 0) {
-    LimitOrder *order = order_book->top();
+    order = order_book->top();
     if (order->is_cancelled) {
       order_book->pop();
       continue;
@@ -53,11 +55,15 @@ void OrderBook::match_orders(LimitOrder *new_order) {
     order_q = order->quantity - order->filled_quantity;
 
     if (order_q <= new_order_q) {
+      new_order->balance -= price_coefficient * order_q * order->price;
+      order->balance += price_coefficient * order_q * order->price;
       new_order->filled_quantity += order_q;
       new_order_q -= order_q;
       order->filled_quantity = order->quantity;
       order_book->pop();
     } else {
+      new_order->balance -= price_coefficient * new_order_q * order->price;
+      order->balance += price_coefficient * new_order_q * order->price;
       order->filled_quantity += new_order_q;
       new_order->filled_quantity = new_order->quantity;
       new_order_q = 0;
