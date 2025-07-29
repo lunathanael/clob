@@ -19,6 +19,7 @@ assignees: ''
 <!-- A clear and concise description of any alternative solutions you've considered -->
 
 ## Impact Assessment
+
 - **Performance Impact:** [e.g., None, Low, Medium, High]
 - **Memory Impact:** [e.g., None, Low, Medium, High]
 - **Complexity:** [e.g., Low, Medium, High]
@@ -34,6 +35,7 @@ assignees: ''
 <!-- Any technical considerations or implementation details -->
 
 ## Checklist
+
 - [ ] I have searched existing issues
 - [ ] I have provided clear use cases
 - [ ] I have considered performance implications

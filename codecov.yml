@@ -1,5 +1,6 @@
 ignore:
   - "test"
+  - "src/main.cpp"
 
 coverage:
   status:

@@ -41,4 +41,7 @@ endfunction()
 
 include(Doctest)
 
+clob_add_test(TEST_MarketTest MarketTest.cpp)
 clob_add_test(TEST_StockTest StockTest.cpp)
+clob_add_test(TEST_LimitOrderTest LimitOrder.cpp)
+clob_add_test(TEST_OrderBookTest OrderBookTest.cpp)
