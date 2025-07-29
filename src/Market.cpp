@@ -4,6 +4,7 @@
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  */
 
+#include <chrono>
 #include <utility>
 
 #include "clob/Market.h"
@@ -28,6 +29,44 @@ bool Market::add_stock(std::string &&stock_name, std::string &&stock_ticker) {
   stocks.emplace_back(std::move(stock_name), std::move(stock_ticker),
                       static_cast<Stock::id_t>(get_num_stocks()));
   return true;
+}
+
+template <clob::LimitOrder::OrderType order_type>
+bool Market::add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity) {
+  auto ns = std::chrono::system_clock::now().time_since_epoch().count();
+  orders.emplace_back(static_cast<LimitOrder::id_t>(orders.size()), ns, price, quantity);
+  if constexpr (order_type == LimitOrder::OrderType::Bid) {
+    order_books[stock_id].add_bid_order(&orders.back());
+  } else {
+    order_books[stock_id].add_ask_order(&orders.back());
+  }
+  return true;
+}
+
+bool Market::cancel_order(const clob::LimitOrder::id_t order_id) {
+  if (order_id >= orders.size()) {
+    return false;
+  }
+  auto & order = orders[order_id];
+  if (order.is_cancelled || order.filled_quantity == order.quantity) {
+    return false;
+  }
+  order.is_cancelled = true;
+  return true;
+}
+
+const LimitOrder *Market::query_order(const clob::LimitOrder::id_t order_id) const {
+  if (order_id >= orders.size()) {
+    return nullptr;
+  }
+  return &orders[order_id];
+}
+
+const OrderBook *Market::get_order_book(const clob::Stock::id_t stock_id) const {
+  if (stock_id >= order_books.size()) {
+    return nullptr;
+  }
+  return &order_books[stock_id];
 }
 
 } // namespace clob

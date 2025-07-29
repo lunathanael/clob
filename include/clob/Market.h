@@ -27,6 +27,7 @@ class Market {
   const std::string exchange_ticker;
   std::vector<Stock> stocks;
   std::vector<OrderBook> order_books;
+  std::vector<LimitOrder> orders;
   clob::LimitOrder::id_t next_order_id;
 
 public:
@@ -91,6 +92,36 @@ public:
    * @param stock The stock to add.
    */
   bool add_stock(std::string &&stock_name, std::string &&stock_ticker);
+
+  /**
+   * @brief Add an order to the market.
+   *
+   * @param order The order to add.
+   */
+  template <clob::LimitOrder::OrderType order_type>
+  bool add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity);
+
+  /**
+   * @brief Cancel an order.
+   *
+   * @param order_id The id of the order to cancel.
+   */
+  bool cancel_order(const clob::LimitOrder::id_t order_id);
+
+  /**
+   * @brief Query an order.
+   *
+   * @param order_id The id of the order to query.
+   */
+  const LimitOrder *query_order(const clob::LimitOrder::id_t order_id) const;
+
+  /**
+   * @brief Get the order book for a stock.
+   *
+   * @param stock_id The id of the stock to get the order book for.
+   */
+  const OrderBook *get_order_book(const clob::Stock::id_t stock_id) const;
+
 };
 
 } // namespace clob
