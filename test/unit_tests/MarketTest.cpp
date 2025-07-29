@@ -101,6 +101,9 @@ TEST_CASE("market_add_invalid_order") {
   CHECK(market.add_order<LimitOrder::OrderType::Bid>(2, 103, 100) == 4);
   REQUIRE(market.query_order(4) != nullptr);
   CHECK(market.query_order(4)->is_cancelled == true);
+  CHECK(market.add_order<LimitOrder::OrderType::Ask>(3, 104, 100) == 5);
+  REQUIRE(market.query_order(5) != nullptr);
+  CHECK(market.query_order(5)->is_cancelled == true);
 }
 
 /***/
