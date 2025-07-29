@@ -43,6 +43,14 @@ public:
   timestamp_ns_t timestamp;
   price_t price;
   quantity_t quantity;
+  quantity_t filled_quantity;
+  bool is_cancelled;
+
+
+  LimitOrder(const id_t id, const timestamp_ns_t timestamp, const price_t price, const quantity_t quantity)
+      : id(id), timestamp(timestamp), price(price), quantity(quantity),
+        filled_quantity(0),
+        is_cancelled(false) {}
 };
 
 } // namespace clob
