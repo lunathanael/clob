@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,7 +28,7 @@ class Market {
   const std::string exchange_ticker;
   std::vector<Stock> stocks;
   std::vector<OrderBook> order_books;
-  clob::LimitOrder::id_t next_order_id;
+  std::vector<std::unique_ptr<LimitOrder>> orders;
 
 public:
   Market() = delete;
@@ -43,8 +44,7 @@ public:
    * @param exchange_ticker The ticker of the market.
    */
   Market(const std::string &exchange_name, const std::string &exchange_ticker)
-      : exchange_name(exchange_name), exchange_ticker(exchange_ticker),
-        next_order_id(0) {}
+      : exchange_name(exchange_name), exchange_ticker(exchange_ticker) {}
 
   /**
    * @brief Constructor for the Market class.
@@ -54,7 +54,7 @@ public:
    */
   Market(std::string &&exchange_name, std::string &&exchange_ticker)
       : exchange_name(std::move(exchange_name)),
-        exchange_ticker(std::move(exchange_ticker)), next_order_id(0) {}
+        exchange_ticker(std::move(exchange_ticker)) {}
 
   /**
    * @brief Get the name of the market.
@@ -91,6 +91,37 @@ public:
    * @param stock The stock to add.
    */
   bool add_stock(std::string &&stock_name, std::string &&stock_ticker);
+
+  /**
+   * @brief Add an order to the market.
+   *
+   * @param order The order to add.
+   */
+  template <clob::LimitOrder::OrderType order_type>
+  clob::LimitOrder::id_t add_order(const clob::Stock::id_t stock_id,
+                                   const clob::price_t price,
+                                   const clob::quantity_t quantity);
+
+  /**
+   * @brief Cancel an order.
+   *
+   * @param order_id The id of the order to cancel.
+   */
+  bool cancel_order(const clob::LimitOrder::id_t order_id);
+
+  /**
+   * @brief Query an order.
+   *
+   * @param order_id The id of the order to query.
+   */
+  const LimitOrder *query_order(const clob::LimitOrder::id_t order_id) const;
+
+  /**
+   * @brief Get the order book for a stock.
+   *
+   * @param stock_id The id of the stock to get the order book for.
+   */
+  const OrderBook *get_order_book(const clob::Stock::id_t stock_id) const;
 };
 
 } // namespace clob

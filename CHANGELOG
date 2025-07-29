@@ -6,6 +6,7 @@
 - Add Unit and Integration tests for placeholder classes
 - Implemented OrderBook order matching
 - Added balance tracking to LimitOrder
+- Add Market Methods for managing orders
 
 ## v0.1.0
 
