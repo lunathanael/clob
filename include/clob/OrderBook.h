@@ -14,7 +14,6 @@
 namespace clob {
 
 class OrderBook {
-public:
   std::priority_queue<LimitOrder *, std::vector<LimitOrder *>,
                       LimitOrder::PriceTimeQueuePriority::BidCmp>
       bids;
@@ -22,6 +21,13 @@ public:
                       LimitOrder::PriceTimeQueuePriority::AskCmp>
       asks;
 
+  /**
+   * @brief Match the orders in the order book.
+   */
+  template <LimitOrder::OrderType order_type>
+  void match_orders(LimitOrder *new_order);
+
+public:
   /**
    * @brief Add a bid order to the order book.
    *
@@ -35,6 +41,35 @@ public:
    * @param order The order to add.
    */
   void add_ask_order(LimitOrder *order);
+
+  /**
+   * @brief Get the top bid order from the order book.
+   *
+   * @return The top bid order.
+   */
+  const LimitOrder *get_best_bid_order() const;
+
+  /**
+   * @brief Get the top ask order from the order book.
+   * Assumes the ask order book is not empty.
+   *
+   * @return The top ask order.
+   */
+  const LimitOrder *get_best_ask_order() const;
+
+  /**
+   * @brief Get the number of bid orders.
+   *
+   * @return The number of bid orders.
+   */
+  size_t bids_size() const { return bids.size(); }
+
+  /**
+   * @brief Get the number of ask orders.
+   *
+   * @return The number of ask orders.
+   */
+  size_t asks_size() const { return asks.size(); }
 };
 
 } // namespace clob
