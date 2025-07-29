@@ -62,13 +62,13 @@ TEST_CASE("add_multiple_bid_orders") {
   auto bid1 = std::make_unique<LimitOrder>(1, 1000, 15000, 100);
   auto bid2 = std::make_unique<LimitOrder>(2, 1100, 14900, 150);
   auto bid3 = std::make_unique<LimitOrder>(3, 1200, 15100, 75);
-  
+
   order_book.add_bid_order(bid1.get());
   CHECK(order_book.bids_size() == 1);
-  
+
   order_book.add_bid_order(bid2.get());
   CHECK(order_book.bids_size() == 2);
-  
+
   order_book.add_bid_order(bid3.get());
   CHECK(order_book.bids_size() == 3);
   CHECK(order_book.asks_size() == 0);
@@ -80,13 +80,13 @@ TEST_CASE("add_multiple_ask_orders") {
   auto ask1 = std::make_unique<LimitOrder>(4, 1300, 16000, 200);
   auto ask2 = std::make_unique<LimitOrder>(5, 1400, 15900, 125);
   auto ask3 = std::make_unique<LimitOrder>(6, 1500, 16100, 300);
-  
+
   order_book.add_ask_order(ask1.get());
   CHECK(order_book.asks_size() == 1);
-  
+
   order_book.add_ask_order(ask2.get());
   CHECK(order_book.asks_size() == 2);
-  
+
   order_book.add_ask_order(ask3.get());
   CHECK(order_book.asks_size() == 3);
   CHECK(order_book.bids_size() == 0);
@@ -268,6 +268,36 @@ TEST_CASE("add_cancelled_ask_order") {
 
   CHECK(order_book.bids_size() == 0);
   CHECK(order_book.asks_size() == 0);
+}
+
+TEST_CASE("cancel_later_ask_order") {
+  OrderBook order_book;
+
+  auto ask_order = std::make_unique<LimitOrder>(1, 1000, 15000, 100);
+  order_book.add_ask_order(ask_order.get());
+  ask_order->is_cancelled = true;
+
+  auto bid_order = std::make_unique<LimitOrder>(2, 1100, 15000, 100);
+  order_book.add_bid_order(bid_order.get());
+
+  CHECK(bid_order->filled_quantity == 0);
+  CHECK(order_book.bids_size() == 1);
+  CHECK(order_book.asks_size() == 0);
+}
+
+TEST_CASE("cancel_later_bid_order") {
+  OrderBook order_book;
+
+  auto bid_order = std::make_unique<LimitOrder>(1, 1000, 15000, 100);
+  order_book.add_bid_order(bid_order.get());
+  bid_order->is_cancelled = true;
+
+  auto ask_order = std::make_unique<LimitOrder>(2, 1100, 15000, 100);
+  order_book.add_ask_order(ask_order.get());
+
+  CHECK(ask_order->filled_quantity == 0);
+  CHECK(order_book.bids_size() == 0);
+  CHECK(order_book.asks_size() == 1);
 }
 
 TEST_CASE("bid_matches_better_ask_price") {
