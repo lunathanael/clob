@@ -98,6 +98,9 @@ TEST_CASE("market_add_invalid_order") {
   CHECK(market.add_order<LimitOrder::OrderType::Bid>(1, 103, 100) == 3);
   REQUIRE(market.query_order(3) != nullptr);
   CHECK(market.query_order(3)->is_cancelled == true);
+  CHECK(market.add_order<LimitOrder::OrderType::Bid>(2, 103, 100) == 4);
+  REQUIRE(market.query_order(4) != nullptr);
+  CHECK(market.query_order(4)->is_cancelled == true);
 }
 
 /***/
@@ -109,6 +112,11 @@ TEST_CASE("market_cancel_order") {
   CHECK(market.cancel_order(0) == true);
   CHECK(market.cancel_order(0) == false);
   CHECK(market.query_order(0)->is_cancelled == true);
+  CHECK(market.add_order<LimitOrder::OrderType::Bid>(0, 100, 100) == 1);
+  CHECK(market.add_order<LimitOrder::OrderType::Ask>(0, 100, 100) == 2);
+  CHECK(market.query_order(2)->is_cancelled == false);
+  CHECK(market.cancel_order(2) == false);
+  CHECK(market.query_order(2)->is_cancelled == false);
 }
 
 /***/

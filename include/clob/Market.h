@@ -44,8 +44,7 @@ public:
    * @param exchange_ticker The ticker of the market.
    */
   Market(const std::string &exchange_name, const std::string &exchange_ticker)
-      : exchange_name(exchange_name), exchange_ticker(exchange_ticker),
-        next_order_id(0) {}
+      : exchange_name(exchange_name), exchange_ticker(exchange_ticker) {}
 
   /**
    * @brief Constructor for the Market class.
@@ -55,7 +54,7 @@ public:
    */
   Market(std::string &&exchange_name, std::string &&exchange_ticker)
       : exchange_name(std::move(exchange_name)),
-        exchange_ticker(std::move(exchange_ticker)), next_order_id(0) {}
+        exchange_ticker(std::move(exchange_ticker)) {}
 
   /**
    * @brief Get the name of the market.
