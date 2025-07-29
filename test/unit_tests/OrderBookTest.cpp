@@ -260,8 +260,6 @@ TEST_CASE("cancelled_order_skipped") {
   CHECK(bid_order->filled_quantity == 0);
   CHECK(bid_order->balance == 0);
   CHECK(ask_order->balance == 0);
-  CHECK(bid_order->balance == 0);
-  CHECK(ask_order->balance == 0);
   CHECK(order_book.bids_size() == 1);
   CHECK(order_book.asks_size() == 0);
 }
@@ -451,7 +449,7 @@ TEST_CASE("partial_fill_scenarios") {
   CHECK(bid1->filled_quantity == 1200);
   CHECK(ask2->filled_quantity == 400);
   CHECK(order_book.get_best_ask_order()->id == 202);
-  CHECK(bid1->balance == - 1200 * 50000);
+  CHECK(bid1->balance == -1200 * 50000);
   CHECK(ask1->balance == 800 * 50000);
   CHECK(ask2->balance == 400 * 50000);
 }
