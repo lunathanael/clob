@@ -60,8 +60,8 @@ TEST_CASE("stock_types") {
 
 /***/
 TEST_CASE("stock_assignment_deleted") {
-    CHECK_FALSE(std::is_copy_assignable_v<Stock>);
-    CHECK_FALSE(std::is_move_assignable_v<Stock>);
+  CHECK_FALSE(std::is_copy_assignable_v<Stock>);
+  CHECK_FALSE(std::is_move_assignable_v<Stock>);
 }
 
 TEST_SUITE_END();

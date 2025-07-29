@@ -23,18 +23,18 @@ public:
   class PriceTimeQueuePriority {
   public:
     struct BidCmp {
-      constexpr inline bool operator()(const LimitOrder &o1,
-                                       const LimitOrder &o2) const {
-        return o1.price < o2.price ||
-               (o1.price == o2.price && o1.timestamp > o2.timestamp);
+      constexpr inline bool operator()(const LimitOrder *o1,
+                                       const LimitOrder *o2) const {
+        return o1->price < o2->price ||
+               (o1->price == o2->price && o1->timestamp > o2->timestamp);
       }
     };
 
     struct AskCmp {
-      constexpr inline bool operator()(const LimitOrder &o1,
-                                       const LimitOrder &o2) const {
-        return o1.price > o2.price ||
-               (o1.price == o2.price && o1.timestamp > o2.timestamp);
+      constexpr inline bool operator()(const LimitOrder *o1,
+                                       const LimitOrder *o2) const {
+        return o1->price > o2->price ||
+               (o1->price == o2->price && o1->timestamp > o2->timestamp);
       }
     };
   };
@@ -43,6 +43,13 @@ public:
   timestamp_ns_t timestamp;
   price_t price;
   quantity_t quantity;
+  quantity_t filled_quantity;
+  bool is_cancelled;
+
+  explicit LimitOrder(const id_t id, const timestamp_ns_t timestamp,
+                      const price_t price, const quantity_t quantity)
+      : id(id), timestamp(timestamp), price(price), quantity(quantity),
+        filled_quantity(0), is_cancelled(false) {}
 };
 
 } // namespace clob
