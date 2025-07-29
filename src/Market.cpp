@@ -34,13 +34,18 @@ bool Market::add_stock(std::string &&stock_name, std::string &&stock_ticker) {
 template <clob::LimitOrder::OrderType order_type>
 clob::LimitOrder::id_t Market::add_order(const clob::Stock::id_t stock_id, const clob::price_t price, const clob::quantity_t quantity) {
   auto ns = std::chrono::system_clock::now().time_since_epoch().count();
+  clob::LimitOrder::id_t order_id = static_cast<LimitOrder::id_t>(orders.size());
   orders.emplace_back(static_cast<LimitOrder::id_t>(orders.size()), ns, price, quantity);
+  if (stock_id >= order_books.size()) {
+    orders.back().is_cancelled = true;
+    return order_id;
+  }
   if constexpr (order_type == LimitOrder::OrderType::Bid) {
     order_books[stock_id].add_bid_order(&orders.back());
   } else {
     order_books[stock_id].add_ask_order(&orders.back());
   }
-  return true;
+  return order_id;
 }
 
 bool Market::cancel_order(const clob::LimitOrder::id_t order_id) {
