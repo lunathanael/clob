@@ -16,39 +16,39 @@
 set -euo pipefail
 
 BUILD_TYPE="Release"
-NO_EXCEPTIONS=false
-BUILD_TESTS=false
-SANITIZE_ADDRESS=false
-SANITIZE_THREAD=false
-CODE_COVERAGE=false
-USE_VALGRIND=false
-VERBOSE_MAKEFILE=false
+NO_EXCEPTIONS=OFF
+BUILD_TESTS=OFF
+SANITIZE_ADDRESS=OFF
+SANITIZE_THREAD=OFF
+CODE_COVERAGE=OFF
+USE_VALGRIND=OFF
+VERBOSE_MAKEFILE=OFF
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --no-exceptions)
-            NO_EXCEPTIONS=true
+            NO_EXCEPTIONS=ON
             shift
             ;;
         --tests)
-            BUILD_TESTS=true
+            BUILD_TESTS=ON
             shift
             ;;
         --sanitize-address)
-            SANITIZE_ADDRESS=true
+            SANITIZE_ADDRESS=ON
             shift
             ;;
         --sanitize-thread)
-            SANITIZE_THREAD=true
+            SANITIZE_THREAD=ON
             shift
             ;;
         --coverage)
-            CODE_COVERAGE=true
+            CODE_COVERAGE=ON
             shift
             ;;
         --valgrind)
-            USE_VALGRIND=true
+            USE_VALGRIND=ON
             shift
             ;;
         --verbose)
@@ -70,27 +70,27 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "Building CLOB with build type: $BUILD_TYPE"
-if [ "$NO_EXCEPTIONS" = true ]; then
+if [ "$NO_EXCEPTIONS" = ON ]; then
     echo "No exceptions mode: enabled"
 fi
-if [ "$BUILD_TESTS" = true ]; then
+if [ "$BUILD_TESTS" = ON ]; then
     echo "Tests: enabled"
 else
     echo "Tests: disabled"
 fi
-if [ "$SANITIZE_ADDRESS" = true ]; then
+if [ "$SANITIZE_ADDRESS" = ON ]; then
     echo "AddressSanitizer: enabled"
 fi
-if [ "$SANITIZE_THREAD" = true ]; then
+if [ "$SANITIZE_THREAD" = ON ]; then
     echo "ThreadSanitizer: enabled"
 fi
-if [ "$CODE_COVERAGE" = true ]; then
+if [ "$CODE_COVERAGE" = ON ]; then
     echo "Code coverage: enabled"
 fi
-if [ "$USE_VALGRIND" = true ]; then
+if [ "$USE_VALGRIND" = ON ]; then
     echo "Valgrind: enabled"
 fi
-if [ "$VERBOSE_MAKEFILE" = true ]; then
+if [ "$VERBOSE_MAKEFILE" = ON ]; then
     echo "Verbose make: enabled"
 fi
 
@@ -102,37 +102,21 @@ echo "Configuring with CMAKE_BUILD_TYPE=$BUILD_TYPE..."
 
 # Configure
 CMAKE_ARGS=("-DCMAKE_BUILD_TYPE=$BUILD_TYPE")
-if [ "$BUILD_TESTS" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_BUILD_TESTS=ON")
-else
-    CMAKE_ARGS+=("-DCLOB_BUILD_TESTS=OFF")
-fi
-if [ "$NO_EXCEPTIONS" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_NO_EXCEPTIONS=ON")
-fi
-if [ "$SANITIZE_ADDRESS" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_SANITIZE_ADDRESS=ON")
-fi
-if [ "$SANITIZE_THREAD" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_SANITIZE_THREAD=ON")
-fi
-if [ "$CODE_COVERAGE" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_CODE_COVERAGE=ON")
-fi
-if [ "$USE_VALGRIND" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_USE_VALGRIND=ON")
-fi
-if [ "$VERBOSE_MAKEFILE" = true ]; then
-    CMAKE_ARGS+=("-DCLOB_VERBOSE_MAKEFILE=ON")
-fi
+CMAKE_ARGS+=("-DCLOB_BUILD_TESTS=$BUILD_TESTS")
+CMAKE_ARGS+=("-DCLOB_NO_EXCEPTIONS=$NO_EXCEPTIONS")
+CMAKE_ARGS+=("-DCLOB_SANITIZE_ADDRESS=$SANITIZE_ADDRESS")
+CMAKE_ARGS+=("-DCLOB_SANITIZE_THREAD=$SANITIZE_THREAD")
+CMAKE_ARGS+=("-DCLOB_CODE_COVERAGE=$CODE_COVERAGE")
+CMAKE_ARGS+=("-DCLOB_USE_VALGRIND=$USE_VALGRIND")
+CMAKE_ARGS+=("-DCLOB_VERBOSE_MAKEFILE=$VERBOSE_MAKEFILE")
 
-
-cmake -S . -B "$BUILD_DIR" "${CMAKE_ARGS[@]}"
+echo "Configuring with CMAKE_ARGS=${CMAKE_ARGS[@]} -DCLOB_USE_SYSTEM_GRPC=ON"
+cmake -S . -B "$BUILD_DIR" "${CMAKE_ARGS[@]}" -DCLOB_USE_SYSTEM_GRPC=ON -DCMAKE_PREFIX_PATH=$HOME/.local
 
 echo "Building..."
 
 # Build
-if [ "$VERBOSE_MAKEFILE" = true ]; then
+if [ "$VERBOSE_MAKEFILE" = ON ]; then
     cmake --build "$BUILD_DIR" -j"$(nproc)" --verbose
 else
     cmake --build "$BUILD_DIR" -j"$(nproc)"
@@ -145,26 +129,26 @@ echo "Binary location: $BUILD_DIR/clob"
 if [ -f "$BUILD_DIR/clob" ]; then
     echo "Binary size: $(ls -lh "$BUILD_DIR/clob" | awk '{print $5}')"
     echo "Build type: $BUILD_TYPE"
-    if [ "$NO_EXCEPTIONS" = true ]; then
+    if [ "$NO_EXCEPTIONS" = ON ]; then
         echo "Exceptions: disabled"
     else
         echo "Exceptions: enabled"
     fi
-    if [ "$BUILD_TESTS" = true ]; then
+    if [ "$BUILD_TESTS" = ON ]; then
         echo "Tests: built"
     else
         echo "Tests: not built"
     fi
-    if [ "$SANITIZE_ADDRESS" = true ]; then
+    if [ "$SANITIZE_ADDRESS" = ON ]; then
         echo "AddressSanitizer: enabled"
     fi
-    if [ "$SANITIZE_THREAD" = true ]; then
+    if [ "$SANITIZE_THREAD" = ON ]; then
         echo "ThreadSanitizer: enabled"
     fi
-    if [ "$CODE_COVERAGE" = true ]; then
+    if [ "$CODE_COVERAGE" = ON ]; then
         echo "Code coverage: enabled"
     fi
-    if [ "$USE_VALGRIND" = true ]; then
+    if [ "$USE_VALGRIND" = ON ]; then
         echo "Valgrind: enabled"
     fi
     
@@ -189,7 +173,7 @@ if [ -f "$BUILD_DIR/clob" ]; then
 fi
 
 # Run tests if they were built
-if [ "$BUILD_TESTS" = true ]; then
+if [ "$BUILD_TESTS" = ON ]; then
     echo "Running tests..."
     cd "$BUILD_DIR"
     ctest --output-on-failure

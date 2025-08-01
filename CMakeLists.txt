@@ -14,6 +14,7 @@ option(CLOB_SANITIZE_ADDRESS "Enable AddressSanitizer (ASan) for memory error de
 option(CLOB_SANITIZE_THREAD "Enable ThreadSanitizer (TSan) for detecting thread-related issues. Note: Using this option with non-Clang compilers may produce false positives." OFF)
 option(CLOB_CODE_COVERAGE "Enable code coverage analysis during the build." OFF)
 option(CLOB_USE_VALGRIND "Use Valgrind as the default memory checking tool in CTest. Valgrind must be installed." OFF)
+option(CLOB_USE_SYSTEM_GRPC "Use the system-wide gRPC installation instead of building it from source." OFF)
 
 # Internal option
 set(CLOB_ENABLE_GCC_HARDENING OFF CACHE INTERNAL "")
@@ -161,21 +162,26 @@ endif ()
 #-------------------------------------------------------------------------------------------------------
 # gRPC
 #-------------------------------------------------------------------------------------------------------
-set(ABSL_ENABLE_INSTALL ON)
-include(FetchContent)
-FetchContent_Declare(
-    gRPC
-    GIT_REPOSITORY https://github.com/grpc/grpc
-    GIT_TAG        v1.74.0
-)
-set(FETCHCONTENT_QUIET OFF)
-FetchContent_MakeAvailable(gRPC)
+if (CLOB_USE_SYSTEM_GRPC)
+    set(BUILD_SHARED_LIBS OFF)
+    find_package(gRPC REQUIRED)
+    target_link_libraries(${LIBRARY_NAME} PRIVATE gRPC::grpc++ gRPC::grpc)
+else()
+    set(ABSL_ENABLE_INSTALL ON)
+    include(FetchContent)
+    FetchContent_Declare(
+        gRPC
+        GIT_REPOSITORY https://github.com/grpc/grpc
+        GIT_TAG        v1.74.0
+    )
+    set(FETCHCONTENT_QUIET OFF)
+    FetchContent_MakeAvailable(gRPC)
+endif()
 
 #-------------------------------------------------------------------------------------------------------
 # Executable
 #-------------------------------------------------------------------------------------------------------'
 add_executable(${TARGET_NAME} src/main.cpp)
-target_link_libraries(${TARGET_NAME} PRIVATE grpc++)
 target_link_libraries(${TARGET_NAME} PRIVATE ${LIBRARY_NAME})
 
 # Apply build type optimizations to executable
