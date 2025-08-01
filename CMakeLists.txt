@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
-set(TARGET_NAME    "clob")
+set(TARGET_NAME    "clob_server")
+set(TARGET_NAME_CLIENT "clob_client")
 set(LIBRARY_NAME    "clob_lib")
 project(${TARGET_NAME} CXX)
 
@@ -202,34 +203,38 @@ target_link_libraries(market_grpc_proto
 # Executable
 #-------------------------------------------------------------------------------------------------------'
 add_executable(${TARGET_NAME} src/MarketMakerServer.cpp)
-target_link_libraries(${TARGET_NAME}
-    PRIVATE
-    ${LIBRARY_NAME}
-    market_grpc_proto
-    absl::flags_parse
-    absl::absl_log
-    absl::log_initialize
-    absl::log_globals
-    ${_REFLECTION}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF}
-    ssl crypto)
+add_executable(${TARGET_NAME_CLIENT} src/CustomerClient.cpp)
+foreach (_target ${TARGET_NAME} ${TARGET_NAME_CLIENT})
 
-# Apply build type optimizations to executable
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(${TARGET_NAME} PRIVATE -O0 -g -DDEBUG)
-elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_compile_options(${TARGET_NAME} PRIVATE -O3 -DNDEBUG)
-elseif (CMAKE_BUILD_TYPE STREQUAL "Performance")
-    target_compile_options(${TARGET_NAME} PRIVATE -Ofast -march=native -ffast-math -flto -DNDEBUG)
-elseif (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    target_compile_options(${TARGET_NAME} PRIVATE -O2 -g -DNDEBUG)
-elseif (CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    target_compile_options(${TARGET_NAME} PRIVATE -Os -DNDEBUG)
-endif ()
+    target_link_libraries(${_target}
+        PRIVATE
+        ${LIBRARY_NAME}
+        market_grpc_proto
+        absl::flags_parse
+        absl::absl_log
+        absl::log_initialize
+        absl::log_globals
+        ${_REFLECTION}
+        ${_GRPC_GRPCPP}
+        ${_PROTOBUF_LIBPROTOBUF}
+        ssl crypto)
+    # Apply build type optimizations to executable
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(${TARGET_NAME} PRIVATE -O0 -g -DDEBUG)
+    elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+        target_compile_options(${TARGET_NAME} PRIVATE -O3 -DNDEBUG)
+    elseif (CMAKE_BUILD_TYPE STREQUAL "Performance")
+        target_compile_options(${TARGET_NAME} PRIVATE -Ofast -march=native -ffast-math -flto -DNDEBUG)
+    elseif (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+        target_compile_options(${TARGET_NAME} PRIVATE -O2 -g -DNDEBUG)
+    elseif (CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+        target_compile_options(${TARGET_NAME} PRIVATE -Os -DNDEBUG)
+    endif ()
 
-# Apply no-exceptions option to executable (independent of build type)
-if (CLOB_NO_EXCEPTIONS)
-    target_compile_options(${TARGET_NAME} PRIVATE -fno-exceptions -fno-rtti)
-    target_compile_definitions(${TARGET_NAME} PRIVATE -DCLOB_NO_EXCEPTIONS)
-endif ()
+    # Apply no-exceptions option to executable (independent of build type)
+    if (CLOB_NO_EXCEPTIONS)
+        target_compile_options(${TARGET_NAME} PRIVATE -fno-exceptions -fno-rtti)
+        target_compile_definitions(${TARGET_NAME} PRIVATE -DCLOB_NO_EXCEPTIONS)
+    endif ()
+
+endforeach ()

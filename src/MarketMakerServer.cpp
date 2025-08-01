@@ -51,6 +51,7 @@ public:
       : market_(exchange_name, exchange_ticker) {
         std::cout << "Market Maker Server initialized with exchange name: " << exchange_name << " and exchange ticker: " << exchange_ticker << std::endl;
         std::cout << "The current time is: " << std::chrono::system_clock::now().time_since_epoch().count() << std::endl;
+        std::cout << "Adding stock: " << market_.add_stock("Apple", "APPL") << std::endl;
       }
 
   Status PlaceOrder(ServerContext *context, const PlaceOrderRequest *request,
