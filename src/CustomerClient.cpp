@@ -125,16 +125,42 @@ public:
     std::cout << "Order placed: " << response.order_id() << std::endl;
     return response.order_id();
   }
+
+  void ParseCommand(const std::string& command) {
+    std::istringstream iss(command);
+    std::string command_type;
+    iss >> command_type;
+    if (command_type == "place_order") {
+      std::string order_type, stock_id, price, quantity;
+      iss >> order_type >> stock_id >> price >> quantity;
+      auto order_id = PlaceOrder(static_cast<clob::OrderType>(std::stoi(order_type)), std::stoull(stock_id), std::stoull(price), std::stoull(quantity));
+      std::cout << "Order placed with id: " << order_id << std::endl;
+    } else if (command_type == "get_order_status") {
+      std::string order_type, order_id;
+      iss >> order_type >> order_id;
+      GetOrderStatus(std::stoull(order_id), static_cast<clob::OrderType>(std::stoi(order_type)));
+    } else if (command_type == "cancel_order") {
+      std::string order_type, order_id;
+      iss >> order_type >> order_id;
+      CancelOrder(std::stoull(order_id), static_cast<clob::OrderType>(std::stoi(order_type)));
+    } else {
+      std::cout << "Invalid command" << std::endl;
+    }
+  }
 };
+
+void RunCustomerClient() {
+    CustomerClient customer(grpc::CreateChannel(
+      "localhost:50051", grpc::InsecureChannelCredentials()));
+  std::string command;
+  while (std::getline(std::cin, command)) {
+    customer.ParseCommand(command);
+  }
+}
 
 int main(int argc, char **argv) {
   absl::ParseCommandLine(argc, argv);
   absl::InitializeLog();
-  // Expect only arg: --db_path=path/to/route_guide_db.json.
-  CustomerClient customer(grpc::CreateChannel(
-      "localhost:50051", grpc::InsecureChannelCredentials()));
-  clob::LimitOrderId_t order_id =
-      customer.PlaceOrder(clob::OrderType::Ask, 0, 100, 800);
-  customer.GetOrderStatus(9223372036854775808, clob::OrderType::Ask);
+  RunCustomerClient();
   return 0;
 }
