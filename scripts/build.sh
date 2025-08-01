@@ -23,7 +23,6 @@ SANITIZE_THREAD=false
 CODE_COVERAGE=false
 USE_VALGRIND=false
 VERBOSE_MAKEFILE=false
-CLEAN_BUILD=false
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -56,10 +55,6 @@ while [[ $# -gt 0 ]]; do
             VERBOSE_MAKEFILE=true
             shift
             ;;
-        --clean)
-            CLEAN_BUILD=true
-            shift
-            ;;
         Debug|Release|Performance|RelWithDebInfo|MinSizeRel)
             BUILD_TYPE="$1"
             shift
@@ -68,7 +63,7 @@ while [[ $# -gt 0 ]]; do
             echo "Unknown argument: $1"
             echo "Usage: ./build.sh [build_type] [options...]"
             echo "Build types: Debug, Release, Performance, RelWithDebInfo, MinSizeRel"
-            echo "Options: --no-exceptions, --tests, --sanitize-address, --sanitize-thread, --coverage, --valgrind, --verbose, --clean"
+            echo "Options: --no-exceptions, --tests, --sanitize-address, --sanitize-thread, --coverage, --valgrind, --verbose"
             exit 1
             ;;
     esac
@@ -99,12 +94,7 @@ if [ "$VERBOSE_MAKEFILE" = true ]; then
     echo "Verbose make: enabled"
 fi
 
-BUILD_DIR="out"
-
-if [ "$CLEAN_BUILD" = true ]; then
-    echo "Cleaning build directory..."
-    rm -rf "$BUILD_DIR"
-fi
+BUILD_DIR="build"
 
 mkdir -p "$BUILD_DIR"
 

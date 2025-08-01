@@ -159,9 +159,23 @@ if (CLOB_NO_EXCEPTIONS)
 endif ()
 
 #-------------------------------------------------------------------------------------------------------
-# Executable
+# gRPC
 #-------------------------------------------------------------------------------------------------------
+set(ABSL_ENABLE_INSTALL ON)
+include(FetchContent)
+FetchContent_Declare(
+    gRPC
+    GIT_REPOSITORY https://github.com/grpc/grpc
+    GIT_TAG        v1.74.0
+)
+set(FETCHCONTENT_QUIET OFF)
+FetchContent_MakeAvailable(gRPC)
+
+#-------------------------------------------------------------------------------------------------------
+# Executable
+#-------------------------------------------------------------------------------------------------------'
 add_executable(${TARGET_NAME} src/main.cpp)
+target_link_libraries(${TARGET_NAME} PRIVATE grpc++)
 target_link_libraries(${TARGET_NAME} PRIVATE ${LIBRARY_NAME})
 
 # Apply build type optimizations to executable
