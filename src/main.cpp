@@ -8,15 +8,18 @@
 
 #include "clob/Market.h"
 
-int main() {
-  clob::Market market("New York Stock Exchange", "NYSE");
-  std::cout << market.get_exchange_name() << std::endl;
-  std::cout << market.get_exchange_ticker() << std::endl;
-  std::cout << market.get_num_stocks() << std::endl;
-  market.add_stock("Apple", "AAPL");
-  std::cout << market.get_num_stocks() << std::endl;
-  market.add_stock("Microsoft", "MSFT");
-  std::cout << market.get_num_stocks() << std::endl;
-  market.add_stock("Google", "GOOGL");
-  return 0;
+using namespace std;
+
+int main(int argc, char *argv[]) {
+
+  if (argc != 3) {
+    cout << "Usage: " << argv[0] << " <exchange_name> <exchange_ticker>"
+         << endl;
+    return 1;
+  }
+
+  const string exchange_name = argv[1];
+  const string exchange_ticker = argv[2];
+
+  clob::Market market(exchange_name, exchange_ticker);
 }

@@ -15,31 +15,23 @@ namespace clob {
  *
  * @details Includes the id, timestamp, price, and quantity of the order.
  */
-class LimitOrder {
+template <OrderType order_type> class LimitOrder {
 public:
-  enum class OrderType { Bid, Ask };
-  using id_t = uint_fast64_t;
-
   class PriceTimeQueuePriority {
   public:
-    struct BidCmp {
-      constexpr inline bool operator()(const LimitOrder *o1,
-                                       const LimitOrder *o2) const {
+    constexpr inline bool operator()(const LimitOrder<order_type> *o1,
+                                     const LimitOrder<order_type> *o2) const {
+      if constexpr (order_type == OrderType::Bid) {
         return o1->price < o2->price ||
                (o1->price == o2->price && o1->timestamp > o2->timestamp);
-      }
-    };
-
-    struct AskCmp {
-      constexpr inline bool operator()(const LimitOrder *o1,
-                                       const LimitOrder *o2) const {
+      } else {
         return o1->price > o2->price ||
                (o1->price == o2->price && o1->timestamp > o2->timestamp);
       }
-    };
+    }
   };
 
-  id_t id;
+  LimitOrderId_t id;
   timestamp_ns_t timestamp;
   balance_t balance;
   price_t price;
@@ -47,7 +39,7 @@ public:
   quantity_t filled_quantity;
   bool is_cancelled;
 
-  explicit LimitOrder(const id_t id, const timestamp_ns_t timestamp,
+  explicit LimitOrder(const LimitOrderId_t id, const timestamp_ns_t timestamp,
                       const price_t price, const quantity_t quantity)
       : id(id), timestamp(timestamp), balance(0), price(price),
         quantity(quantity), filled_quantity(0), is_cancelled(false) {}

@@ -6,9 +6,10 @@
 
 #pragma once
 
-#include <cstdint>
 #include <string>
 #include <utility>
+
+#include "clob/types.h"
 
 namespace clob {
 
@@ -19,10 +20,9 @@ namespace clob {
  */
 class Stock {
 public:
-  using id_t = uint_fast32_t;
   const std::string name;
   const std::string ticker;
-  const Stock::id_t id;
+  const StockId_t id;
 
   /**
    * @brief Construct a new Stock object
@@ -31,7 +31,7 @@ public:
    * @param ticker The ticker of the stock
    * @param id The id of the stock
    */
-  Stock(const std::string &name, const std::string &ticker, const id_t id)
+  Stock(const std::string &name, const std::string &ticker, const StockId_t id)
       : name(name), ticker(ticker), id(id) {}
 
   /**
@@ -41,7 +41,7 @@ public:
    * @param ticker The ticker of the stock
    * @param id The id of the stock
    */
-  Stock(std::string &&name, std::string &&ticker, const id_t id)
+  Stock(std::string &&name, std::string &&ticker, const StockId_t id)
       : name(std::move(name)), ticker(std::move(ticker)), id(id) {}
 
   Stock(const Stock &) = default;

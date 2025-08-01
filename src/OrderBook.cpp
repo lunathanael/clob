@@ -10,47 +10,30 @@
 
 namespace clob {
 
-template <LimitOrder::OrderType order_type>
-void OrderBook::match_orders(LimitOrder *new_order) {
-  using order_book_t =
-      std::conditional_t<order_type == LimitOrder::OrderType::Bid,
-                         decltype(asks), decltype(bids)>;
-  using new_order_book_t =
-      std::conditional_t<order_type == LimitOrder::OrderType::Bid,
-                         decltype(bids), decltype(asks)>;
-  order_book_t *order_book;
-  new_order_book_t *new_order_book;
-  constexpr const balance_t balance_sign{
-      order_type == LimitOrder::OrderType::Bid ? 1 : -1};
-  if constexpr (order_type == LimitOrder::OrderType::Bid) {
-    order_book = &asks;
-    new_order_book = &bids;
-  } else {
-    order_book = &bids;
-    new_order_book = &asks;
-  }
+template <OrderType order_type>
+void OrderBook::match_orders(LimitOrder<order_type> *new_order) {
+  static constexpr auto other_order_type =
+      ternary<order_type == OrderType::Bid>(OrderType::Ask, OrderType::Bid);
+  static constexpr const balance_t balance_sign{
+      ternary<order_type == OrderType::Bid>(1, -1)};
+  auto &order_book = ternary<order_type == OrderType::Bid>(asks, bids);
+  auto &new_order_book = ternary<order_type == OrderType::Bid>(bids, asks);
 
   if (new_order->is_cancelled) {
     return;
   }
 
-  LimitOrder *order;
   quantity_t order_q{}, new_order_q{new_order->quantity};
-  while (order_book->size() > 0 && new_order_q != 0) {
-    order = order_book->top();
+  while (order_book.size() > 0 && new_order_q != 0) {
+    const auto &order = order_book.top();
     if (order->is_cancelled) {
-      order_book->pop();
+      order_book.pop();
       continue;
     }
 
-    if constexpr (order_type == LimitOrder::OrderType::Bid) {
-      if (order->price > new_order->price) {
-        break;
-      }
-    } else {
-      if (order->price < new_order->price) {
-        break;
-      }
+    if (ternary<order_type == OrderType::Bid>(
+            order->price > new_order->price, order->price < new_order->price)) {
+      break;
     }
 
     order_q = order->quantity - order->filled_quantity;
@@ -61,7 +44,7 @@ void OrderBook::match_orders(LimitOrder *new_order) {
       new_order->filled_quantity += order_q;
       new_order_q -= order_q;
       order->filled_quantity = order->quantity;
-      order_book->pop();
+      order_book.pop();
     } else {
       new_order->balance -= balance_sign * new_order_q * order->price;
       order->balance += balance_sign * new_order_q * order->price;
@@ -73,24 +56,29 @@ void OrderBook::match_orders(LimitOrder *new_order) {
   }
 
   if (new_order_q != 0) {
-    new_order_book->push(new_order);
+    new_order_book.push(new_order);
   }
 }
 
-void OrderBook::add_bid_order(LimitOrder *order) {
-  match_orders<LimitOrder::OrderType::Bid>(order);
+template <OrderType order_type>
+void OrderBook::add_order(LimitOrder<order_type> *order) {
+  match_orders(order);
 }
 
-void OrderBook::add_ask_order(LimitOrder *order) {
-  match_orders<LimitOrder::OrderType::Ask>(order);
+template void
+OrderBook::add_order<OrderType::Bid>(LimitOrder<OrderType::Bid> *order);
+template void
+OrderBook::add_order<OrderType::Ask>(LimitOrder<OrderType::Ask> *order);
+
+template <OrderType order_type>
+const LimitOrder<order_type> *OrderBook::get_best_order() const {
+  auto &order_book = ternary<order_type == OrderType::Bid>(bids, asks);
+  return order_book.size() > 0 ? order_book.top() : nullptr;
 }
 
-const LimitOrder *OrderBook::get_best_bid_order() const {
-  return bids.empty() ? nullptr : bids.top();
-}
-
-const LimitOrder *OrderBook::get_best_ask_order() const {
-  return asks.empty() ? nullptr : asks.top();
-}
+template const LimitOrder<OrderType::Bid> *
+OrderBook::get_best_order<OrderType::Bid>() const;
+template const LimitOrder<OrderType::Ask> *
+OrderBook::get_best_order<OrderType::Ask>() const;
 
 } // namespace clob

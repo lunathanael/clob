@@ -11,8 +11,10 @@
 #include <utility>
 #include <vector>
 
+#include "clob/LimitOrder.h"
 #include "clob/OrderBook.h"
 #include "clob/Stock.h"
+#include "clob/types.h"
 
 namespace clob {
 
@@ -28,9 +30,11 @@ class Market {
   const std::string exchange_ticker;
   std::vector<Stock> stocks;
   std::vector<OrderBook> order_books;
-  std::vector<std::unique_ptr<LimitOrder>> orders;
+  std::vector<std::unique_ptr<LimitOrder<OrderType::Bid>>> bid_orders;
+  std::vector<std::unique_ptr<LimitOrder<OrderType::Ask>>> ask_orders;
 
 public:
+  static constexpr LimitOrderId_t ask_order_flag = (1UL << 63);
   Market() = delete;
   Market(const Market &) = delete;
   Market(Market &&) = delete;
@@ -97,31 +101,33 @@ public:
    *
    * @param order The order to add.
    */
-  template <clob::LimitOrder::OrderType order_type>
-  clob::LimitOrder::id_t add_order(const clob::Stock::id_t stock_id,
-                                   const clob::price_t price,
-                                   const clob::quantity_t quantity);
+  template <OrderType order_type>
+  LimitOrderId_t add_order(const StockId_t stock_id, const price_t price,
+                           const quantity_t quantity);
 
   /**
    * @brief Cancel an order.
    *
    * @param order_id The id of the order to cancel.
    */
-  bool cancel_order(const clob::LimitOrder::id_t order_id);
+  template <OrderType order_type>
+  bool cancel_order(const LimitOrderId_t order_id);
 
   /**
    * @brief Query an order.
    *
    * @param order_id The id of the order to query.
    */
-  const LimitOrder *query_order(const clob::LimitOrder::id_t order_id) const;
+  template <OrderType order_type>
+  const LimitOrder<order_type> *
+  query_order(const LimitOrderId_t order_id) const;
 
   /**
    * @brief Get the order book for a stock.
    *
    * @param stock_id The id of the stock to get the order book for.
    */
-  const OrderBook *get_order_book(const clob::Stock::id_t stock_id) const;
+  const OrderBook *get_order_book(const StockId_t stock_id) const;
 };
 
 } // namespace clob

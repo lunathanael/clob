@@ -10,22 +10,25 @@
 #include <vector>
 
 #include "clob/LimitOrder.h"
+#include "clob/types.h"
 
 namespace clob {
 
 class OrderBook {
-  std::priority_queue<LimitOrder *, std::vector<LimitOrder *>,
-                      LimitOrder::PriceTimeQueuePriority::BidCmp>
+  std::priority_queue<LimitOrder<OrderType::Bid> *,
+                      std::vector<LimitOrder<OrderType::Bid> *>,
+                      LimitOrder<OrderType::Bid>::PriceTimeQueuePriority>
       bids;
-  std::priority_queue<LimitOrder *, std::vector<LimitOrder *>,
-                      LimitOrder::PriceTimeQueuePriority::AskCmp>
+  std::priority_queue<LimitOrder<OrderType::Ask> *,
+                      std::vector<LimitOrder<OrderType::Ask> *>,
+                      LimitOrder<OrderType::Ask>::PriceTimeQueuePriority>
       asks;
 
   /**
    * @brief Match the orders in the order book.
    */
-  template <LimitOrder::OrderType order_type>
-  void match_orders(LimitOrder *new_order);
+  template <OrderType order_type>
+  void match_orders(LimitOrder<order_type> *new_order);
 
 public:
   /**
@@ -33,29 +36,15 @@ public:
    *
    * @param order The order to add.
    */
-  void add_bid_order(LimitOrder *order);
-
-  /**
-   * @brief Add an ask order to the order book.
-   *
-   * @param order The order to add.
-   */
-  void add_ask_order(LimitOrder *order);
+  template <OrderType order_type> void add_order(LimitOrder<order_type> *order);
 
   /**
    * @brief Get the top bid order from the order book.
    *
    * @return The top bid order.
    */
-  const LimitOrder *get_best_bid_order() const;
-
-  /**
-   * @brief Get the top ask order from the order book.
-   * Assumes the ask order book is not empty.
-   *
-   * @return The top ask order.
-   */
-  const LimitOrder *get_best_ask_order() const;
+  template <OrderType order_type>
+  const LimitOrder<order_type> *get_best_order() const;
 
   /**
    * @brief Get the number of bid orders.
