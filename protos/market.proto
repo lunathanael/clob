@@ -1,0 +1,84 @@
+/**
+ * @page copyright
+ * Copyright(c) 2025-present, Nathanael Lu.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ */
+
+syntax = "proto3";
+
+package market;
+
+// Interface exported by the server.
+service Market {
+  // Obtains the current information on an order.
+  //
+  // An empty message with `order_found` set to false is returned
+  // if no order was found with `OrderId`.
+  rpc GetOrderStatus(OrderQuery) returns (LimitOrderInfo) {}
+
+  // A server-to-client streaming RPC.
+  //
+  // Places an order in the Order Book
+  rpc PlaceOrder(PlaceOrderRequest) returns (LimitOrderInfo) {}
+}
+
+message OrderQuery {
+  uint64 order_id = 1;
+}
+
+// Information for placing a Limit Order
+message PlaceOrderRequest {
+  uint32 stock_id = 1;
+  uint32 price = 2;
+  uint32 quantity = 3;
+  
+}
+
+// A latitude-longitude rectangle, represented as two diagonally opposite
+// points "lo" and "hi".
+message Rectangle {
+  // One corner of the rectangle.
+  Point lo = 1;
+
+  // The other corner of the rectangle.
+  Point hi = 2;
+}
+
+// A feature names something at a given point.
+//
+// If a feature could not be named, the name is empty.
+message Feature {
+  // The name of the feature.
+  string name = 1;
+
+  // The point where the feature is detected.
+  Point location = 2;
+}
+
+// A RouteNote is a message sent while at a given point.
+message RouteNote {
+  // The location from which the message is sent.
+  Point location = 1;
+
+  // The message to be sent.
+  string message = 2;
+}
+
+// A RouteSummary is received in response to a RecordRoute rpc.
+//
+// It contains the number of individual points received, the number of
+// detected features, and the total distance covered as the cumulative sum of
+// the distance between each point.
+message RouteSummary {
+  // The number of points received.
+  int32 point_count = 1;
+
+  // The number of known features passed while traversing the route.
+  int32 feature_count = 2;
+
+  // The distance covered in metres.
+  int32 distance = 3;
+
+  // The duration of the traversal in seconds.
+  int32 elapsed_time = 4;
+}

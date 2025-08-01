@@ -10,7 +10,6 @@
 
 #include "clob/LimitOrder.h"
 #include "clob/Market.h"
-#include "clob/Stock.h"
 
 namespace clob {
 

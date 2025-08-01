@@ -4,8 +4,6 @@
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  */
 
-#include <type_traits>
-
 #include "clob/OrderBook.h"
 
 namespace clob {
