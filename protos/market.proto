@@ -10,20 +10,19 @@ package market;
 
 // Interface exported by the server.
 service Market {
+  // A server-to-client streaming RPC.
+  //
+  // Places an order in the Order Book
+  rpc PlaceOrder(PlaceOrderRequest) returns (OrderId) {}
+
   // Obtains the current information on an order.
   //
   // An empty message with `order_found` set to false is returned
   // if no order was found with `OrderId`.
-  rpc GetOrderStatus(OrderQuery) returns (LimitOrderInfo) {}
+  rpc GetOrderStatus(OrderId) returns (LimitOrderInfo) {}
 
-  // A server-to-client streaming RPC.
-  //
-  // Places an order in the Order Book
-  rpc PlaceOrder(PlaceOrderRequest) returns (LimitOrderInfo) {}
-}
-
-message OrderQuery {
-  uint64 order_id = 1;
+  // Attempts to cancel an ongoing order
+  rpc CancelOrder(OrderId) returns (CancelOrderResponse) {}
 }
 
 // Information for placing a Limit Order
@@ -34,51 +33,20 @@ message PlaceOrderRequest {
   
 }
 
-// A latitude-longitude rectangle, represented as two diagonally opposite
-// points "lo" and "hi".
-message Rectangle {
-  // One corner of the rectangle.
-  Point lo = 1;
-
-  // The other corner of the rectangle.
-  Point hi = 2;
+message OrderId {
+  uint64 order_id = 1;
 }
 
-// A feature names something at a given point.
-//
-// If a feature could not be named, the name is empty.
-message Feature {
-  // The name of the feature.
-  string name = 1;
-
-  // The point where the feature is detected.
-  Point location = 2;
+message LimitOrderInfo {
+    uint64 order_id = 1;
+    uint64 timestamp = 2;
+    int64 balance = 3;
+    uint32 price = 4;
+    uint32 quantity = 5;
+    uint32 filled_quantity = 6;
+    bool is_cancelled = 7;
 }
 
-// A RouteNote is a message sent while at a given point.
-message RouteNote {
-  // The location from which the message is sent.
-  Point location = 1;
-
-  // The message to be sent.
-  string message = 2;
-}
-
-// A RouteSummary is received in response to a RecordRoute rpc.
-//
-// It contains the number of individual points received, the number of
-// detected features, and the total distance covered as the cumulative sum of
-// the distance between each point.
-message RouteSummary {
-  // The number of points received.
-  int32 point_count = 1;
-
-  // The number of known features passed while traversing the route.
-  int32 feature_count = 2;
-
-  // The distance covered in metres.
-  int32 distance = 3;
-
-  // The duration of the traversal in seconds.
-  int32 elapsed_time = 4;
+message CancelOrderResponse {
+    bool success = 1;
 }
