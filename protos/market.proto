@@ -6,23 +6,28 @@
 
 syntax = "proto3";
 
-package market;
+package marketmaker;
 
 // Interface exported by the server.
-service Market {
+service MarketMaker {
   // A server-to-client streaming RPC.
   //
   // Places an order in the Order Book
-  rpc PlaceOrder(PlaceOrderRequest) returns (OrderId) {}
+  rpc PlaceOrder(PlaceOrderRequest) returns (LimitOrderId) {}
 
   // Obtains the current information on an order.
   //
   // An empty message with `order_found` set to false is returned
-  // if no order was found with `OrderId`.
-  rpc GetOrderStatus(OrderId) returns (LimitOrderInfo) {}
+  // if no order was found with `LimitOrderId`.
+  rpc GetOrderStatus(GetOrderRequest) returns (LimitOrderInfo) {}
 
   // Attempts to cancel an ongoing order
-  rpc CancelOrder(OrderId) returns (CancelOrderResponse) {}
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {}
+}
+
+enum OrderType {
+  Bid = 0;
+  Ask = 1;
 }
 
 // Information for placing a Limit Order
@@ -30,10 +35,20 @@ message PlaceOrderRequest {
   uint32 stock_id = 1;
   uint32 price = 2;
   uint32 quantity = 3;
-  
+  OrderType order_type = 4;
 }
 
-message OrderId {
+message GetOrderRequest {
+  uint64 order_id = 1;
+  OrderType order_type = 2;
+}
+
+message CancelOrderRequest {
+  uint64 order_id = 1;
+  OrderType order_type = 2;
+}
+
+message LimitOrderId {
   uint64 order_id = 1;
 }
 
@@ -45,6 +60,7 @@ message LimitOrderInfo {
     uint32 quantity = 5;
     uint32 filled_quantity = 6;
     bool is_cancelled = 7;
+    bool order_found = 8;
 }
 
 message CancelOrderResponse {

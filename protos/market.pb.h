@@ -28,6 +28,7 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
+#include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 // @@protoc_insertion_point(includes)
 
@@ -52,30 +53,79 @@ struct TableStruct_market_2eproto {
 extern "C" {
 extern const ::google::protobuf::internal::DescriptorTable descriptor_table_market_2eproto;
 }  // extern "C"
-namespace market {
+namespace marketmaker {
+enum OrderType : int;
+extern const uint32_t OrderType_internal_data_[];
+class CancelOrderRequest;
+struct CancelOrderRequestDefaultTypeInternal;
+extern CancelOrderRequestDefaultTypeInternal _CancelOrderRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CancelOrderRequest_class_data_;
 class CancelOrderResponse;
 struct CancelOrderResponseDefaultTypeInternal;
 extern CancelOrderResponseDefaultTypeInternal _CancelOrderResponse_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull CancelOrderResponse_class_data_;
+class GetOrderRequest;
+struct GetOrderRequestDefaultTypeInternal;
+extern GetOrderRequestDefaultTypeInternal _GetOrderRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull GetOrderRequest_class_data_;
+class LimitOrderId;
+struct LimitOrderIdDefaultTypeInternal;
+extern LimitOrderIdDefaultTypeInternal _LimitOrderId_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull LimitOrderId_class_data_;
 class LimitOrderInfo;
 struct LimitOrderInfoDefaultTypeInternal;
 extern LimitOrderInfoDefaultTypeInternal _LimitOrderInfo_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull LimitOrderInfo_class_data_;
-class OrderId;
-struct OrderIdDefaultTypeInternal;
-extern OrderIdDefaultTypeInternal _OrderId_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull OrderId_class_data_;
 class PlaceOrderRequest;
 struct PlaceOrderRequestDefaultTypeInternal;
 extern PlaceOrderRequestDefaultTypeInternal _PlaceOrderRequest_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull PlaceOrderRequest_class_data_;
-}  // namespace market
+}  // namespace marketmaker
 namespace google {
 namespace protobuf {
+template <>
+internal::EnumTraitsT<::marketmaker::OrderType_internal_data_>
+    internal::EnumTraitsImpl::value<::marketmaker::OrderType>;
 }  // namespace protobuf
 }  // namespace google
 
-namespace market {
+namespace marketmaker {
+enum OrderType : int {
+  Bid = 0,
+  Ask = 1,
+  OrderType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::min(),
+  OrderType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::max(),
+};
+
+extern const uint32_t OrderType_internal_data_[];
+inline constexpr OrderType OrderType_MIN =
+    static_cast<OrderType>(0);
+inline constexpr OrderType OrderType_MAX =
+    static_cast<OrderType>(1);
+inline bool OrderType_IsValid(int value) {
+  return 0 <= value && value <= 1;
+}
+inline constexpr int OrderType_ARRAYSIZE = 1 + 1;
+const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL OrderType_descriptor();
+template <typename T>
+const ::std::string& OrderType_Name(T value) {
+  static_assert(::std::is_same<T, OrderType>::value ||
+                    ::std::is_integral<T>::value,
+                "Incorrect type passed to OrderType_Name().");
+  return OrderType_Name(static_cast<OrderType>(value));
+}
+template <>
+inline const ::std::string& OrderType_Name(OrderType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<OrderType_descriptor, 0, 1>(
+      static_cast<int>(value));
+}
+inline bool OrderType_Parse(
+    ::absl::string_view name, OrderType* PROTOBUF_NONNULL value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrderType>(OrderType_descriptor(), name,
+                                           value);
+}
 
 // ===================================================================
 
@@ -83,7 +133,7 @@ namespace market {
 // -------------------------------------------------------------------
 
 class PlaceOrderRequest final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:market.PlaceOrderRequest) */ {
+/* @@protoc_insertion_point(class_definition:marketmaker.PlaceOrderRequest) */ {
  public:
   inline PlaceOrderRequest() : PlaceOrderRequest(nullptr) {}
   ~PlaceOrderRequest() PROTOBUF_FINAL;
@@ -201,7 +251,7 @@ class PlaceOrderRequest final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "market.PlaceOrderRequest"; }
+  static ::absl::string_view FullMessageName() { return "marketmaker.PlaceOrderRequest"; }
 
  protected:
   explicit PlaceOrderRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -228,6 +278,7 @@ class PlaceOrderRequest final : public ::google::protobuf::Message
     kStockIdFieldNumber = 1,
     kPriceFieldNumber = 2,
     kQuantityFieldNumber = 3,
+    kOrderTypeFieldNumber = 4,
   };
   // uint32 stock_id = 1;
   void clear_stock_id() ;
@@ -259,11 +310,21 @@ class PlaceOrderRequest final : public ::google::protobuf::Message
   void _internal_set_quantity(::uint32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:market.PlaceOrderRequest)
+  // .marketmaker.OrderType order_type = 4;
+  void clear_order_type() ;
+  ::marketmaker::OrderType order_type() const;
+  void set_order_type(::marketmaker::OrderType value);
+
+  private:
+  ::marketmaker::OrderType _internal_order_type() const;
+  void _internal_set_order_type(::marketmaker::OrderType value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.PlaceOrderRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
                                    0, 0,
                                    2>
       _table_;
@@ -288,6 +349,7 @@ class PlaceOrderRequest final : public ::google::protobuf::Message
     ::uint32_t stock_id_;
     ::uint32_t price_;
     ::uint32_t quantity_;
+    int order_type_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -297,199 +359,8 @@ class PlaceOrderRequest final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull PlaceOrderRequest_class_data_;
 // -------------------------------------------------------------------
 
-class OrderId final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:market.OrderId) */ {
- public:
-  inline OrderId() : OrderId(nullptr) {}
-  ~OrderId() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(OrderId* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(OrderId));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR OrderId(::google::protobuf::internal::ConstantInitialized);
-
-  inline OrderId(const OrderId& from) : OrderId(nullptr, from) {}
-  inline OrderId(OrderId&& from) noexcept
-      : OrderId(nullptr, ::std::move(from)) {}
-  inline OrderId& operator=(const OrderId& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline OrderId& operator=(OrderId&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const OrderId& default_instance() {
-    return *reinterpret_cast<const OrderId*>(
-        &_OrderId_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 1;
-  friend void swap(OrderId& a, OrderId& b) { a.Swap(&b); }
-  inline void Swap(OrderId* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(OrderId* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  OrderId* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<OrderId>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const OrderId& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const OrderId& from) { OrderId::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(OrderId* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "market.OrderId"; }
-
- protected:
-  explicit OrderId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  OrderId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const OrderId& from);
-  OrderId(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, OrderId&& from) noexcept
-      : OrderId(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kOrderIdFieldNumber = 1,
-  };
-  // uint64 order_id = 1;
-  void clear_order_id() ;
-  ::uint64_t order_id() const;
-  void set_order_id(::uint64_t value);
-
-  private:
-  ::uint64_t _internal_order_id() const;
-  void _internal_set_order_id(::uint64_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:market.OrderId)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   0, 0,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const OrderId& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::uint64_t order_id_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_market_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull OrderId_class_data_;
-// -------------------------------------------------------------------
-
 class LimitOrderInfo final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:market.LimitOrderInfo) */ {
+/* @@protoc_insertion_point(class_definition:marketmaker.LimitOrderInfo) */ {
  public:
   inline LimitOrderInfo() : LimitOrderInfo(nullptr) {}
   ~LimitOrderInfo() PROTOBUF_FINAL;
@@ -543,7 +414,7 @@ class LimitOrderInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const LimitOrderInfo*>(
         &_LimitOrderInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(LimitOrderInfo& a, LimitOrderInfo& b) { a.Swap(&b); }
   inline void Swap(LimitOrderInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -607,7 +478,7 @@ class LimitOrderInfo final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "market.LimitOrderInfo"; }
+  static ::absl::string_view FullMessageName() { return "marketmaker.LimitOrderInfo"; }
 
  protected:
   explicit LimitOrderInfo(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -638,6 +509,7 @@ class LimitOrderInfo final : public ::google::protobuf::Message
     kQuantityFieldNumber = 5,
     kFilledQuantityFieldNumber = 6,
     kIsCancelledFieldNumber = 7,
+    kOrderFoundFieldNumber = 8,
   };
   // uint64 order_id = 1;
   void clear_order_id() ;
@@ -709,11 +581,21 @@ class LimitOrderInfo final : public ::google::protobuf::Message
   void _internal_set_is_cancelled(bool value);
 
   public:
-  // @@protoc_insertion_point(class_scope:market.LimitOrderInfo)
+  // bool order_found = 8;
+  void clear_order_found() ;
+  bool order_found() const;
+  void set_order_found(bool value);
+
+  private:
+  bool _internal_order_found() const;
+  void _internal_set_order_found(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.LimitOrderInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7,
+  static const ::google::protobuf::internal::TcParseTable<3, 8,
                                    0, 0,
                                    2>
       _table_;
@@ -742,6 +624,7 @@ class LimitOrderInfo final : public ::google::protobuf::Message
     ::uint32_t quantity_;
     ::uint32_t filled_quantity_;
     bool is_cancelled_;
+    bool order_found_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -751,8 +634,402 @@ class LimitOrderInfo final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull LimitOrderInfo_class_data_;
 // -------------------------------------------------------------------
 
+class LimitOrderId final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:marketmaker.LimitOrderId) */ {
+ public:
+  inline LimitOrderId() : LimitOrderId(nullptr) {}
+  ~LimitOrderId() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(LimitOrderId* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LimitOrderId));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR LimitOrderId(::google::protobuf::internal::ConstantInitialized);
+
+  inline LimitOrderId(const LimitOrderId& from) : LimitOrderId(nullptr, from) {}
+  inline LimitOrderId(LimitOrderId&& from) noexcept
+      : LimitOrderId(nullptr, ::std::move(from)) {}
+  inline LimitOrderId& operator=(const LimitOrderId& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LimitOrderId& operator=(LimitOrderId&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const LimitOrderId& default_instance() {
+    return *reinterpret_cast<const LimitOrderId*>(
+        &_LimitOrderId_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(LimitOrderId& a, LimitOrderId& b) { a.Swap(&b); }
+  inline void Swap(LimitOrderId* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LimitOrderId* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  LimitOrderId* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LimitOrderId>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LimitOrderId& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LimitOrderId& from) { LimitOrderId::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LimitOrderId* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "marketmaker.LimitOrderId"; }
+
+ protected:
+  explicit LimitOrderId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  LimitOrderId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const LimitOrderId& from);
+  LimitOrderId(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, LimitOrderId&& from) noexcept
+      : LimitOrderId(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kOrderIdFieldNumber = 1,
+  };
+  // uint64 order_id = 1;
+  void clear_order_id() ;
+  ::uint64_t order_id() const;
+  void set_order_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_order_id() const;
+  void _internal_set_order_id(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.LimitOrderId)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const LimitOrderId& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint64_t order_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_market_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull LimitOrderId_class_data_;
+// -------------------------------------------------------------------
+
+class GetOrderRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:marketmaker.GetOrderRequest) */ {
+ public:
+  inline GetOrderRequest() : GetOrderRequest(nullptr) {}
+  ~GetOrderRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GetOrderRequest* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetOrderRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetOrderRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetOrderRequest(const GetOrderRequest& from) : GetOrderRequest(nullptr, from) {}
+  inline GetOrderRequest(GetOrderRequest&& from) noexcept
+      : GetOrderRequest(nullptr, ::std::move(from)) {}
+  inline GetOrderRequest& operator=(const GetOrderRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetOrderRequest& operator=(GetOrderRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetOrderRequest& default_instance() {
+    return *reinterpret_cast<const GetOrderRequest*>(
+        &_GetOrderRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(GetOrderRequest& a, GetOrderRequest& b) { a.Swap(&b); }
+  inline void Swap(GetOrderRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetOrderRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetOrderRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetOrderRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetOrderRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetOrderRequest& from) { GetOrderRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetOrderRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "marketmaker.GetOrderRequest"; }
+
+ protected:
+  explicit GetOrderRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  GetOrderRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const GetOrderRequest& from);
+  GetOrderRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, GetOrderRequest&& from) noexcept
+      : GetOrderRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kOrderIdFieldNumber = 1,
+    kOrderTypeFieldNumber = 2,
+  };
+  // uint64 order_id = 1;
+  void clear_order_id() ;
+  ::uint64_t order_id() const;
+  void set_order_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_order_id() const;
+  void _internal_set_order_id(::uint64_t value);
+
+  public:
+  // .marketmaker.OrderType order_type = 2;
+  void clear_order_type() ;
+  ::marketmaker::OrderType order_type() const;
+  void set_order_type(::marketmaker::OrderType value);
+
+  private:
+  ::marketmaker::OrderType _internal_order_type() const;
+  void _internal_set_order_type(::marketmaker::OrderType value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.GetOrderRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const GetOrderRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint64_t order_id_;
+    int order_type_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_market_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull GetOrderRequest_class_data_;
+// -------------------------------------------------------------------
+
 class CancelOrderResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:market.CancelOrderResponse) */ {
+/* @@protoc_insertion_point(class_definition:marketmaker.CancelOrderResponse) */ {
  public:
   inline CancelOrderResponse() : CancelOrderResponse(nullptr) {}
   ~CancelOrderResponse() PROTOBUF_FINAL;
@@ -806,7 +1083,7 @@ class CancelOrderResponse final : public ::google::protobuf::Message
     return *reinterpret_cast<const CancelOrderResponse*>(
         &_CancelOrderResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(CancelOrderResponse& a, CancelOrderResponse& b) { a.Swap(&b); }
   inline void Swap(CancelOrderResponse* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -870,7 +1147,7 @@ class CancelOrderResponse final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "market.CancelOrderResponse"; }
+  static ::absl::string_view FullMessageName() { return "marketmaker.CancelOrderResponse"; }
 
  protected:
   explicit CancelOrderResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -906,7 +1183,7 @@ class CancelOrderResponse final : public ::google::protobuf::Message
   void _internal_set_success(bool value);
 
   public:
-  // @@protoc_insertion_point(class_scope:market.CancelOrderResponse)
+  // @@protoc_insertion_point(class_scope:marketmaker.CancelOrderResponse)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -940,6 +1217,209 @@ class CancelOrderResponse final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull CancelOrderResponse_class_data_;
+// -------------------------------------------------------------------
+
+class CancelOrderRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:marketmaker.CancelOrderRequest) */ {
+ public:
+  inline CancelOrderRequest() : CancelOrderRequest(nullptr) {}
+  ~CancelOrderRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CancelOrderRequest* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelOrderRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelOrderRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline CancelOrderRequest(const CancelOrderRequest& from) : CancelOrderRequest(nullptr, from) {}
+  inline CancelOrderRequest(CancelOrderRequest&& from) noexcept
+      : CancelOrderRequest(nullptr, ::std::move(from)) {}
+  inline CancelOrderRequest& operator=(const CancelOrderRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelOrderRequest& operator=(CancelOrderRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelOrderRequest& default_instance() {
+    return *reinterpret_cast<const CancelOrderRequest*>(
+        &_CancelOrderRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(CancelOrderRequest& a, CancelOrderRequest& b) { a.Swap(&b); }
+  inline void Swap(CancelOrderRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CancelOrderRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CancelOrderRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CancelOrderRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CancelOrderRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CancelOrderRequest& from) { CancelOrderRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CancelOrderRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "marketmaker.CancelOrderRequest"; }
+
+ protected:
+  explicit CancelOrderRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CancelOrderRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CancelOrderRequest& from);
+  CancelOrderRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CancelOrderRequest&& from) noexcept
+      : CancelOrderRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kOrderIdFieldNumber = 1,
+    kOrderTypeFieldNumber = 2,
+  };
+  // uint64 order_id = 1;
+  void clear_order_id() ;
+  ::uint64_t order_id() const;
+  void set_order_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_order_id() const;
+  void _internal_set_order_id(::uint64_t value);
+
+  public:
+  // .marketmaker.OrderType order_type = 2;
+  void clear_order_type() ;
+  ::marketmaker::OrderType order_type() const;
+  void set_order_type(::marketmaker::OrderType value);
+
+  private:
+  ::marketmaker::OrderType _internal_order_type() const;
+  void _internal_set_order_type(::marketmaker::OrderType value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.CancelOrderRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CancelOrderRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint64_t order_id_;
+    int order_type_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_market_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CancelOrderRequest_class_data_;
 
 // ===================================================================
 
@@ -964,13 +1444,13 @@ inline void PlaceOrderRequest::clear_stock_id() {
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::uint32_t PlaceOrderRequest::stock_id() const {
-  // @@protoc_insertion_point(field_get:market.PlaceOrderRequest.stock_id)
+  // @@protoc_insertion_point(field_get:marketmaker.PlaceOrderRequest.stock_id)
   return _internal_stock_id();
 }
 inline void PlaceOrderRequest::set_stock_id(::uint32_t value) {
   _internal_set_stock_id(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:market.PlaceOrderRequest.stock_id)
+  // @@protoc_insertion_point(field_set:marketmaker.PlaceOrderRequest.stock_id)
 }
 inline ::uint32_t PlaceOrderRequest::_internal_stock_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -988,13 +1468,13 @@ inline void PlaceOrderRequest::clear_price() {
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::uint32_t PlaceOrderRequest::price() const {
-  // @@protoc_insertion_point(field_get:market.PlaceOrderRequest.price)
+  // @@protoc_insertion_point(field_get:marketmaker.PlaceOrderRequest.price)
   return _internal_price();
 }
 inline void PlaceOrderRequest::set_price(::uint32_t value) {
   _internal_set_price(value);
   _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:market.PlaceOrderRequest.price)
+  // @@protoc_insertion_point(field_set:marketmaker.PlaceOrderRequest.price)
 }
 inline ::uint32_t PlaceOrderRequest::_internal_price() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1012,13 +1492,13 @@ inline void PlaceOrderRequest::clear_quantity() {
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
 inline ::uint32_t PlaceOrderRequest::quantity() const {
-  // @@protoc_insertion_point(field_get:market.PlaceOrderRequest.quantity)
+  // @@protoc_insertion_point(field_get:marketmaker.PlaceOrderRequest.quantity)
   return _internal_quantity();
 }
 inline void PlaceOrderRequest::set_quantity(::uint32_t value) {
   _internal_set_quantity(value);
   _impl_._has_bits_[0] |= 0x00000004u;
-  // @@protoc_insertion_point(field_set:market.PlaceOrderRequest.quantity)
+  // @@protoc_insertion_point(field_set:marketmaker.PlaceOrderRequest.quantity)
 }
 inline ::uint32_t PlaceOrderRequest::_internal_quantity() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1029,30 +1509,158 @@ inline void PlaceOrderRequest::_internal_set_quantity(::uint32_t value) {
   _impl_.quantity_ = value;
 }
 
+// .marketmaker.OrderType order_type = 4;
+inline void PlaceOrderRequest::clear_order_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::marketmaker::OrderType PlaceOrderRequest::order_type() const {
+  // @@protoc_insertion_point(field_get:marketmaker.PlaceOrderRequest.order_type)
+  return _internal_order_type();
+}
+inline void PlaceOrderRequest::set_order_type(::marketmaker::OrderType value) {
+  _internal_set_order_type(value);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  // @@protoc_insertion_point(field_set:marketmaker.PlaceOrderRequest.order_type)
+}
+inline ::marketmaker::OrderType PlaceOrderRequest::_internal_order_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::marketmaker::OrderType>(_impl_.order_type_);
+}
+inline void PlaceOrderRequest::_internal_set_order_type(::marketmaker::OrderType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_type_ = value;
+}
+
 // -------------------------------------------------------------------
 
-// OrderId
+// GetOrderRequest
 
 // uint64 order_id = 1;
-inline void OrderId::clear_order_id() {
+inline void GetOrderRequest::clear_order_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.order_id_ = ::uint64_t{0u};
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::uint64_t OrderId::order_id() const {
-  // @@protoc_insertion_point(field_get:market.OrderId.order_id)
+inline ::uint64_t GetOrderRequest::order_id() const {
+  // @@protoc_insertion_point(field_get:marketmaker.GetOrderRequest.order_id)
   return _internal_order_id();
 }
-inline void OrderId::set_order_id(::uint64_t value) {
+inline void GetOrderRequest::set_order_id(::uint64_t value) {
   _internal_set_order_id(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:market.OrderId.order_id)
+  // @@protoc_insertion_point(field_set:marketmaker.GetOrderRequest.order_id)
 }
-inline ::uint64_t OrderId::_internal_order_id() const {
+inline ::uint64_t GetOrderRequest::_internal_order_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.order_id_;
 }
-inline void OrderId::_internal_set_order_id(::uint64_t value) {
+inline void GetOrderRequest::_internal_set_order_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_id_ = value;
+}
+
+// .marketmaker.OrderType order_type = 2;
+inline void GetOrderRequest::clear_order_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::marketmaker::OrderType GetOrderRequest::order_type() const {
+  // @@protoc_insertion_point(field_get:marketmaker.GetOrderRequest.order_type)
+  return _internal_order_type();
+}
+inline void GetOrderRequest::set_order_type(::marketmaker::OrderType value) {
+  _internal_set_order_type(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:marketmaker.GetOrderRequest.order_type)
+}
+inline ::marketmaker::OrderType GetOrderRequest::_internal_order_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::marketmaker::OrderType>(_impl_.order_type_);
+}
+inline void GetOrderRequest::_internal_set_order_type(::marketmaker::OrderType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_type_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// CancelOrderRequest
+
+// uint64 order_id = 1;
+inline void CancelOrderRequest::clear_order_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_id_ = ::uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::uint64_t CancelOrderRequest::order_id() const {
+  // @@protoc_insertion_point(field_get:marketmaker.CancelOrderRequest.order_id)
+  return _internal_order_id();
+}
+inline void CancelOrderRequest::set_order_id(::uint64_t value) {
+  _internal_set_order_id(value);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  // @@protoc_insertion_point(field_set:marketmaker.CancelOrderRequest.order_id)
+}
+inline ::uint64_t CancelOrderRequest::_internal_order_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.order_id_;
+}
+inline void CancelOrderRequest::_internal_set_order_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_id_ = value;
+}
+
+// .marketmaker.OrderType order_type = 2;
+inline void CancelOrderRequest::clear_order_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::marketmaker::OrderType CancelOrderRequest::order_type() const {
+  // @@protoc_insertion_point(field_get:marketmaker.CancelOrderRequest.order_type)
+  return _internal_order_type();
+}
+inline void CancelOrderRequest::set_order_type(::marketmaker::OrderType value) {
+  _internal_set_order_type(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:marketmaker.CancelOrderRequest.order_type)
+}
+inline ::marketmaker::OrderType CancelOrderRequest::_internal_order_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::marketmaker::OrderType>(_impl_.order_type_);
+}
+inline void CancelOrderRequest::_internal_set_order_type(::marketmaker::OrderType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_type_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// LimitOrderId
+
+// uint64 order_id = 1;
+inline void LimitOrderId::clear_order_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_id_ = ::uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::uint64_t LimitOrderId::order_id() const {
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderId.order_id)
+  return _internal_order_id();
+}
+inline void LimitOrderId::set_order_id(::uint64_t value) {
+  _internal_set_order_id(value);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderId.order_id)
+}
+inline ::uint64_t LimitOrderId::_internal_order_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.order_id_;
+}
+inline void LimitOrderId::_internal_set_order_id(::uint64_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.order_id_ = value;
 }
@@ -1068,13 +1676,13 @@ inline void LimitOrderInfo::clear_order_id() {
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::uint64_t LimitOrderInfo::order_id() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.order_id)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.order_id)
   return _internal_order_id();
 }
 inline void LimitOrderInfo::set_order_id(::uint64_t value) {
   _internal_set_order_id(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.order_id)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.order_id)
 }
 inline ::uint64_t LimitOrderInfo::_internal_order_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1092,13 +1700,13 @@ inline void LimitOrderInfo::clear_timestamp() {
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::uint64_t LimitOrderInfo::timestamp() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.timestamp)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.timestamp)
   return _internal_timestamp();
 }
 inline void LimitOrderInfo::set_timestamp(::uint64_t value) {
   _internal_set_timestamp(value);
   _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.timestamp)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.timestamp)
 }
 inline ::uint64_t LimitOrderInfo::_internal_timestamp() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1116,13 +1724,13 @@ inline void LimitOrderInfo::clear_balance() {
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
 inline ::int64_t LimitOrderInfo::balance() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.balance)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.balance)
   return _internal_balance();
 }
 inline void LimitOrderInfo::set_balance(::int64_t value) {
   _internal_set_balance(value);
   _impl_._has_bits_[0] |= 0x00000004u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.balance)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.balance)
 }
 inline ::int64_t LimitOrderInfo::_internal_balance() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1140,13 +1748,13 @@ inline void LimitOrderInfo::clear_price() {
   _impl_._has_bits_[0] &= ~0x00000008u;
 }
 inline ::uint32_t LimitOrderInfo::price() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.price)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.price)
   return _internal_price();
 }
 inline void LimitOrderInfo::set_price(::uint32_t value) {
   _internal_set_price(value);
   _impl_._has_bits_[0] |= 0x00000008u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.price)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.price)
 }
 inline ::uint32_t LimitOrderInfo::_internal_price() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1164,13 +1772,13 @@ inline void LimitOrderInfo::clear_quantity() {
   _impl_._has_bits_[0] &= ~0x00000010u;
 }
 inline ::uint32_t LimitOrderInfo::quantity() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.quantity)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.quantity)
   return _internal_quantity();
 }
 inline void LimitOrderInfo::set_quantity(::uint32_t value) {
   _internal_set_quantity(value);
   _impl_._has_bits_[0] |= 0x00000010u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.quantity)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.quantity)
 }
 inline ::uint32_t LimitOrderInfo::_internal_quantity() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1188,13 +1796,13 @@ inline void LimitOrderInfo::clear_filled_quantity() {
   _impl_._has_bits_[0] &= ~0x00000020u;
 }
 inline ::uint32_t LimitOrderInfo::filled_quantity() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.filled_quantity)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.filled_quantity)
   return _internal_filled_quantity();
 }
 inline void LimitOrderInfo::set_filled_quantity(::uint32_t value) {
   _internal_set_filled_quantity(value);
   _impl_._has_bits_[0] |= 0x00000020u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.filled_quantity)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.filled_quantity)
 }
 inline ::uint32_t LimitOrderInfo::_internal_filled_quantity() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1212,13 +1820,13 @@ inline void LimitOrderInfo::clear_is_cancelled() {
   _impl_._has_bits_[0] &= ~0x00000040u;
 }
 inline bool LimitOrderInfo::is_cancelled() const {
-  // @@protoc_insertion_point(field_get:market.LimitOrderInfo.is_cancelled)
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.is_cancelled)
   return _internal_is_cancelled();
 }
 inline void LimitOrderInfo::set_is_cancelled(bool value) {
   _internal_set_is_cancelled(value);
   _impl_._has_bits_[0] |= 0x00000040u;
-  // @@protoc_insertion_point(field_set:market.LimitOrderInfo.is_cancelled)
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.is_cancelled)
 }
 inline bool LimitOrderInfo::_internal_is_cancelled() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1227,6 +1835,30 @@ inline bool LimitOrderInfo::_internal_is_cancelled() const {
 inline void LimitOrderInfo::_internal_set_is_cancelled(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_cancelled_ = value;
+}
+
+// bool order_found = 8;
+inline void LimitOrderInfo::clear_order_found() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_found_ = false;
+  _impl_._has_bits_[0] &= ~0x00000080u;
+}
+inline bool LimitOrderInfo::order_found() const {
+  // @@protoc_insertion_point(field_get:marketmaker.LimitOrderInfo.order_found)
+  return _internal_order_found();
+}
+inline void LimitOrderInfo::set_order_found(bool value) {
+  _internal_set_order_found(value);
+  _impl_._has_bits_[0] |= 0x00000080u;
+  // @@protoc_insertion_point(field_set:marketmaker.LimitOrderInfo.order_found)
+}
+inline bool LimitOrderInfo::_internal_order_found() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.order_found_;
+}
+inline void LimitOrderInfo::_internal_set_order_found(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_found_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1240,13 +1872,13 @@ inline void CancelOrderResponse::clear_success() {
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline bool CancelOrderResponse::success() const {
-  // @@protoc_insertion_point(field_get:market.CancelOrderResponse.success)
+  // @@protoc_insertion_point(field_get:marketmaker.CancelOrderResponse.success)
   return _internal_success();
 }
 inline void CancelOrderResponse::set_success(bool value) {
   _internal_set_success(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:market.CancelOrderResponse.success)
+  // @@protoc_insertion_point(field_set:marketmaker.CancelOrderResponse.success)
 }
 inline bool CancelOrderResponse::_internal_success() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1262,8 +1894,21 @@ inline void CancelOrderResponse::_internal_set_success(bool value) {
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace market
+}  // namespace marketmaker
 
+
+namespace google {
+namespace protobuf {
+
+template <>
+struct is_proto_enum<::marketmaker::OrderType> : std::true_type {};
+template <>
+inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::marketmaker::OrderType>() {
+  return ::marketmaker::OrderType_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

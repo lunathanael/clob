@@ -135,6 +135,8 @@ set(SOURCE_FILES
 
 add_library(${LIBRARY_NAME} OBJECT ${HEADER_FILES} ${SOURCE_FILES})
 target_include_directories(${LIBRARY_NAME} PUBLIC include)
+target_include_directories(${LIBRARY_NAME} PUBLIC protos)
+target_include_directories(${LIBRARY_NAME} PRIVATE /home/lunat/.local/include)
 
 # Apply common compile options to object library
 set_common_compile_options(${LIBRARY_NAME})
@@ -162,12 +164,56 @@ endif ()
 # gRPC
 #-------------------------------------------------------------------------------------------------------
 include(./cmake/GRPC.cmake)
+find_package(absl CONFIG REQUIRED)
+
+# Proto file
+get_filename_component(market_proto "./protos/market.proto" ABSOLUTE)
+get_filename_component(market_proto_path "${market_proto}" PATH)
+
+# Generated sources
+set(market_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/market.pb.cc")
+set(market_proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/market.pb.h")
+set(market_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/market.grpc.pb.cc")
+set(market_grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/market.grpc.pb.h")
+add_custom_command(
+      OUTPUT "${market_proto_srcs}" "${market_proto_hdrs}" "${market_grpc_srcs}" "${market_grpc_hdrs}"
+      COMMAND ${_PROTOBUF_PROTOC}
+      ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
+        --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
+        -I "${market_proto_path}"
+        --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
+        "${market_proto}"
+      DEPENDS "${market_proto}")
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+add_library(market_grpc_proto
+  ${market_grpc_srcs}
+  ${market_grpc_hdrs}
+  ${market_proto_srcs}
+  ${market_proto_hdrs})
+target_link_libraries(market_grpc_proto
+  absl::absl_log
+  ${_REFLECTION}
+  ${_GRPC_GRPCPP}
+  ${_PROTOBUF_LIBPROTOBUF})
 
 #-------------------------------------------------------------------------------------------------------
 # Executable
 #-------------------------------------------------------------------------------------------------------'
-add_executable(${TARGET_NAME} src/main.cpp)
-target_link_libraries(${TARGET_NAME} PRIVATE ${LIBRARY_NAME})
+add_executable(${TARGET_NAME} src/MarketMakerServer.cpp)
+target_link_libraries(${TARGET_NAME}
+    PRIVATE
+    ${LIBRARY_NAME}
+    market_grpc_proto
+    absl::flags_parse
+    absl::absl_log
+    absl::log_initialize
+    absl::log_globals
+    ${_REFLECTION}
+    ${_GRPC_GRPCPP}
+    ${_PROTOBUF_LIBPROTOBUF}
+    ssl crypto)
 
 # Apply build type optimizations to executable
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

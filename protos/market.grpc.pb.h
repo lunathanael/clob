@@ -32,13 +32,13 @@
 #include <grpcpp/support/sync_stream.h>
 #include <grpcpp/ports_def.inc>
 
-namespace market {
+namespace marketmaker {
 
 // Interface exported by the server.
-class Market final {
+class MarketMaker final {
  public:
   static constexpr char const* service_full_name() {
-    return "market.Market";
+    return "marketmaker.MarketMaker";
   }
   class StubInterface {
    public:
@@ -46,31 +46,31 @@ class Market final {
     // A server-to-client streaming RPC.
     //
     // Places an order in the Order Book
-    virtual ::grpc::Status PlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::market::OrderId* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::OrderId>> AsyncPlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::OrderId>>(AsyncPlaceOrderRaw(context, request, cq));
+    virtual ::grpc::Status PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::marketmaker::LimitOrderId* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderId>> AsyncPlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderId>>(AsyncPlaceOrderRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::OrderId>> PrepareAsyncPlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::OrderId>>(PrepareAsyncPlaceOrderRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderId>> PrepareAsyncPlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderId>>(PrepareAsyncPlaceOrderRaw(context, request, cq));
     }
     // Obtains the current information on an order.
     //
     // An empty message with `order_found` set to false is returned
-    // if no order was found with `OrderId`.
-    virtual ::grpc::Status GetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId& request, ::market::LimitOrderInfo* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::LimitOrderInfo>> AsyncGetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::LimitOrderInfo>>(AsyncGetOrderStatusRaw(context, request, cq));
+    // if no order was found with `LimitOrderId`.
+    virtual ::grpc::Status GetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::marketmaker::LimitOrderInfo* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderInfo>> AsyncGetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderInfo>>(AsyncGetOrderStatusRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::LimitOrderInfo>> PrepareAsyncGetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::LimitOrderInfo>>(PrepareAsyncGetOrderStatusRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderInfo>> PrepareAsyncGetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderInfo>>(PrepareAsyncGetOrderStatusRaw(context, request, cq));
     }
     // Attempts to cancel an ongoing order
-    virtual ::grpc::Status CancelOrder(::grpc::ClientContext* context, const ::market::OrderId& request, ::market::CancelOrderResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::CancelOrderResponse>> AsyncCancelOrder(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::CancelOrderResponse>>(AsyncCancelOrderRaw(context, request, cq));
+    virtual ::grpc::Status CancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::marketmaker::CancelOrderResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::CancelOrderResponse>> AsyncCancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::CancelOrderResponse>>(AsyncCancelOrderRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::CancelOrderResponse>> PrepareAsyncCancelOrder(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::market::CancelOrderResponse>>(PrepareAsyncCancelOrderRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::CancelOrderResponse>> PrepareAsyncCancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::CancelOrderResponse>>(PrepareAsyncCancelOrderRaw(context, request, cq));
     }
     class async_interface {
      public:
@@ -78,62 +78,62 @@ class Market final {
       // A server-to-client streaming RPC.
       //
       // Places an order in the Order Book
-      virtual void PlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest* request, ::market::OrderId* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void PlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest* request, ::market::OrderId* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest* request, ::marketmaker::LimitOrderId* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest* request, ::marketmaker::LimitOrderId* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Obtains the current information on an order.
       //
       // An empty message with `order_found` set to false is returned
-      // if no order was found with `OrderId`.
-      virtual void GetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::LimitOrderInfo* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::LimitOrderInfo* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // if no order was found with `LimitOrderId`.
+      virtual void GetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest* request, ::marketmaker::LimitOrderInfo* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest* request, ::marketmaker::LimitOrderInfo* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Attempts to cancel an ongoing order
-      virtual void CancelOrder(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::CancelOrderResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void CancelOrder(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::CancelOrderResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void CancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void CancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::market::OrderId>* AsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::market::OrderId>* PrepareAsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::market::LimitOrderInfo>* AsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::market::LimitOrderInfo>* PrepareAsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::market::CancelOrderResponse>* AsyncCancelOrderRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::market::CancelOrderResponse>* PrepareAsyncCancelOrderRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderId>* AsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderId>* PrepareAsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderInfo>* AsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::LimitOrderInfo>* PrepareAsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::CancelOrderResponse>* AsyncCancelOrderRaw(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::marketmaker::CancelOrderResponse>* PrepareAsyncCancelOrderRaw(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status PlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::market::OrderId* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::OrderId>> AsyncPlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::OrderId>>(AsyncPlaceOrderRaw(context, request, cq));
+    ::grpc::Status PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::marketmaker::LimitOrderId* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderId>> AsyncPlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderId>>(AsyncPlaceOrderRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::OrderId>> PrepareAsyncPlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::OrderId>>(PrepareAsyncPlaceOrderRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderId>> PrepareAsyncPlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderId>>(PrepareAsyncPlaceOrderRaw(context, request, cq));
     }
-    ::grpc::Status GetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId& request, ::market::LimitOrderInfo* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::LimitOrderInfo>> AsyncGetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::LimitOrderInfo>>(AsyncGetOrderStatusRaw(context, request, cq));
+    ::grpc::Status GetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::marketmaker::LimitOrderInfo* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderInfo>> AsyncGetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderInfo>>(AsyncGetOrderStatusRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::LimitOrderInfo>> PrepareAsyncGetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::LimitOrderInfo>>(PrepareAsyncGetOrderStatusRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderInfo>> PrepareAsyncGetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderInfo>>(PrepareAsyncGetOrderStatusRaw(context, request, cq));
     }
-    ::grpc::Status CancelOrder(::grpc::ClientContext* context, const ::market::OrderId& request, ::market::CancelOrderResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::CancelOrderResponse>> AsyncCancelOrder(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::CancelOrderResponse>>(AsyncCancelOrderRaw(context, request, cq));
+    ::grpc::Status CancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::marketmaker::CancelOrderResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::CancelOrderResponse>> AsyncCancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::CancelOrderResponse>>(AsyncCancelOrderRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::CancelOrderResponse>> PrepareAsyncCancelOrder(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::market::CancelOrderResponse>>(PrepareAsyncCancelOrderRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::CancelOrderResponse>> PrepareAsyncCancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::marketmaker::CancelOrderResponse>>(PrepareAsyncCancelOrderRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void PlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest* request, ::market::OrderId* response, std::function<void(::grpc::Status)>) override;
-      void PlaceOrder(::grpc::ClientContext* context, const ::market::PlaceOrderRequest* request, ::market::OrderId* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void GetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::LimitOrderInfo* response, std::function<void(::grpc::Status)>) override;
-      void GetOrderStatus(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::LimitOrderInfo* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void CancelOrder(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::CancelOrderResponse* response, std::function<void(::grpc::Status)>) override;
-      void CancelOrder(::grpc::ClientContext* context, const ::market::OrderId* request, ::market::CancelOrderResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest* request, ::marketmaker::LimitOrderId* response, std::function<void(::grpc::Status)>) override;
+      void PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest* request, ::marketmaker::LimitOrderId* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest* request, ::marketmaker::LimitOrderInfo* response, std::function<void(::grpc::Status)>) override;
+      void GetOrderStatus(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest* request, ::marketmaker::LimitOrderInfo* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void CancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response, std::function<void(::grpc::Status)>) override;
+      void CancelOrder(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -145,12 +145,12 @@ class Market final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::market::OrderId>* AsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::market::OrderId>* PrepareAsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::market::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::market::LimitOrderInfo>* AsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::market::LimitOrderInfo>* PrepareAsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::market::CancelOrderResponse>* AsyncCancelOrderRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::market::CancelOrderResponse>* PrepareAsyncCancelOrderRaw(::grpc::ClientContext* context, const ::market::OrderId& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderId>* AsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderId>* PrepareAsyncPlaceOrderRaw(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderInfo>* AsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::marketmaker::LimitOrderInfo>* PrepareAsyncGetOrderStatusRaw(::grpc::ClientContext* context, const ::marketmaker::GetOrderRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::marketmaker::CancelOrderResponse>* AsyncCancelOrderRaw(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::marketmaker::CancelOrderResponse>* PrepareAsyncCancelOrderRaw(::grpc::ClientContext* context, const ::marketmaker::CancelOrderRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_PlaceOrder_;
     const ::grpc::internal::RpcMethod rpcmethod_GetOrderStatus_;
     const ::grpc::internal::RpcMethod rpcmethod_CancelOrder_;
@@ -164,14 +164,14 @@ class Market final {
     // A server-to-client streaming RPC.
     //
     // Places an order in the Order Book
-    virtual ::grpc::Status PlaceOrder(::grpc::ServerContext* context, const ::market::PlaceOrderRequest* request, ::market::OrderId* response);
+    virtual ::grpc::Status PlaceOrder(::grpc::ServerContext* context, const ::marketmaker::PlaceOrderRequest* request, ::marketmaker::LimitOrderId* response);
     // Obtains the current information on an order.
     //
     // An empty message with `order_found` set to false is returned
-    // if no order was found with `OrderId`.
-    virtual ::grpc::Status GetOrderStatus(::grpc::ServerContext* context, const ::market::OrderId* request, ::market::LimitOrderInfo* response);
+    // if no order was found with `LimitOrderId`.
+    virtual ::grpc::Status GetOrderStatus(::grpc::ServerContext* context, const ::marketmaker::GetOrderRequest* request, ::marketmaker::LimitOrderInfo* response);
     // Attempts to cancel an ongoing order
-    virtual ::grpc::Status CancelOrder(::grpc::ServerContext* context, const ::market::OrderId* request, ::market::CancelOrderResponse* response);
+    virtual ::grpc::Status CancelOrder(::grpc::ServerContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_PlaceOrder : public BaseClass {
@@ -185,11 +185,11 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/) override {
+    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestPlaceOrder(::grpc::ServerContext* context, ::market::PlaceOrderRequest* request, ::grpc::ServerAsyncResponseWriter< ::market::OrderId>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestPlaceOrder(::grpc::ServerContext* context, ::marketmaker::PlaceOrderRequest* request, ::grpc::ServerAsyncResponseWriter< ::marketmaker::LimitOrderId>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -205,11 +205,11 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/) override {
+    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetOrderStatus(::grpc::ServerContext* context, ::market::OrderId* request, ::grpc::ServerAsyncResponseWriter< ::market::LimitOrderInfo>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetOrderStatus(::grpc::ServerContext* context, ::marketmaker::GetOrderRequest* request, ::grpc::ServerAsyncResponseWriter< ::marketmaker::LimitOrderInfo>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -225,11 +225,11 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/) override {
+    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestCancelOrder(::grpc::ServerContext* context, ::market::OrderId* request, ::grpc::ServerAsyncResponseWriter< ::market::CancelOrderResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestCancelOrder(::grpc::ServerContext* context, ::marketmaker::CancelOrderRequest* request, ::grpc::ServerAsyncResponseWriter< ::marketmaker::CancelOrderResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -241,25 +241,25 @@ class Market final {
    public:
     WithCallbackMethod_PlaceOrder() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::market::PlaceOrderRequest, ::market::OrderId>(
+          new ::grpc::internal::CallbackUnaryHandler< ::marketmaker::PlaceOrderRequest, ::marketmaker::LimitOrderId>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::market::PlaceOrderRequest* request, ::market::OrderId* response) { return this->PlaceOrder(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::marketmaker::PlaceOrderRequest* request, ::marketmaker::LimitOrderId* response) { return this->PlaceOrder(context, request, response); }));}
     void SetMessageAllocatorFor_PlaceOrder(
-        ::grpc::MessageAllocator< ::market::PlaceOrderRequest, ::market::OrderId>* allocator) {
+        ::grpc::MessageAllocator< ::marketmaker::PlaceOrderRequest, ::marketmaker::LimitOrderId>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::market::PlaceOrderRequest, ::market::OrderId>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::marketmaker::PlaceOrderRequest, ::marketmaker::LimitOrderId>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_PlaceOrder() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/) override {
+    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* PlaceOrder(
-      ::grpc::CallbackServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_GetOrderStatus : public BaseClass {
@@ -268,25 +268,25 @@ class Market final {
    public:
     WithCallbackMethod_GetOrderStatus() {
       ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::market::OrderId, ::market::LimitOrderInfo>(
+          new ::grpc::internal::CallbackUnaryHandler< ::marketmaker::GetOrderRequest, ::marketmaker::LimitOrderInfo>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::market::OrderId* request, ::market::LimitOrderInfo* response) { return this->GetOrderStatus(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::marketmaker::GetOrderRequest* request, ::marketmaker::LimitOrderInfo* response) { return this->GetOrderStatus(context, request, response); }));}
     void SetMessageAllocatorFor_GetOrderStatus(
-        ::grpc::MessageAllocator< ::market::OrderId, ::market::LimitOrderInfo>* allocator) {
+        ::grpc::MessageAllocator< ::marketmaker::GetOrderRequest, ::marketmaker::LimitOrderInfo>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::market::OrderId, ::market::LimitOrderInfo>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::marketmaker::GetOrderRequest, ::marketmaker::LimitOrderInfo>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_GetOrderStatus() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/) override {
+    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* GetOrderStatus(
-      ::grpc::CallbackServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_CancelOrder : public BaseClass {
@@ -295,25 +295,25 @@ class Market final {
    public:
     WithCallbackMethod_CancelOrder() {
       ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::market::OrderId, ::market::CancelOrderResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::marketmaker::CancelOrderRequest, ::marketmaker::CancelOrderResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::market::OrderId* request, ::market::CancelOrderResponse* response) { return this->CancelOrder(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response) { return this->CancelOrder(context, request, response); }));}
     void SetMessageAllocatorFor_CancelOrder(
-        ::grpc::MessageAllocator< ::market::OrderId, ::market::CancelOrderResponse>* allocator) {
+        ::grpc::MessageAllocator< ::marketmaker::CancelOrderRequest, ::marketmaker::CancelOrderResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::market::OrderId, ::market::CancelOrderResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::marketmaker::CancelOrderRequest, ::marketmaker::CancelOrderResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_CancelOrder() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/) override {
+    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* CancelOrder(
-      ::grpc::CallbackServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_PlaceOrder<WithCallbackMethod_GetOrderStatus<WithCallbackMethod_CancelOrder<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -329,7 +329,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/) override {
+    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -346,7 +346,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/) override {
+    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -363,7 +363,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/) override {
+    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -380,7 +380,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/) override {
+    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -400,7 +400,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/) override {
+    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -420,7 +420,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/) override {
+    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -443,7 +443,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/) override {
+    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -465,7 +465,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/) override {
+    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -487,7 +487,7 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/) override {
+    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -502,10 +502,10 @@ class Market final {
     WithStreamedUnaryMethod_PlaceOrder() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::market::PlaceOrderRequest, ::market::OrderId>(
+          ::marketmaker::PlaceOrderRequest, ::marketmaker::LimitOrderId>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::market::PlaceOrderRequest, ::market::OrderId>* streamer) {
+                     ::marketmaker::PlaceOrderRequest, ::marketmaker::LimitOrderId>* streamer) {
                        return this->StreamedPlaceOrder(context,
                          streamer);
                   }));
@@ -514,12 +514,12 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::market::PlaceOrderRequest* /*request*/, ::market::OrderId* /*response*/) override {
+    ::grpc::Status PlaceOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::PlaceOrderRequest* /*request*/, ::marketmaker::LimitOrderId* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedPlaceOrder(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::market::PlaceOrderRequest,::market::OrderId>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedPlaceOrder(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::marketmaker::PlaceOrderRequest,::marketmaker::LimitOrderId>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetOrderStatus : public BaseClass {
@@ -529,10 +529,10 @@ class Market final {
     WithStreamedUnaryMethod_GetOrderStatus() {
       ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::market::OrderId, ::market::LimitOrderInfo>(
+          ::marketmaker::GetOrderRequest, ::marketmaker::LimitOrderInfo>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::market::OrderId, ::market::LimitOrderInfo>* streamer) {
+                     ::marketmaker::GetOrderRequest, ::marketmaker::LimitOrderInfo>* streamer) {
                        return this->StreamedGetOrderStatus(context,
                          streamer);
                   }));
@@ -541,12 +541,12 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::LimitOrderInfo* /*response*/) override {
+    ::grpc::Status GetOrderStatus(::grpc::ServerContext* /*context*/, const ::marketmaker::GetOrderRequest* /*request*/, ::marketmaker::LimitOrderInfo* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetOrderStatus(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::market::OrderId,::market::LimitOrderInfo>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetOrderStatus(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::marketmaker::GetOrderRequest,::marketmaker::LimitOrderInfo>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_CancelOrder : public BaseClass {
@@ -556,10 +556,10 @@ class Market final {
     WithStreamedUnaryMethod_CancelOrder() {
       ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::market::OrderId, ::market::CancelOrderResponse>(
+          ::marketmaker::CancelOrderRequest, ::marketmaker::CancelOrderResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::market::OrderId, ::market::CancelOrderResponse>* streamer) {
+                     ::marketmaker::CancelOrderRequest, ::marketmaker::CancelOrderResponse>* streamer) {
                        return this->StreamedCancelOrder(context,
                          streamer);
                   }));
@@ -568,19 +568,19 @@ class Market final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::market::OrderId* /*request*/, ::market::CancelOrderResponse* /*response*/) override {
+    ::grpc::Status CancelOrder(::grpc::ServerContext* /*context*/, const ::marketmaker::CancelOrderRequest* /*request*/, ::marketmaker::CancelOrderResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedCancelOrder(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::market::OrderId,::market::CancelOrderResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedCancelOrder(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::marketmaker::CancelOrderRequest,::marketmaker::CancelOrderResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_PlaceOrder<WithStreamedUnaryMethod_GetOrderStatus<WithStreamedUnaryMethod_CancelOrder<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
   typedef WithStreamedUnaryMethod_PlaceOrder<WithStreamedUnaryMethod_GetOrderStatus<WithStreamedUnaryMethod_CancelOrder<Service > > > StreamedService;
 };
 
-}  // namespace market
+}  // namespace marketmaker
 
 
 #include <grpcpp/ports_undef.inc>
