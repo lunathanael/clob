@@ -14,12 +14,13 @@ using namespace clob;
 
 /***/
 TEST_CASE("limit_order_construction") {
-  LimitOrder order1{1, 1000, 15000, 100};
-  LimitOrder::id_t order2_id = 2;
+  LimitOrder<OrderType::Bid> order1{1, 1000, 15000, 100};
+  LimitOrderId_t order2_id = 2;
   timestamp_ns_t order2_timestamp = 2000;
   price_t order2_price = 16000;
   quantity_t order2_quantity = 200;
-  LimitOrder order2{order2_id, order2_timestamp, order2_price, order2_quantity};
+  LimitOrder<OrderType::Bid> order2{order2_id, order2_timestamp, order2_price,
+                                    order2_quantity};
 
   CHECK(order1.id == 1);
   CHECK(order1.timestamp == 1000);
@@ -39,7 +40,7 @@ TEST_CASE("limit_order_construction") {
 
 /***/
 TEST_CASE("limit_order_types") {
-  LimitOrder order{1, 1000, 15000, 100};
+  LimitOrder<OrderType::Bid> order{1, 1000, 15000, 100};
 
   REQUIRE(order.id == 1);
   REQUIRE(order.timestamp == 1000);
@@ -47,7 +48,7 @@ TEST_CASE("limit_order_types") {
   REQUIRE(order.quantity == 100);
   REQUIRE(order.filled_quantity == 0);
   REQUIRE(order.is_cancelled == false);
-  CHECK(std::is_same_v<decltype(order.id), LimitOrder::id_t>);
+  CHECK(std::is_same_v<decltype(order.id), LimitOrderId_t>);
   CHECK(std::is_same_v<decltype(order.timestamp), timestamp_ns_t>);
   CHECK(std::is_same_v<decltype(order.price), price_t>);
   CHECK(std::is_same_v<decltype(order.quantity), quantity_t>);
@@ -63,19 +64,19 @@ TEST_CASE("limit_order_types") {
 
 /***/
 TEST_CASE("limit_order_order_type_enum") {
-  CHECK(static_cast<int>(LimitOrder::OrderType::Bid) == 0);
-  CHECK(static_cast<int>(LimitOrder::OrderType::Ask) == 1);
-  CHECK(LimitOrder::OrderType::Bid != LimitOrder::OrderType::Ask);
+  CHECK(static_cast<int>(OrderType::Bid) == 0);
+  CHECK(static_cast<int>(OrderType::Ask) == 1);
+  CHECK(OrderType::Bid != OrderType::Ask);
 }
 
 /***/
 TEST_CASE("limit_order_priority_queue_bid_comparator") {
-  LimitOrder::PriceTimeQueuePriority::BidCmp bid_cmp;
+  LimitOrder<OrderType::Bid>::PriceTimeQueuePriority bid_cmp;
 
-  LimitOrder order1{1, 1000, 15000, 100};
-  LimitOrder order2{2, 1000, 16000, 100};
-  LimitOrder order3{3, 1000, 15000, 100};
-  LimitOrder order4{4, 2000, 15000, 100};
+  LimitOrder<OrderType::Bid> order1{1, 1000, 15000, 100};
+  LimitOrder<OrderType::Bid> order2{2, 1000, 16000, 100};
+  LimitOrder<OrderType::Bid> order3{3, 1000, 15000, 100};
+  LimitOrder<OrderType::Bid> order4{4, 2000, 15000, 100};
 
   CHECK(bid_cmp(&order1, &order2) == true);
   CHECK(bid_cmp(&order2, &order1) == false);
@@ -86,12 +87,12 @@ TEST_CASE("limit_order_priority_queue_bid_comparator") {
 
 /***/
 TEST_CASE("limit_order_priority_queue_ask_comparator") {
-  LimitOrder::PriceTimeQueuePriority::AskCmp ask_cmp;
+  LimitOrder<OrderType::Ask>::PriceTimeQueuePriority ask_cmp;
 
-  LimitOrder order1{1, 1000, 16000, 100};
-  LimitOrder order2{2, 1000, 15000, 100};
-  LimitOrder order3{3, 1000, 15000, 100};
-  LimitOrder order4{4, 2000, 15000, 100};
+  LimitOrder<OrderType::Ask> order1{1, 1000, 16000, 100};
+  LimitOrder<OrderType::Ask> order2{2, 1000, 15000, 100};
+  LimitOrder<OrderType::Ask> order3{3, 1000, 15000, 100};
+  LimitOrder<OrderType::Ask> order4{4, 2000, 15000, 100};
 
   CHECK(ask_cmp(&order1, &order2) == true);
   CHECK(ask_cmp(&order2, &order1) == false);
@@ -102,7 +103,7 @@ TEST_CASE("limit_order_priority_queue_ask_comparator") {
 
 /***/
 TEST_CASE("limit_order_edge_cases") {
-  LimitOrder zero_order{0, 0, 0, 0};
+  LimitOrder<OrderType::Bid> zero_order{0, 0, 0, 0};
   CHECK(zero_order.id == 0);
   CHECK(zero_order.timestamp == 0);
   CHECK(zero_order.price == 0);
@@ -110,8 +111,8 @@ TEST_CASE("limit_order_edge_cases") {
   CHECK(zero_order.filled_quantity == 0);
   CHECK(zero_order.is_cancelled == false);
 
-  LimitOrder max_order{UINT_FAST64_MAX, UINT_FAST64_MAX, UINT_FAST32_MAX,
-                       UINT_FAST32_MAX};
+  LimitOrder<OrderType::Bid> max_order{UINT_FAST64_MAX, UINT_FAST64_MAX,
+                                       UINT_FAST32_MAX, UINT_FAST32_MAX};
   CHECK(max_order.id == UINT_FAST64_MAX);
   CHECK(max_order.timestamp == UINT_FAST64_MAX);
   CHECK(max_order.price == UINT_FAST32_MAX);
@@ -122,9 +123,9 @@ TEST_CASE("limit_order_edge_cases") {
 
 /***/
 TEST_CASE("limit_order_copy_constructors") {
-  LimitOrder order1{1, 1000, 15000, 100};
+  LimitOrder<OrderType::Bid> order1{1, 1000, 15000, 100};
   order1.balance = 10000;
-  LimitOrder order2{order1};
+  LimitOrder<OrderType::Bid> order2{order1};
 
   CHECK(order2.id == order1.id);
   CHECK(order2.timestamp == order1.timestamp);
@@ -137,8 +138,8 @@ TEST_CASE("limit_order_copy_constructors") {
 
 /***/
 TEST_CASE("limit_order_move_constructor") {
-  LimitOrder order1{1, 1000, 15000, 100};
-  LimitOrder order2{std::move(order1)};
+  LimitOrder<OrderType::Bid> order1{1, 1000, 15000, 100};
+  LimitOrder<OrderType::Bid> order2{std::move(order1)};
 
   CHECK(order2.id == 1);
   CHECK(order2.timestamp == 1000);

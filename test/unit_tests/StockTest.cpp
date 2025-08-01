@@ -17,7 +17,7 @@ TEST_CASE("stock_construction") {
   Stock stock1{"stock1", "AAPL", 2};
   std::string stock2_name = "stock2";
   std::string stock2_ticker = "GOOG";
-  Stock::id_t stock2_id = 1;
+  StockId_t stock2_id = 1;
   Stock stock2{stock2_name, stock2_ticker, stock2_id};
 
   CHECK(stock1.name == "stock1");
@@ -54,7 +54,7 @@ TEST_CASE("stock_types") {
   REQUIRE(stock.ticker == "AAPL");
   REQUIRE(stock.id == 2);
 
-  CHECK(std::is_same_v<decltype(stock.id), const Stock::id_t>);
+  CHECK(std::is_same_v<decltype(stock.id), const StockId_t>);
   CHECK(sizeof(stock.id) >= sizeof(int32_t));
 }
 
