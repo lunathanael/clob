@@ -26,6 +26,7 @@ static const char* MarketMaker_method_names[] = {
   "/marketmaker.MarketMaker/PlaceOrder",
   "/marketmaker.MarketMaker/GetOrderStatus",
   "/marketmaker.MarketMaker/CancelOrder",
+  "/marketmaker.MarketMaker/QuoteBestBidAsk",
 };
 
 std::unique_ptr< MarketMaker::Stub> MarketMaker::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -38,6 +39,7 @@ MarketMaker::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channe
   : channel_(channel), rpcmethod_PlaceOrder_(MarketMaker_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetOrderStatus_(MarketMaker_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_CancelOrder_(MarketMaker_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_QuoteBestBidAsk_(MarketMaker_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MarketMaker::Stub::PlaceOrder(::grpc::ClientContext* context, const ::marketmaker::PlaceOrderRequest& request, ::marketmaker::LimitOrderId* response) {
@@ -109,6 +111,29 @@ void MarketMaker::Stub::async::CancelOrder(::grpc::ClientContext* context, const
   return result;
 }
 
+::grpc::Status MarketMaker::Stub::QuoteBestBidAsk(::grpc::ClientContext* context, const ::marketmaker::StockId& request, ::marketmaker::BestBidAskResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::marketmaker::StockId, ::marketmaker::BestBidAskResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_QuoteBestBidAsk_, context, request, response);
+}
+
+void MarketMaker::Stub::async::QuoteBestBidAsk(::grpc::ClientContext* context, const ::marketmaker::StockId* request, ::marketmaker::BestBidAskResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::marketmaker::StockId, ::marketmaker::BestBidAskResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_QuoteBestBidAsk_, context, request, response, std::move(f));
+}
+
+void MarketMaker::Stub::async::QuoteBestBidAsk(::grpc::ClientContext* context, const ::marketmaker::StockId* request, ::marketmaker::BestBidAskResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_QuoteBestBidAsk_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::marketmaker::BestBidAskResponse>* MarketMaker::Stub::PrepareAsyncQuoteBestBidAskRaw(::grpc::ClientContext* context, const ::marketmaker::StockId& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::marketmaker::BestBidAskResponse, ::marketmaker::StockId, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_QuoteBestBidAsk_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::marketmaker::BestBidAskResponse>* MarketMaker::Stub::AsyncQuoteBestBidAskRaw(::grpc::ClientContext* context, const ::marketmaker::StockId& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncQuoteBestBidAskRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 MarketMaker::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MarketMaker_method_names[0],
@@ -140,6 +165,16 @@ MarketMaker::Service::Service() {
              ::marketmaker::CancelOrderResponse* resp) {
                return service->CancelOrder(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MarketMaker_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MarketMaker::Service, ::marketmaker::StockId, ::marketmaker::BestBidAskResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MarketMaker::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::marketmaker::StockId* req,
+             ::marketmaker::BestBidAskResponse* resp) {
+               return service->QuoteBestBidAsk(ctx, req, resp);
+             }, this)));
 }
 
 MarketMaker::Service::~Service() {
@@ -160,6 +195,13 @@ MarketMaker::Service::~Service() {
 }
 
 ::grpc::Status MarketMaker::Service::CancelOrder(::grpc::ServerContext* context, const ::marketmaker::CancelOrderRequest* request, ::marketmaker::CancelOrderResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MarketMaker::Service::QuoteBestBidAsk(::grpc::ServerContext* context, const ::marketmaker::StockId* request, ::marketmaker::BestBidAskResponse* response) {
   (void) context;
   (void) request;
   (void) response;

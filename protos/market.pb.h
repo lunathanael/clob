@@ -56,6 +56,10 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_mark
 namespace marketmaker {
 enum OrderType : int;
 extern const uint32_t OrderType_internal_data_[];
+class BestBidAskResponse;
+struct BestBidAskResponseDefaultTypeInternal;
+extern BestBidAskResponseDefaultTypeInternal _BestBidAskResponse_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull BestBidAskResponse_class_data_;
 class CancelOrderRequest;
 struct CancelOrderRequestDefaultTypeInternal;
 extern CancelOrderRequestDefaultTypeInternal _CancelOrderRequest_default_instance_;
@@ -80,6 +84,10 @@ class PlaceOrderRequest;
 struct PlaceOrderRequestDefaultTypeInternal;
 extern PlaceOrderRequestDefaultTypeInternal _PlaceOrderRequest_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull PlaceOrderRequest_class_data_;
+class StockId;
+struct StockIdDefaultTypeInternal;
+extern StockIdDefaultTypeInternal _StockId_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull StockId_class_data_;
 }  // namespace marketmaker
 namespace google {
 namespace protobuf {
@@ -130,6 +138,197 @@ inline bool OrderType_Parse(
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class StockId final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:marketmaker.StockId) */ {
+ public:
+  inline StockId() : StockId(nullptr) {}
+  ~StockId() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(StockId* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StockId));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StockId(::google::protobuf::internal::ConstantInitialized);
+
+  inline StockId(const StockId& from) : StockId(nullptr, from) {}
+  inline StockId(StockId&& from) noexcept
+      : StockId(nullptr, ::std::move(from)) {}
+  inline StockId& operator=(const StockId& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StockId& operator=(StockId&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StockId& default_instance() {
+    return *reinterpret_cast<const StockId*>(
+        &_StockId_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(StockId& a, StockId& b) { a.Swap(&b); }
+  inline void Swap(StockId* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StockId* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StockId* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<StockId>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StockId& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const StockId& from) { StockId::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(StockId* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "marketmaker.StockId"; }
+
+ protected:
+  explicit StockId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  StockId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const StockId& from);
+  StockId(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, StockId&& from) noexcept
+      : StockId(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kStockIdFieldNumber = 1,
+  };
+  // uint32 stock_id = 1;
+  void clear_stock_id() ;
+  ::uint32_t stock_id() const;
+  void set_stock_id(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_stock_id() const;
+  void _internal_set_stock_id(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.StockId)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const StockId& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t stock_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_market_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull StockId_class_data_;
 // -------------------------------------------------------------------
 
 class PlaceOrderRequest final : public ::google::protobuf::Message
@@ -1420,6 +1619,209 @@ class CancelOrderRequest final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull CancelOrderRequest_class_data_;
+// -------------------------------------------------------------------
+
+class BestBidAskResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:marketmaker.BestBidAskResponse) */ {
+ public:
+  inline BestBidAskResponse() : BestBidAskResponse(nullptr) {}
+  ~BestBidAskResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(BestBidAskResponse* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(BestBidAskResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR BestBidAskResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline BestBidAskResponse(const BestBidAskResponse& from) : BestBidAskResponse(nullptr, from) {}
+  inline BestBidAskResponse(BestBidAskResponse&& from) noexcept
+      : BestBidAskResponse(nullptr, ::std::move(from)) {}
+  inline BestBidAskResponse& operator=(const BestBidAskResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline BestBidAskResponse& operator=(BestBidAskResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const BestBidAskResponse& default_instance() {
+    return *reinterpret_cast<const BestBidAskResponse*>(
+        &_BestBidAskResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(BestBidAskResponse& a, BestBidAskResponse& b) { a.Swap(&b); }
+  inline void Swap(BestBidAskResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(BestBidAskResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  BestBidAskResponse* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<BestBidAskResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const BestBidAskResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const BestBidAskResponse& from) { BestBidAskResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(BestBidAskResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "marketmaker.BestBidAskResponse"; }
+
+ protected:
+  explicit BestBidAskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  BestBidAskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const BestBidAskResponse& from);
+  BestBidAskResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, BestBidAskResponse&& from) noexcept
+      : BestBidAskResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kBestBidFieldNumber = 1,
+    kBestAskFieldNumber = 2,
+  };
+  // uint32 best_bid = 1;
+  void clear_best_bid() ;
+  ::uint32_t best_bid() const;
+  void set_best_bid(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_best_bid() const;
+  void _internal_set_best_bid(::uint32_t value);
+
+  public:
+  // uint32 best_ask = 2;
+  void clear_best_ask() ;
+  ::uint32_t best_ask() const;
+  void set_best_ask(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_best_ask() const;
+  void _internal_set_best_ask(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:marketmaker.BestBidAskResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const BestBidAskResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t best_bid_;
+    ::uint32_t best_ask_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_market_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull BestBidAskResponse_class_data_;
 
 // ===================================================================
 
@@ -1887,6 +2289,86 @@ inline bool CancelOrderResponse::_internal_success() const {
 inline void CancelOrderResponse::_internal_set_success(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.success_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// StockId
+
+// uint32 stock_id = 1;
+inline void StockId::clear_stock_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.stock_id_ = 0u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::uint32_t StockId::stock_id() const {
+  // @@protoc_insertion_point(field_get:marketmaker.StockId.stock_id)
+  return _internal_stock_id();
+}
+inline void StockId::set_stock_id(::uint32_t value) {
+  _internal_set_stock_id(value);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  // @@protoc_insertion_point(field_set:marketmaker.StockId.stock_id)
+}
+inline ::uint32_t StockId::_internal_stock_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.stock_id_;
+}
+inline void StockId::_internal_set_stock_id(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.stock_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// BestBidAskResponse
+
+// uint32 best_bid = 1;
+inline void BestBidAskResponse::clear_best_bid() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.best_bid_ = 0u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline ::uint32_t BestBidAskResponse::best_bid() const {
+  // @@protoc_insertion_point(field_get:marketmaker.BestBidAskResponse.best_bid)
+  return _internal_best_bid();
+}
+inline void BestBidAskResponse::set_best_bid(::uint32_t value) {
+  _internal_set_best_bid(value);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  // @@protoc_insertion_point(field_set:marketmaker.BestBidAskResponse.best_bid)
+}
+inline ::uint32_t BestBidAskResponse::_internal_best_bid() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.best_bid_;
+}
+inline void BestBidAskResponse::_internal_set_best_bid(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.best_bid_ = value;
+}
+
+// uint32 best_ask = 2;
+inline void BestBidAskResponse::clear_best_ask() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.best_ask_ = 0u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::uint32_t BestBidAskResponse::best_ask() const {
+  // @@protoc_insertion_point(field_get:marketmaker.BestBidAskResponse.best_ask)
+  return _internal_best_ask();
+}
+inline void BestBidAskResponse::set_best_ask(::uint32_t value) {
+  _internal_set_best_ask(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:marketmaker.BestBidAskResponse.best_ask)
+}
+inline ::uint32_t BestBidAskResponse::_internal_best_ask() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.best_ask_;
+}
+inline void BestBidAskResponse::_internal_set_best_ask(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.best_ask_ = value;
 }
 
 #ifdef __GNUC__

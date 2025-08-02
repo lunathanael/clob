@@ -26,6 +26,31 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace marketmaker {
 
+inline constexpr StockId::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        stock_id_{0u} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR StockId::StockId(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(StockId_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct StockIdDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR StockIdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~StockIdDefaultTypeInternal() {}
+  union {
+    StockId _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StockIdDefaultTypeInternal _StockId_default_instance_;
+
 inline constexpr PlaceOrderRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -187,6 +212,32 @@ struct CancelOrderRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CancelOrderRequestDefaultTypeInternal _CancelOrderRequest_default_instance_;
+
+inline constexpr BestBidAskResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        best_bid_{0u},
+        best_ask_{0u} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR BestBidAskResponse::BestBidAskResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(BestBidAskResponse_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct BestBidAskResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR BestBidAskResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~BestBidAskResponseDefaultTypeInternal() {}
+  union {
+    BestBidAskResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BestBidAskResponseDefaultTypeInternal _BestBidAskResponse_default_instance_;
 }  // namespace marketmaker
 static const ::_pb::EnumDescriptor* PROTOBUF_NONNULL
     file_level_enum_descriptors_market_2eproto[1];
@@ -249,6 +300,18 @@ const ::uint32_t
         4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::marketmaker::CancelOrderResponse, _impl_.success_),
         0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::marketmaker::StockId, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::marketmaker::StockId, _impl_.stock_id_),
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::marketmaker::BestBidAskResponse, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::marketmaker::BestBidAskResponse, _impl_.best_bid_),
+        PROTOBUF_FIELD_OFFSET(::marketmaker::BestBidAskResponse, _impl_.best_ask_),
+        0,
+        1,
 };
 
 static const ::_pbi::MigrationSchema
@@ -259,6 +322,8 @@ static const ::_pbi::MigrationSchema
         {25, sizeof(::marketmaker::LimitOrderId)},
         {30, sizeof(::marketmaker::LimitOrderInfo)},
         {49, sizeof(::marketmaker::CancelOrderResponse)},
+        {54, sizeof(::marketmaker::StockId)},
+        {59, sizeof(::marketmaker::BestBidAskResponse)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::marketmaker::_PlaceOrderRequest_default_instance_._instance,
@@ -267,6 +332,8 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::marketmaker::_LimitOrderId_default_instance_._instance,
     &::marketmaker::_LimitOrderInfo_default_instance_._instance,
     &::marketmaker::_CancelOrderResponse_default_instance_._instance,
+    &::marketmaker::_StockId_default_instance_._instance,
+    &::marketmaker::_BestBidAskResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_market_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -283,27 +350,31 @@ const char descriptor_table_protodef_market_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\007balance\030\003 \001(\003\022\r\n\005price\030\004 \001(\r\022\020\n\010quanti"
     "ty\030\005 \001(\r\022\027\n\017filled_quantity\030\006 \001(\r\022\024\n\014is_"
     "cancelled\030\007 \001(\010\022\023\n\013order_found\030\010 \001(\010\"&\n\023"
-    "CancelOrderResponse\022\017\n\007success\030\001 \001(\010*\035\n\t"
-    "OrderType\022\007\n\003Bid\020\000\022\007\n\003Ask\020\0012\373\001\n\013MarketMa"
-    "ker\022I\n\nPlaceOrder\022\036.marketmaker.PlaceOrd"
-    "erRequest\032\031.marketmaker.LimitOrderId\"\000\022M"
-    "\n\016GetOrderStatus\022\034.marketmaker.GetOrderR"
-    "equest\032\033.marketmaker.LimitOrderInfo\"\000\022R\n"
-    "\013CancelOrder\022\037.marketmaker.CancelOrderRe"
-    "quest\032 .marketmaker.CancelOrderResponse\""
-    "\000b\006proto3"
+    "CancelOrderResponse\022\017\n\007success\030\001 \001(\010\"\033\n\007"
+    "StockId\022\020\n\010stock_id\030\001 \001(\r\"8\n\022BestBidAskR"
+    "esponse\022\020\n\010best_bid\030\001 \001(\r\022\020\n\010best_ask\030\002 "
+    "\001(\r*\035\n\tOrderType\022\007\n\003Bid\020\000\022\007\n\003Ask\020\0012\307\002\n\013M"
+    "arketMaker\022I\n\nPlaceOrder\022\036.marketmaker.P"
+    "laceOrderRequest\032\031.marketmaker.LimitOrde"
+    "rId\"\000\022M\n\016GetOrderStatus\022\034.marketmaker.Ge"
+    "tOrderRequest\032\033.marketmaker.LimitOrderIn"
+    "fo\"\000\022R\n\013CancelOrder\022\037.marketmaker.Cancel"
+    "OrderRequest\032 .marketmaker.CancelOrderRe"
+    "sponse\"\000\022J\n\017QuoteBestBidAsk\022\024.marketmake"
+    "r.StockId\032\037.marketmaker.BestBidAskRespon"
+    "se\"\000b\006proto3"
 };
 static ::absl::once_flag descriptor_table_market_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_market_2eproto = {
     false,
     false,
-    849,
+    1012,
     descriptor_table_protodef_market_2eproto,
     "market.proto",
     &descriptor_table_market_2eproto_once,
     nullptr,
     0,
-    6,
+    8,
     schemas,
     file_default_instances,
     TableStruct_market_2eproto::offsets,
@@ -2118,6 +2189,521 @@ void CancelOrderResponse::InternalSwap(CancelOrderResponse* PROTOBUF_RESTRICT PR
 }
 
 ::google::protobuf::Metadata CancelOrderResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class StockId::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<StockId>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(StockId, _impl_._has_bits_);
+};
+
+StockId::StockId(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, StockId_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:marketmaker.StockId)
+}
+StockId::StockId(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const StockId& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, StockId_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE StockId::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void StockId::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.stock_id_ = {};
+}
+StockId::~StockId() {
+  // @@protoc_insertion_point(destructor:marketmaker.StockId)
+  SharedDtor(*this);
+}
+inline void StockId::SharedDtor(MessageLite& self) {
+  StockId& this_ = static_cast<StockId&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL StockId::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) StockId(arena);
+}
+constexpr auto StockId::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(StockId),
+                                            alignof(StockId));
+}
+constexpr auto StockId::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_StockId_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &StockId::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<StockId>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &StockId::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<StockId>(), &StockId::ByteSizeLong,
+              &StockId::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(StockId, _impl_._cached_size_),
+          false,
+      },
+      &StockId::kDescriptorMethods,
+      &descriptor_table_market_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull StockId_class_data_ =
+        StockId::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+StockId::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&StockId_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(StockId_class_data_.tc_table);
+  return StockId_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
+StockId::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(StockId, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    StockId_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::marketmaker::StockId>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint32 stock_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(StockId, _impl_.stock_id_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(StockId, _impl_.stock_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 stock_id = 1;
+    {PROTOBUF_FIELD_OFFSET(StockId, _impl_.stock_id_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void StockId::Clear() {
+// @@protoc_insertion_point(message_clear_start:marketmaker.StockId)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.stock_id_ = 0u;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL StockId::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const StockId& this_ = static_cast<const StockId&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL StockId::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const StockId& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(serialize_to_array_start:marketmaker.StockId)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // uint32 stock_id = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (this_._internal_stock_id() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+          1, this_._internal_stock_id(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:marketmaker.StockId)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t StockId::ByteSizeLong(const MessageLite& base) {
+  const StockId& this_ = static_cast<const StockId&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t StockId::ByteSizeLong() const {
+  const StockId& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:marketmaker.StockId)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // uint32 stock_id = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (this_._internal_stock_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+            this_._internal_stock_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void StockId::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<StockId*>(&to_msg);
+  auto& from = static_cast<const StockId&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:marketmaker.StockId)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    if (from._internal_stock_id() != 0) {
+      _this->_impl_.stock_id_ = from._impl_.stock_id_;
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void StockId::CopyFrom(const StockId& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:marketmaker.StockId)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void StockId::InternalSwap(StockId* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.stock_id_, other->_impl_.stock_id_);
+}
+
+::google::protobuf::Metadata StockId::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class BestBidAskResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<BestBidAskResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_._has_bits_);
+};
+
+BestBidAskResponse::BestBidAskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, BestBidAskResponse_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:marketmaker.BestBidAskResponse)
+}
+BestBidAskResponse::BestBidAskResponse(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const BestBidAskResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, BestBidAskResponse_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE BestBidAskResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void BestBidAskResponse::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, best_bid_),
+           0,
+           offsetof(Impl_, best_ask_) -
+               offsetof(Impl_, best_bid_) +
+               sizeof(Impl_::best_ask_));
+}
+BestBidAskResponse::~BestBidAskResponse() {
+  // @@protoc_insertion_point(destructor:marketmaker.BestBidAskResponse)
+  SharedDtor(*this);
+}
+inline void BestBidAskResponse::SharedDtor(MessageLite& self) {
+  BestBidAskResponse& this_ = static_cast<BestBidAskResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL BestBidAskResponse::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) BestBidAskResponse(arena);
+}
+constexpr auto BestBidAskResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(BestBidAskResponse),
+                                            alignof(BestBidAskResponse));
+}
+constexpr auto BestBidAskResponse::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_BestBidAskResponse_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &BestBidAskResponse::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<BestBidAskResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &BestBidAskResponse::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<BestBidAskResponse>(), &BestBidAskResponse::ByteSizeLong,
+              &BestBidAskResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_._cached_size_),
+          false,
+      },
+      &BestBidAskResponse::kDescriptorMethods,
+      &descriptor_table_market_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull BestBidAskResponse_class_data_ =
+        BestBidAskResponse::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+BestBidAskResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&BestBidAskResponse_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(BestBidAskResponse_class_data_.tc_table);
+  return BestBidAskResponse_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+BestBidAskResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    BestBidAskResponse_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::marketmaker::BestBidAskResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint32 best_ask = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(BestBidAskResponse, _impl_.best_ask_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_.best_ask_)}},
+    // uint32 best_bid = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(BestBidAskResponse, _impl_.best_bid_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_.best_bid_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 best_bid = 1;
+    {PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_.best_bid_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
+    // uint32 best_ask = 2;
+    {PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_.best_ask_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void BestBidAskResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:marketmaker.BestBidAskResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    ::memset(&_impl_.best_bid_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.best_ask_) -
+        reinterpret_cast<char*>(&_impl_.best_bid_)) + sizeof(_impl_.best_ask_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL BestBidAskResponse::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const BestBidAskResponse& this_ = static_cast<const BestBidAskResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL BestBidAskResponse::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const BestBidAskResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(serialize_to_array_start:marketmaker.BestBidAskResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // uint32 best_bid = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (this_._internal_best_bid() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+          1, this_._internal_best_bid(), target);
+    }
+  }
+
+  // uint32 best_ask = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    if (this_._internal_best_ask() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+          2, this_._internal_best_ask(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:marketmaker.BestBidAskResponse)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t BestBidAskResponse::ByteSizeLong(const MessageLite& base) {
+  const BestBidAskResponse& this_ = static_cast<const BestBidAskResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t BestBidAskResponse::ByteSizeLong() const {
+  const BestBidAskResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:marketmaker.BestBidAskResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    // uint32 best_bid = 1;
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (this_._internal_best_bid() != 0) {
+        total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+            this_._internal_best_bid());
+      }
+    }
+    // uint32 best_ask = 2;
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (this_._internal_best_ask() != 0) {
+        total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+            this_._internal_best_ask());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void BestBidAskResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<BestBidAskResponse*>(&to_msg);
+  auto& from = static_cast<const BestBidAskResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:marketmaker.BestBidAskResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (from._internal_best_bid() != 0) {
+        _this->_impl_.best_bid_ = from._impl_.best_bid_;
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (from._internal_best_ask() != 0) {
+        _this->_impl_.best_ask_ = from._impl_.best_ask_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void BestBidAskResponse::CopyFrom(const BestBidAskResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:marketmaker.BestBidAskResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void BestBidAskResponse::InternalSwap(BestBidAskResponse* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_.best_ask_)
+      + sizeof(BestBidAskResponse::_impl_.best_ask_)
+      - PROTOBUF_FIELD_OFFSET(BestBidAskResponse, _impl_.best_bid_)>(
+          reinterpret_cast<char*>(&_impl_.best_bid_),
+          reinterpret_cast<char*>(&other->_impl_.best_bid_));
+}
+
+::google::protobuf::Metadata BestBidAskResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

@@ -23,6 +23,8 @@ service MarketMaker {
 
   // Attempts to cancel an ongoing order
   rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {}
+
+  rpc QuoteBestBidAsk(StockId) returns (BestBidAskResponse) {}
 }
 
 enum OrderType {
@@ -65,4 +67,13 @@ message LimitOrderInfo {
 
 message CancelOrderResponse {
     bool success = 1;
+}
+
+message StockId {
+  uint32 stock_id = 1;
+}
+
+message BestBidAskResponse {
+  uint32 best_bid = 1;
+  uint32 best_ask = 2;
 }

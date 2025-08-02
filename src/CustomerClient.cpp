@@ -22,6 +22,7 @@
 #include "market.grpc.pb.h"
 #include "market.pb.h"
 
+#include "clob/CustomerClient.h"
 #include "clob/LimitOrder.h"
 #include "clob/types.h"
 
@@ -37,7 +38,9 @@ using marketmaker::GetOrderRequest;
 using marketmaker::LimitOrderId;
 using marketmaker::MarketMaker;
 using marketmaker::PlaceOrderRequest;
+using marketmaker::StockId;
 
+namespace clob {
 LimitOrderId MakeLimitOrderId(const clob::LimitOrderId_t order_id) {
   LimitOrderId limit_order_id;
   limit_order_id.set_order_id(order_id);
@@ -77,90 +80,89 @@ PlaceOrderRequest MakePlaceOrderRequest(const clob::OrderType order_type,
   return place_order_request;
 }
 
-class CustomerClient {
-  std::unique_ptr<MarketMaker::Stub> stub_;
+StockId MakeStockId(const clob::StockId_t stock_id) {
+  StockId stock_id_request;
+  stock_id_request.set_stock_id(stock_id);
+  return stock_id_request;
+}
 
-public:
-  CustomerClient(std::shared_ptr<Channel> channel)
-      : stub_(MarketMaker::NewStub(channel)) {}
+CustomerClient::CustomerClient(std::shared_ptr<Channel> channel)
+    : stub_(MarketMaker::NewStub(channel)) {}
 
-  void GetOrderStatus(const clob::LimitOrderId_t order_id,
-                      const clob::OrderType order_type) {
-    GetOrderRequest get_order_request =
-        MakeGetOrderRequest(order_id, order_type);
-    ClientContext context;
-    marketmaker::LimitOrderInfo response;
-    Status status =
-        stub_->GetOrderStatus(&context, get_order_request, &response);
+CustomerClient::~CustomerClient() {}
 
-    std::cout << "Order id: " << response.order_id() << std::endl;
-    std::cout << "Order timestamp: " << response.timestamp() << std::endl;
-    std::cout << "Order balance: " << response.balance() << std::endl;
-    std::cout << "Order price: " << response.price() << std::endl;
-    std::cout << "Order quantity: " << response.quantity() << std::endl;
-    std::cout << "Order filled quantity: " << response.filled_quantity() << std::endl;
-    std::cout << "Is cancelled: " << response.is_cancelled() << std::endl;
-    std::cout << "Order found: " << response.order_found() << std::endl;
-  }
+void CustomerClient::GetOrderStatus(const clob::LimitOrderId_t order_id,
+                                    const clob::OrderType order_type) {
+  GetOrderRequest get_order_request = MakeGetOrderRequest(order_id, order_type);
+  ClientContext context;
+  marketmaker::LimitOrderInfo response;
+  Status status = stub_->GetOrderStatus(&context, get_order_request, &response);
 
-  void CancelOrder(const clob::LimitOrderId_t order_id,
-                   const clob::OrderType order_type) {
-    CancelOrderRequest cancel_order_request =
-        MakeCancelOrderRequest(order_id, order_type);
-    ClientContext context;
-    marketmaker::CancelOrderResponse response;
-    Status status =
-        stub_->CancelOrder(&context, cancel_order_request, &response);
-    std::cout << "Order cancelled: " << response.success() << std::endl;
-  }
+  std::cout << "Order id: " << response.order_id() << std::endl;
+  std::cout << "Order timestamp: " << response.timestamp() << std::endl;
+  std::cout << "Order balance: " << response.balance() << std::endl;
+  std::cout << "Order price: " << response.price() << std::endl;
+  std::cout << "Order quantity: " << response.quantity() << std::endl;
+  std::cout << "Order filled quantity: " << response.filled_quantity()
+            << std::endl;
+  std::cout << "Is cancelled: " << response.is_cancelled() << std::endl;
+  std::cout << "Order found: " << response.order_found() << std::endl;
+}
 
-  clob::LimitOrderId_t PlaceOrder(const clob::OrderType order_type,
-                  const clob::StockId_t stock_id, const clob::price_t price,
-                  const clob::quantity_t quantity) {
-    PlaceOrderRequest place_order_request =
-        MakePlaceOrderRequest(order_type, stock_id, price, quantity);
-    ClientContext context;
-    marketmaker::LimitOrderId response;
-    Status status = stub_->PlaceOrder(&context, place_order_request, &response);
-    std::cout << "Order placed: " << response.order_id() << std::endl;
-    return response.order_id();
-  }
+void CustomerClient::CancelOrder(const clob::LimitOrderId_t order_id,
+                                 const clob::OrderType order_type) {
+  CancelOrderRequest cancel_order_request =
+      MakeCancelOrderRequest(order_id, order_type);
+  ClientContext context;
+  marketmaker::CancelOrderResponse response;
+  Status status = stub_->CancelOrder(&context, cancel_order_request, &response);
+  std::cout << "Order cancelled: " << response.success() << std::endl;
+}
 
-  void ParseCommand(const std::string& command) {
-    std::istringstream iss(command);
-    std::string command_type;
-    iss >> command_type;
-    if (command_type == "place_order") {
-      std::string order_type, stock_id, price, quantity;
-      iss >> order_type >> stock_id >> price >> quantity;
-      auto order_id = PlaceOrder(static_cast<clob::OrderType>(std::stoi(order_type)), std::stoull(stock_id), std::stoull(price), std::stoull(quantity));
-      std::cout << "Order placed with id: " << order_id << std::endl;
-    } else if (command_type == "get_order_status") {
-      std::string order_type, order_id;
-      iss >> order_type >> order_id;
-      GetOrderStatus(std::stoull(order_id), static_cast<clob::OrderType>(std::stoi(order_type)));
-    } else if (command_type == "cancel_order") {
-      std::string order_type, order_id;
-      iss >> order_type >> order_id;
-      CancelOrder(std::stoull(order_id), static_cast<clob::OrderType>(std::stoi(order_type)));
-    } else {
-      std::cout << "Invalid command" << std::endl;
-    }
-  }
-};
+clob::LimitOrderId_t CustomerClient::PlaceOrder(
+    const clob::OrderType order_type, const clob::StockId_t stock_id,
+    const clob::price_t price, const clob::quantity_t quantity) {
+  PlaceOrderRequest place_order_request =
+      MakePlaceOrderRequest(order_type, stock_id, price, quantity);
+  ClientContext context;
+  marketmaker::LimitOrderId response;
+  Status status = stub_->PlaceOrder(&context, place_order_request, &response);
+  std::cout << "Order placed: " << response.order_id() << std::endl;
+  return response.order_id();
+}
 
-void RunCustomerClient() {
-    CustomerClient customer(grpc::CreateChannel(
-      "localhost:50051", grpc::InsecureChannelCredentials()));
-  std::string command;
-  while (std::getline(std::cin, command)) {
-    customer.ParseCommand(command);
+std::pair<clob::price_t, clob::price_t> CustomerClient::QuoteBestBidAsk(const clob::StockId_t stock_id) {
+  StockId stock_id_request = MakeStockId(stock_id);
+  ClientContext context;
+  marketmaker::BestBidAskResponse response;
+  Status status = stub_->QuoteBestBidAsk(&context, stock_id_request, &response);
+  return std::make_pair(response.best_bid(), response.best_ask());
+}
+
+void CustomerClient::ParseCommand(const std::string &command) {
+  std::istringstream iss(command);
+  std::string command_type;
+  iss >> command_type;
+  if (command_type == "place_order") {
+    std::string order_type, stock_id, price, quantity;
+    iss >> order_type >> stock_id >> price >> quantity;
+    auto order_id = PlaceOrder(
+        static_cast<clob::OrderType>(std::stoi(order_type)),
+        std::stoull(stock_id), std::stoull(price), std::stoull(quantity));
+    std::cout << "Order placed with id: " << order_id << std::endl;
+  } else if (command_type == "get_order_status") {
+    std::string order_type, order_id;
+    iss >> order_type >> order_id;
+    GetOrderStatus(std::stoull(order_id),
+                   static_cast<clob::OrderType>(std::stoi(order_type)));
+  } else if (command_type == "cancel_order") {
+    std::string order_type, order_id;
+    iss >> order_type >> order_id;
+    CancelOrder(std::stoull(order_id),
+                static_cast<clob::OrderType>(std::stoi(order_type)));
+  } else {
+    std::cout << "Invalid command" << std::endl;
   }
 }
 
-int main(int argc, char **argv) {
-  absl::ParseCommandLine(argc, argv);
-  absl::InitializeLog();
-  RunCustomerClient();
-  return 0;
-}
+} // namespace clob

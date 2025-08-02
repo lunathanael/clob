@@ -121,8 +121,10 @@ endif ()
 
 # header files
 set(HEADER_FILES
+    include/clob/CustomerClient.h
     include/clob/LimitOrder.h
     include/clob/Market.h
+    include/clob/MarketMaker.h
     include/clob/OrderBook.h
     include/clob/Stock.h
     include/clob/types.h
@@ -132,6 +134,8 @@ set(HEADER_FILES
 set(SOURCE_FILES
     src/Market.cpp
     src/OrderBook.cpp
+    src/CustomerClient.cpp
+    src/MarketMakerServer.cpp
 )
 
 add_library(${LIBRARY_NAME} OBJECT ${HEADER_FILES} ${SOURCE_FILES})
@@ -202,9 +206,10 @@ target_link_libraries(market_grpc_proto
 #-------------------------------------------------------------------------------------------------------
 # Executable
 #-------------------------------------------------------------------------------------------------------'
-add_executable(${TARGET_NAME} src/MarketMakerServer.cpp)
-add_executable(${TARGET_NAME_CLIENT} src/CustomerClient.cpp)
-foreach (_target ${TARGET_NAME} ${TARGET_NAME_CLIENT})
+add_executable(${TARGET_NAME} src/server.cpp)
+add_executable(${TARGET_NAME_CLIENT} src/client.cpp)
+add_executable(benchmark src/Benchmark.cpp)
+foreach (_target ${TARGET_NAME} ${TARGET_NAME_CLIENT} benchmark)
 
     target_link_libraries(${_target}
         PRIVATE
